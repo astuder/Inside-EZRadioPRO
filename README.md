@@ -3,11 +3,11 @@ Reverse engineering the SiLabs EZRadioPRO family of RF ICs with the goal of writ
 
 ## Progress
 
-- Dump the all memory address spaces, including CODE and NVRAM address spaces.
--- Si4362-B1B, Si4362-C2A, Si4460-A2A, Si4463-B1B, Si4467-A2A
+- Dump the all memory address spaces, including CODE and NVRAM
+  - Si4362-B1B, Si4362-C2A, Si4460-A2A, Si4463-B1B, Si4467-A2A
 - Run custom code on radio IC
 - Analyze and annotate large parts of the firmware using radare2
--- Si4362-C2A: bootloader, main application image (FUNC1)
+  - Si4362-C2A: bootloader, main application image (FUNC1)
 
 [To-do list](TODO.md)
 
