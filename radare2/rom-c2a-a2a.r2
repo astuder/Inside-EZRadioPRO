@@ -530,7 +530,7 @@ CCu RSSI_DELAY, RSSI_DELAY_CNT @ 0x9230
 CCu OOK_DISCHG_DIV @ 0x923d
 CCu OOK_LIMIT_DISCHG @ 0x9250
 CCu if always dischg (0) @ 0x9258
-CCu xreg.modem_rssi_thres @ 0x926f
+axd xreg_base+0x3b @ 0x926f
 CCu if hysterisis larger than thres @ 0x9278
 CCu then no hysterisis @ 0x927c
 CCu calculate RSSI turn off thres @ 0x9288
@@ -564,7 +564,6 @@ CCu NON_FRZEN @ 0x936e
 CCu MODEM_RAW_EYE lsb @ 0x9378
 axd xreg_base+0x42 @ 0x937c
 CCu MODEM_ANT_DIV_MODE @ 0x937e
-CCu xreg.modem_ant_div_mode @ 0x9380
 CCu MODEM_ANT_DIV_CONTROL @ 0x9388
 axd xreg_base+0x57 @ 0x938a
 CCu ANT2PM_THD @ 0x938c
@@ -592,7 +591,6 @@ CCu dest xreg = 0x0a @ 0x948e
 CCu 8th prop group entry (MODEM_CHFLT) @ 0x9494
 CCu xmem loc of properties (0x61c) @ 0x94a1
 .(fcn 0x94c9 0x94f5 rom.config_dsa_ctrl2)
-CCu xreg.modem_dsa_ctrl1 @ 0x94c9
 CCu DSA_EN @ 0x94cc
 CCu RX_PREAM_SRC @ 0x94d2
 CCu if DSA_ONLY @ 0x94d7
@@ -601,10 +599,7 @@ CCu STANDARD_PREAM @ 0x94dc
 CCu PRE_NS (non-std) @ 0x94e2
 CCu DSA disabled @ 0x94e6
 CCu BCR_GEAR_SHIFT, ARRIVAL_THD @ 0x94ec
-CCu xreg.dsa_ctrl2 @ 0x94f0
-.(fcn 0x94f5 0x9513 rom.irq0x07_bit1)
-CCu xreg.usec_timer_lsb @ 0x9503
-CCu xreg.usec_timer_msb @ 0x9508
+.(fcn 0x94f5 0x9513 rom.irq0x07_packet_sent)
 CCu usec delay expired @ 0x950b
 .(fcn 0x9513 0x9556 rom.0x07_isr)
 .(fcn 0x9556 0x95f6 rom.config_modem_clkgen_band)
@@ -798,7 +793,7 @@ CCu fill rest of response with 0 @ 0x9dea
 .(fcn 0x9dfe 0x9e09 rom.peek_dsp_ram)
 CCu or method to read SFR? @ 0x9dfe
 .(fcn 0x9e09 0x9e69 rom.spi_parse_more_cmds)
-CCu also available with func2 and func3 boot (peek&poke!) @ 0x9e09
+CCu also called in func2 and func3 images (peek&poke!) @ 0x9e09
 CCu GET_CHIP_STATUS @ 0x9e0c
 CCu FIFO_INFO @ 0x9e12
 CCu SET_PROPERTY @ 0x9e18
@@ -915,28 +910,25 @@ f rom.raise_int_chip_state_change_r5 @ 0xa1f8
 CCu store CURRENT_STATE for FRR access @ 0xa1f8
 CCu STATE_CHANGE @ 0xa1fd
 f rom.raise_int_chip @ 0xa1ff
-CCu xreg.int_ctl_chip_enable @ 0xa203
-CCu xreg.int_ctl_chip_enable @ 0xa230
 .(fcn 0xa236 0xa2ae rom.main_loop_bit7_cmd1_2)
 CCu CAL @ 0xa278
 CCu CAL @ 0xa2a5
 .(fcn 0xa2f9 0xa313 rom.exit_cmd_with_err)
-CCu xreg.spi_buffer[0] (cmd) @ 0xa2fe
-CCu xreg.spi_cmd_status @ 0xa305
+CCu CMD @ 0xa2fe
 CCu CMD_ERROR @ 0xa30b
 CCu CMD_ERROR @ 0xa30f
 .(fcn 0xa313 0xa331 rom.main_loop_wut_event)
 CCu check WUT_SLEEP flag @ 0xa327
 CCu SLEEP @ 0xa32b
 .(fcn 0xa331 0xa38c rom.adc_read_gpio_r7)
-CCu xreg.gpio_gpiox_cfg2 @ 0xa331
-CCu gpio_cfg2 xreg for pin @ 0xa336
-CCu prev cfg2 value @ 0xa33a
+axd xreg_base+0xa2 @ 0xa331
+CCu gpio_cfg1 xreg for pin @ 0xa336
+CCu prev cfg1 value @ 0xa33a
 CCu prev gpio adc sel value @ 0xa33f
 CCu create pin mask @ 0xa34b
 CCu ADC_CFG @ 0xa357
 CCu GPIO_ATT @ 0xa35b
-CCu restore gpio cfg2 @ 0xa37c
+CCu restore gpio cfg1 @ 0xa37c
 CCu restore gpoio adc sel @ 0xa382
 .(fcn 0xa38c 0xa3a5 rom.main_loop_change_state)
 CCu STATE_CHANGE @ 0xa38e
@@ -978,7 +970,6 @@ CCu undocumented @ 0xa41f
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xa42a
 .(fcn 0xa42e 0xa43d rom.clear_int_modem)
 .(fcn 0xa43d 0xa44e rom.exit_cmd_check_busy)
-CCu xreg.spi_cmd_status @ 0xa43d
 CCu CMD_ERROR_COMMAND_BUSY @ 0xa443
 CCu CHIP_READY @ 0xa454
 .(fcn 0xa45d 0xa48a rom.main_loop_parse_cmds)
@@ -1098,6 +1089,7 @@ CCu is next state not TX? @ 0xa8b6
 CCu TX @ 0xa8cd
 .(fcn 0xa8ec 0xa8fc rom.change_from_rx_to_rx)
 CCu RX @ 0xa8ec
+CCu bytes in spi buffer @ 0xa8ff
 .(fcn 0xa925 0xa949 rom.movx_spibuf_to_r6r7_lenr5)
 CCu dest: r6r7 @ 0xa925
 CCu src: SPI buffer @ 0xa929
@@ -1182,20 +1174,25 @@ f rom.config_cmd_table 1 @ 0xac70
 CCu ALT_CRC_POLYNOMIAL @ 0xacd1
 CCu 0x8cc5=rom.crc_poly_table+2 @ 0xacdb
 axd 0x8cc5 @ 0xacdb
-CCu xreg.alt_crc_polynomial_msb @ 0xace5
-CCu xreg.alt_crc_polynomial_lsb @ 0xacea
+axd xreg_base+0xb5 @ 0xacea
 CCu CRC_POLYNOMIAL @ 0xaced
 CCu 0x8cc3=rom.crc_poly_table @ 0xacf3
 axd 0x8cc3 @ 0xacf3
-CCu xreg.crc_polynomial msb @ 0xacfe
+axd xreg_base+0xbe @ 0xacfe
 CCu CRC_SEED @ 0xad07
 CCu set CRC value to all 1 @ 0xad0a
+axd xreg_base+0xc1 @ 0xad0f
+axd xreg_base+0xc0 @ 0xad11
+axd xreg_base+0xbf @ 0xad13
 CCu set CRC value to seed (default 0) @ 0xad1a
+axd xreg_base+0xc2 @ 0xad1a
 CCu ALT_CRC_SEED @ 0xad25
-CCu xreg.alt_crc_value @ 0xad2a
+axd xreg_base+0xb7 @ 0xad2e
 .(fcn 0xad37 0xad67 rom.config_pkt_whitening)
 CCu write poly to xreg @ 0xad3a
+axd xreg_base+0xc8 @ 0xad3a
 CCu write PHT_WHT_SEED to xreg @ 0xad3f
+axd xreg_base+0xca @ 0xad3f
 CCu SW_CRC_CTRL (enable sw crc) @ 0xad5f
 CCu PKT_WHT_BIT_NUM @ 0xad44
 CCu WHT_BIT_NUM @ 0xad45
@@ -1224,10 +1221,7 @@ CCu SW_WHT_CTRL @ 0xaf06
 CCu SW_CRC_CTRL @ 0xaf0b
 .(fcn 0xaf17 0xaf23 rom.read_wht_seed_from_xreg)
 CCu set flag 24.6 to xreg.wht_seed_msb bit0 @ 0xaf17
-CCu xreg.wht_seed_lsb @ 0xaf1d
 .(fcn 0xaf23 0xaf32 rom.read_crc16_from_xreg)
-CCu xreg.crc16_msb @ 0xaf23
-CCu xreg.crc16_lsb @ 0xaf27
 .(fcn 0xaf32 0xaf44 rom.config_pa_mode)
 CCu PA_MODE @ 0xaf35
 CCu mode SWC (switched current) @ 0xaf39
@@ -1259,8 +1253,10 @@ CCu report PH filter match @ 0xb079
 .(fcn 0xb07e 0xb09b rom.rx_ph_isr_preamble_detected)
 CCu latch RSSI on preamble detect @ 0xb08f
 .(fcn 0xb09b 0xb0a5 rom.xreg0x02_bit0_set_and_clr)
-CCu copy 0x0737-0x073a to xreg.0x46-0x49 @ 0xb0ac
 .(fcn 0xb0a5 0xb0be rom.movx_0x0737_to_xreg0x46)
+CCu copy 0x0737-0x073a to xreg.0x46-0x49 @ 0xb0ac
+axd xreg_base+0x46 @ 0xb0b0
+axd xreg_base+0x49 @ 0xb0b5
 .(fcn 0xb0be 0xb0f9 rom.rx_ph_isr_payload)
 CCu raise PH CRC error @ 0xb0d3
 CCu raise PH ALT CRC error @ 0xb0e2
@@ -1647,6 +1643,7 @@ CCu tx fifo out pos @ 0xc5e1
 CCu branch if fifo out pos < in pos @ 0xc5e6
 CCu fifo space = out - in @ 0xc5e8
 CCu fifo space = size - in + out @ 0xc5ee
+.(fcn 0xc603 0xc621 rom.fifo_tx_unk0xc603)
 .(fcn 0xc621 0xc627 rom.pti_wait_status_bit7_clr)
 .(fcn 0xc627 0xc650 rom.pti_send_tx_info)
 CCu PTI_EN @ 0xc62b
@@ -1661,6 +1658,7 @@ CCu enable PTI for rx @ 0xc67f
 .(fcn 0xc683 0xc69a rom.pti_send_curr_state)
 .(fcn 0xc69a 0xc6b3 rom.pti_send_spi_cmd)
 CCu PTI output of SPI cmd enabled? @ 0xc69a
+CCu CMD @ 0xc6a8
 .(fcn 0xc6b3 0xc6cd rom.pti_send_r7)
 .(fcn 0xc6cd 0xc704 rom.pti_dump_imem_and_xmem)
 CCu iterate over imem @ 0xc6d9
@@ -1683,7 +1681,6 @@ f rom.movx_dptr_to_r0_dec_r0_inc_dptr_x2 1 @ 0xc83f
 f rom.movx_a_to_r0_inc_dptr_dec_r0_movx_dptr_to_r0 1 @ 0xc840
 .(fcn 0xc846 0xc851 rom.spi_cmd_done_ex)
 f rom.spi_cmd_done 1 @ 0xc84a
-CCu xreg.spi_cmd_status @ 0xc84a
 .(fcn 0xc851 0xc87d rom.read_group_info)
 CCu group index @ 0xc851
 CCu group info addr lo @ 0xc860
@@ -1773,8 +1770,7 @@ CCu RX @ 0xcad6
 .(fcn 0xcb8f 0xcb97 rom.and_r4r6_and_ar5_or)
 .(fcn 0xcb97 0xcb9f rom.set_acc_1_r6_0_r0_idx_plus_1)
 .(fcn 0xcb9f 0xcba7 rom.set_xreg_usec_timer_to_0xffff)
-CCu xreg.usec_timer_lsb @ 0xcb9f
-CCu xreg.usec_timer_msb @ 0xcba4
+axd xreg_base+0xf0 @ 0xcba4
 .(fcn 0xcba7 0xcbae rom.dsp_reg0x01_set_lonib_to_r3)
 .(fcn 0xcbae 0xcbb6 rom.inc_at_dptr_wiggle_xreg0xdf_bit1_ret_bit3)
 .(fcn 0xcbb6 0xcbbe rom.get_modem_rssi_ctl_latch)
@@ -1832,8 +1828,10 @@ CCu SYNC_DETECT @ 0xcd8e
 .(fcn 0xcda6 0xcdb0 rom.irq0x07_rssi_jump)
 CCu RSSI_JUMP @ 0xcda6
 CCu RSSI_JUMP @ 0xcdab
-.(fcn 0xcdb0 0xcdb3 rx_process_byte_b)
+.(fcn 0xcdb0 0xcdb3 rom.rx_process_byte_b)
+CCu hop on RSSI timeout @ 0xcdb3
 CCu RSSI @ 0xcdbc
+.(fcn 0xcdc6 0xcdcb rom.clear_int_modem_rssi)
 CCu RSSI @ 0xcdc6
 .(fcn 0xcdcb 0xcdcc rom.rx_ph_isr_bit5)
 .(fcn 0xcdcc 0xcdde rom.packet_sent)
@@ -1852,7 +1850,6 @@ CCu RX_FIFO_ALMOST_FULL @ 0xce1c
 .(fcn 0xce26 0xce30 rom.fifo_rx_clear_almost_full)
 CCu RX_FIFO_ALMOST_FULL @ 0xce26
 .(fcn 0xce30 0xce52 rom.check_thresh_at_latch)
-CCu xreg.modem_rssi_latch_thresh @ 0xce30
 CCu CHECK_THRESH_AT_LATCH @ 0xce40
 CCu RSSI_LATCH @ 0xce4c
 .(fcn 0xce52 0xce65 rom.raise_postamble_detect)
@@ -1888,6 +1885,8 @@ axd _idate+0x93 @ 0xcf84
 .(fcn 0xcf89 0xcf8c rom.config_modem_entry)
 .(fcn 0xcf8d 0xcfae rom.spi_isr)
 CCu was previous cmd undoc_0x35? @ 0xcf95
+CCu bytes in spi buffer @ 0xcf9e
+CCu set if cmd parsing handed to main loop @ 0xcfa7
 .(fcn 0xcfae 0xcff0 rom.spi_parse_cmds)
 CCu RX_HOP @ 0xcfb1
 CCu TX_HOP @ 0xcfb7

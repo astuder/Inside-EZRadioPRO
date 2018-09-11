@@ -111,11 +111,11 @@ f var.rxtx_delay_cnt_lsb 1 @ _idata+0x5d
 f var.crc16_msb 1 @ _idata+0x5e
 f var.crc16_lsb 1 @ _idata+0x5f
 
-f var.rx_ph_status 1 @ _idata+0x61
+f var.ph_status 1 @ _idata+0x61
 CCu 0:clr end of ph isr 1:rx fifo overflow 2:ph isr error @ _idata+0x61
 f var.target_channel @ _idata+0x62
-f var.spi_cmd_status @ _idata+0x63
-CCu cleared on reset, 0-6: set from xreg.spi_cmd_status in spi_isr @ _idata+0x63
+f var.spi_len_in @ _idata+0x63
+CCu incoming bytes in SPI buffer @ _idata+0x63
 f var.whit_seed @ _idata+0x65
 f var.main_loop_bit7_cmd @ _idata+0x66
 f var.loc67 1 @ _idata+0x67
@@ -283,6 +283,7 @@ f map.flag0x28_processing 1 @ 0x01dd
 f map.clear_int_pending_flags 1 @ 0x01e0
 f map.change_from_rx_tune 1 @ 0x01e3
 f map.rx_ph_init 1 @ 0x01e6
+f map.clear_int_modem_rssi 1 @0x01e9
 f map.pa_dig_pwr_sequencing 1 @ 0x01ef
 f map.modem_start_tx 1 @ 0x01f2
 f map.rx_start 1 @ 0x01f8
