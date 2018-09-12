@@ -82,8 +82,8 @@ f sfr.freq_pll_div_frac1 1 @ _sfr+0xeb
 CCu 0-7:pll divider frac[15:8] @ _sfr+0xeb
 f sfr.freq_pll_div_frac2 1 @ _sfr+0xec
 CCu 0-7:pll divider frac[7:0] @ _sfr+0xec
-f sfr.gpio_unk 1 @ _sfr+0xee
-CCu set on various ints 1:LOW_BATT 2:RX_FIFO_ALMOST_FULL 3:TX_FIFO_ALMOST_EMPTY 4: FILTER_MISS 5:RSSI 6:POSTAMBLE_DECT @ _sfr+0xee
+f sfr.gpio_out_states 1 @ _sfr+0xee
+CCu 0:TX 1:RX 2:RX_FIFO_FULL 3:TX_FIFO_EMPTY 4:LOW_BATT 5:CCA_LATCH 6:HOPPED 7:HOP_TABLE_WRAP @ _sfr+0xee
 
 f sfr.modem_decimation_cfg @ _sfr+0xf1
 CCu 0:RXGAINX2 1-3:NDEC0 4-5:NDEC1 6-7:NDEC2 @ _sfr+0xf1
@@ -307,7 +307,7 @@ CCu set to #0x17 if EXT_PA_RAMP, 7 if not @ xreg_base+0xdb
 CCu 4:set in adc enable @ xreg_base+0xdf
 
 f xreg.periph_ctrl 1 @ xreg_base+0xe0
-CCu 1:ADC @ xreg_base+0xe0
+CCu 1:ADC 5:BATT 6:1=low batt @ xreg_base+0xe0
 f xreg.periph_ctrl2 1 @ xreg_base+0xe1
 CCu 1:NVRAM @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2

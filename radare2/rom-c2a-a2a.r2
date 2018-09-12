@@ -621,6 +621,9 @@ CCu low temp @ 0x95e6
 CCu set xreg2 modem_rssi_ctrl bit 5 @ 0x95f9
 CCu set xreg2 modem_rssi_ctrl bit 4 @ 0x9603
 .(fcn 0x960f 0x961b rom.irq0x07_bit2)
+.(fcn 0x9620 0x9635 rom.timer_wait_until_done)
+CCu wait until timer done @ 0x9622
+.(fcn 0x9635 0x9647 rom.timer_wait_r6r7_minus_1_x_30)
 .(fcn 0x966c 0x96e9 rom.rx_start)
 CCu FIFO_SRC_SEL @ 0x96e0
 CCu src is packet handler @ 0x96e3
@@ -891,6 +894,8 @@ CCu WUT @ 0xa15d
 CCu WUT @ 0xa161
 CCu no 32k clk cal @ 0xa169
 CCu decrement cal counter @ 0xa16b
+CCu WUT_LBD_EN @ 0xa17d
+CCu LOW_BATT @ 0xa184
 CCu LOW_BATT @ 0xa18b
 CCu LOW_BATT @ 0xa194
 CCu WUT_LDC_EN @ 0xa1a6
@@ -1046,11 +1051,15 @@ CCu RX_TUNE @ 0xa73b
 .(fcn 0xa748 0xa755 rom.change_from_ready_to_tx_tune)
 CCu TX_TUNE @ 0xa748
 .(fcn 0xa755 0xa764 rom.change_from_ready_to_rx)
-CCu RX @ 0x758
+CCu RX @ 0xa758
+CCu RX @ 0xa75c
 .(fcn 0xa764 0xa774 rom.change_from_rx_to_rx_tune)
 CCu RX_TUNE @ 0xa764
+CCu RX,CCA_LATCH @ 0xa76b
 .(fcn 0xa774 0xa786 rom.change_state_from_tx_to_rx)
 CCu RX @ 0xa776
+CCu RX @ 0xa77c
+CCu TX @ 0xa77e
 .(fcn 0xa7b5 0xa7d2 rom.config_pti_baud)
 CCu r4r5r6r7 = baudrate / 100 @ 0xa7be
 CCu 100 dec @ 0xa7c0
@@ -1087,6 +1096,8 @@ CCu is next state RX? @ 0xa8b3
 CCu is next state not TX? @ 0xa8b6
 .(fcn 0xa8cd 0xa8ec rom.change_from_rx_to_tx)
 CCu TX @ 0xa8cd
+CCu TX @ 0xa8d7
+CCu RX,CCA_LATCH @ 0xa8d9
 .(fcn 0xa8ec 0xa8fc rom.change_from_rx_to_rx)
 CCu RX @ 0xa8ec
 CCu bytes in spi buffer @ 0xa8ff
@@ -1142,6 +1153,7 @@ CCu disable timer interrupt @ 0xaaf1
 CCu copy xreg.0x4a-0x4d to 0x0737-0x073a @ 0xab2b
 .(fcn 0xab43 0xab77 rom.rx_ph_isr_sync_detected)
 CCu latch on sync @ 0xab4e
+CCu CCA_LATCH @ 0xab56
 .(fcn 0xab77 0xaba1 rom.config_preamble_timeout)
 CCu RX_PREAMBLE_TIMEOUT @ 0xab7c
 CCu RX_PREAMBLE_TIMEOUT_EXTEND @ 0xab80
@@ -1309,6 +1321,10 @@ CCu next bit7 cmd @ 0xb5ea
 .(fcn 0xb5f1 0xb5f9 rom.main_loop_bit7_cmd10)
 .(fcn 0xb5f9 0xb617 rom.main_loop_bit7_cmd0)
 axd dsp_base+0x00 @ 0xb635
+.(fcn 0xb6ad 0xb6c5 rom.wut_check_low_batt)
+CCu en ADC, BATT @0xb6b0
+CCu low batt bit @0xb6bd
+CCu disable ADC, BATT @0xb6c1
 .(fcn 0xb6c5 0xb6dc rom.dsp_set_0x03_0x57_from_cache_set_0x87_to_0x02)
 .(fcn 0xb6dc 0xb713 rom.raise_int_ph)
 .(fcn 0xb713 0xb74a rom.raise_int_modem)
@@ -1395,10 +1411,14 @@ CCu update xreg.gpio_xx_cfg1 @ 0xbb87
 CCu inc ptr to cfg.gpio_xx_cfg1 @ 0xbb8b
 CCu inc ptr to xreg.gpio_xx_cfg1 @ 0xbb93
 CCu shr gpio pin state2 @ 0xbb94
-.(fcn 0xbba1 0xbba5 rom.sfr0xee_or_r7)
-.(fcn 0xbba5 0xbbaa rom.sfr0xee_mask_r7)
-.(fcn 0xbbaa 0xbbae rom.sfr0xee_xor_r7)
-.(fcn 0xbbae 0xbbbf rom.sfr0xee_mask_r7_or_r5_xor_r3)
+.(fcn 0xbba1 0xbba5 rom.gpio_state_set_r7)
+CCu set gpio output for modes 32-39 @0xbba1
+.(fcn 0xbba5 0xbbaa rom.gpio_state_clr_r7)
+CCu clear gpio output for modes 32-39 @0xbba5
+.(fcn 0xbbaa 0xbbae rom.gpio_state_toggle_r7)
+CCu toggle gpio output for modes 32-39 @0xbbaa
+.(fcn 0xbbae 0xbbbf rom.gpio_state_clr_r7_set_r5_toggle_r3)
+CCu update gpio output for modes 32-39 @0xbbae
 .(fcn 0xbbbf 0xbc2b rom.gpio_read_pin_cfg)
 CCu pin @ 0xbbbf
 CCu cfg @ 0xbbc1
@@ -1473,6 +1493,7 @@ CCu READY @ 0xbd15
 CCu is next state TX? @ 0xbd1e
 CCu is next state RX? @ 0xbd25
 CCu TX_TUNE @ 0xbd2b
+CCu TX @ 0xbd33
 CCu TX_TUNE @ 0xbd38
 f rom.change_state_from_tx_to_tx @ 0xbd3c
 .(fcn 0xbd4a 0xbd6c rom.synth_recal_check)
@@ -1711,6 +1732,7 @@ axd xreg_base+0x03 @ 0xc918
 axd xreg_base+0x02 @ 0xc91b
 .(fcn 0xc91e 0xc92f rom.change_from_ready_or_tune_to_tx)
 CCu TX @ 0xc91e
+CCu TX @ 0xc923
 .(fcn 0xc92f 0xc93d rom.rc32k_enable)
 .(fcn 0xc950 0xc95a rom.set_eint1_callback_r4r5)
 f rom.store_r4r5_at_scratch_r0_ret_r4_or_r5 1 @ 0xc952
@@ -1831,6 +1853,7 @@ CCu RSSI_JUMP @ 0xcdab
 .(fcn 0xcdb0 0xcdb3 rom.rx_process_byte_b)
 CCu hop on RSSI timeout @ 0xcdb3
 CCu RSSI @ 0xcdbc
+CCu CCA_LATCH @ 0xcdc1
 .(fcn 0xcdc6 0xcdcb rom.clear_int_modem_rssi)
 CCu RSSI @ 0xcdc6
 .(fcn 0xcdcb 0xcdcc rom.rx_ph_isr_bit5)
@@ -1842,13 +1865,17 @@ CCu do nothing if state TX @ 0xcde2
 CCu return 0x80 @ 0xcde4
 CCu return 0x80 @ 0xcdea
 .(fcn 0xcdf5 0xce12 rom.fifo_tx_check_almost_empty)
+CCu TX_FIFO_EMPTY @ 0xce05
+CCu TX_FIFO_EMPTY @ 0xce0d
 CCu TX_FIFO_ALMOST_EMPTY @ 0xcdfe
 .(fcn 0xce17 0xce1c rom.fifo_raise_underflow_overflow_err)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xce17
 .(fcn 0xce1c 0xce26 rom.fifo_rx_raise_almost_full)
 CCu RX_FIFO_ALMOST_FULL @ 0xce1c
+CCu RX_FIFO_FULL @ 0xce21
 .(fcn 0xce26 0xce30 rom.fifo_rx_clear_almost_full)
 CCu RX_FIFO_ALMOST_FULL @ 0xce26
+CCu RX_FIFO_FULL @ 0xce2b
 .(fcn 0xce30 0xce52 rom.check_thresh_at_latch)
 CCu CHECK_THRESH_AT_LATCH @ 0xce40
 CCu RSSI_LATCH @ 0xce4c
@@ -1877,7 +1904,11 @@ CCu average 2 @ 0xcf24
 CCu BIT1 @ 0xcf29
 CCu PH_RX_DISABLE @ 0xcf51
 CCu if packet handler disabled @ 0xcf52
+CCu start on WUT? @0xcf5f
+CCu clr start condition @0xcf62
 CCu RX @ 0xcf65
+CCu start on WUT? @0xcf6d
+CCu clr start condition @0xcf70
 CCu TX @ 0xcf73
 .(fcn 0xcf7b 0xcf7c rom.main_loop_bit6_event)
 axd _idata+0x92 @ 0xcf80
@@ -2011,9 +2042,11 @@ CCu manual RX hop @ 0xd3a0
 .(fcn 0xd3ba 0xd414 rom.main_loop_rx_hop_initiate)
 CCu check if state in progress @ 0xd3ba
 CCu check if in RX state @ 0xd3bf
+CCu HOPPED @ 0xd3c6
 CCu increment table pos @ 0xd3dc
 CCu check if end of table reached @ 0xd3df
 CCu reset table pos to 0 @ 0xd3e4
+CCu HOP_TABLE_WRAP @ 0xd3e6
 CCu get ptr into hop table (0x0535) @ 0xd3ef
 CCu read hop table entry @ 0xd3f8
 CCu check if entry is 0xff (skip entry) @ 0xd3fa
@@ -2121,6 +2154,8 @@ axc 0xe8ef @ 0xe238
 CCu delay @ 0xe23d
 CCu TX_FIFO_ALMOST_EMPTY @ 0xe290
 CCu FILTER_MISS @ 0xe2a0
+CCu TX_FIFO_EMPTY @ 0xe2a7
+CCu TX_FIFO_EMPTY @ 0xe2af
 CCu RSSI_LATCH @ 0xe2e2
 .(fcn 0xe37d 0xe384 rom.int0x0f_cb_unk0xe37d)
 CCu indicate RX/TX event @ 0xe37f
@@ -2132,7 +2167,9 @@ CCu indicate RX/TX event @ 0xe43e
 .(fcn 0xe443 0xe498 rom.int0x0f_cb_unk0xe443)
 CCu int 0x0f impl at 0xe435 @ 0xe4a4
 CCu POSTAMBLE_DETECT @ 0xe7d9
+CCu RX_FIFO_FULL @ 0xe7de
 CCu POSTAMBLE_DETECT @ 0xe7e3
+CCu RX_FIFO_FULL @ 0xe7e8
 .(fcn 0xe8ef 0xe90d rom.eint1_cb_unk0xe8ef)
 CCu peak detect? @ 0xe8ef
 CCu var.CURRENT_RSSI @ 0xe900

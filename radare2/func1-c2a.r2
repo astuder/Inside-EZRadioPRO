@@ -37,9 +37,9 @@ f var.ph_flags0 1 @ _idata+0x22
 f var.rx_hop_ctl 1 @ _idata+0x23
 CCu 0:rssi 1:preamble 2:sync 3:hop pending @ _idata+0x23
 f var.flags_24 1 @ _idata+0x24
-CCu 0:txrx started? 1:? 2:txrx started? 4:rx hop? 5:rc32k cal due 6:wht bit8 7:state change in progress? @ _idata+0x24
+CCu 0:? 1:? 2:txrx started? 4:rx hop? 5:rc32k cal due 6:wht bit8 7:state change in progress? @ _idata+0x24
 f var.flags_25 1 @ _idata+0x25
-CCu 1:low power 3:? 4:zeroif 5:synth recal 7:OOK @ _idata+0x25
+CCu 0:? 1:low power 3:? 4:zeroif 5:synth recal 7:OOK @ _idata+0x25
 CCu low power flag @@/c 0x25.1 > /dev/null
 f-hit*
 f var.flags_26 1 @ _idata+0x26
@@ -217,7 +217,7 @@ f map.adc_calculate_result 1 @ 0x00f0
 f map.config_modem 1 @ 0x00f3
 f map.irq0x07_rssi_jump 1 @ 0x00ff
 
-f map.sfr0xee_mask_r7 1 @ 0x0102
+f map.gpio_state_clr_r7 1 @ 0x0102
 f map.modem_start_unk0xba27 1 @ 0x0108
 f map.fifo_rx_update 1 @ 0x010b
 f map.rx_sync_timeout 1 @ 0x010e
@@ -245,6 +245,7 @@ f map.dsp_reg_r7_unk0xb371 1 @ 0x0150
 f map.rc32k_set_source 1 @ 0x0153
 f map.config_clk 1 @ 0x0156
 f map.rx_unk_0xd5dc 1 @ 0x0159
+f map.wut_check_low_batt 1 @ 0x015c
 f map.write_sfr0xed_to_rx_fifo @ 0x015f
 f map.rx_start_dsp_unk_0xc0f5 1 @ 0x0162
 f map.cmd_ircal 1 @ 0x0165
@@ -265,7 +266,7 @@ f map.config_dsa_ctrl2 1 @ 0x19b
 f map.cmd_ircal_manual 1 @ 0x019e
 f map.ircal_calibration_step 1 @ 0x01a1
 f map.eint0_entry 1 @ 0x01a4
-f map.sfr0xee_mask_r7_or_r5_xor_r3 1 @ 0x01aa
+f map.gpio_state_clr_r7_set_r5_toggle_r3 1 @ 0x01aa
 f map.cmd_func_info 1 @ 0x01ad
 f map.change_from_tx_tune 1 @ 0x01b0
 f map.pti_send_curr_state 1 @ 0x01b3
@@ -313,7 +314,7 @@ f map.main_loop 1 @ 0x024f
 f map.pti_send_r7 1 @ 0x0252
 f map.config_run_r7 1 @ 0x0255
 f map.cmd_gpio_pin_config 1 @ 0x0258
-f map.sfr0xee_or_r7 1 @ 0x025b
+f map.gpio_state_set_r7 1 @ 0x025b
 f map.main_loop_bit7_event 1 @ 0x0261
 f map.cmd_request_device_state 1 @ 0x0264
 f map.rx_ph_isr_payload 1 @ 0x0267

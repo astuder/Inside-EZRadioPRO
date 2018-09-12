@@ -12,7 +12,7 @@ f var.CMD_ERR_STATUS 1 @ 0x0026
 Cd 1 1 @ 0x0026
 f var.CURRENT_CHANNEL 1 @ 0x002a
 Cd 1 1 @ 0x002a
-f var.wut_tx_periods 1 @ 0x004e
+f var.wut_periods 1 @ 0x004e
 Cd 1 1 @ 0x004e
 CCu #0x40:forever #0x6x:x LDC periods @ 0x004e
 
