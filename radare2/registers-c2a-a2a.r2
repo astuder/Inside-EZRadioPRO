@@ -20,7 +20,6 @@ CCu 2:clr before GPIO adc read @ _sfr+0x96
 f sfr.dsp_ram_rw 1 @ _sfr+0xa6
 f sfr.rxtx_byte 1 @ _sfr+0xa7
 CCu read in rx, written in tx @ _sfr+0xa7
-f sfr.IE 1 @ _sfr+0xa8
 CCu 4:eint1 (bit timer) @ _sfr+0xa8
 CCu set to #0x01 end of tx, #0x10 end of rx packet @ _sfr+0xa9
 f sfr.preamble_ctrl 1 @ _sfr+0xaa

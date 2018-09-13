@@ -25,6 +25,15 @@ Cd 1 0x100 @_pdata*0x100
 
 # general 8051 
 
+f sfr.sp 1 @ _sfr+0x81
+f sfr.dl 1 @ _sfr+0x82
+f sfr.dh 1 @ _sfr+0x83
+f sfr.ie 1 @ _sfr+0xa8
+f sfr.ip 1 @ _sfr+0xb8
+f sfr.psw 1 @ _sfr+0xd0
+f sfr.acc 1 @ _sfr+0xe0
+f sfr.b 1 @ _sfr+0xf0
+
 echo annotating 8051 stuff
 /c clr ie.7 > /dev/null
 CCu disable interrupts @@hit*
