@@ -577,10 +577,11 @@ CCu MATAP @ 0x93b4
 CCu ENFZPMEND, ENAFC_CLKSW @ 0x93bc
 CCu UNDOC_0x4f[0:4] @ 0x93c2
 CCu 4FSK? @ 0x93d2
-CCu clr MOD_TYPE bit2, disable 4FSK? @ 0x93d5
-CCu xreg.0x53[2:0] @ 0x93e2
+CCu clr MOD_TYPE bit3, disable 4FSK? @ 0x93d5
+CCu xreg.0x53[2:0]=2 @ 0x93e2
+CCu clr OOK_SQUELCH_EN @ 0x93eb
 CCu OOK_SQUELCH_EN @ 0x93f4
-CCu DSA enabled if clr @ 0x9405
+CCu DSA supported if clr @ 0x9405
 CCu MODEM_DSA_RSSI @ 0x9416
 CCu LOW_DUTY @ 0x9423
 CCu MODEM_DSA_MISC @ 0x943e
