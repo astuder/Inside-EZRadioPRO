@@ -58,7 +58,7 @@ CCu 0:parse cmds 1:cfg event? 2:change state in progress 3:rxtx_event 5:wut 6:? 
 f var.main_loop_event_ex 1 @ _idata+0x2d
 CCu 0:rx 1:wut 2:rc32k cal 3:tx 4:manual rx hop 5:rx hop @ _idata+0x2d
 f var.pti_flags 1 @ _idata+0x2e
-CCu 4:spi_en (undoc) 5:tx_en 6:rx_en @ _idata+0x2e
+CCu 3:? (idata 0x8d,8e,90) 4:spi_en (undoc) 5:tx_en 6:rx_en @ _idata+0x2e
 f var.irq_0x07_flags 1 @ _idata+0x2f
 
 f var.loc30 1 @ _idata+0x30
@@ -147,7 +147,7 @@ echo annotating code
 echo ..vectors
 
 f vect.reset 1 @ 0x0000
-f vect.eint0 1 @ 0x0003
+f vect.power_up 1 @ 0x0003
 f vect.unk_0x07 1 @ 0x0007
 f vect.timer0 1 @ 0x000b
 f vect.unk_0x0f 1 @ 0x000f
@@ -265,7 +265,7 @@ f map.spi_parse_more_cmds 1 @ 0x0195
 f map.config_dsa_ctrl2 1 @ 0x19b
 f map.cmd_ircal_manual 1 @ 0x019e
 f map.ircal_calibration_step 1 @ 0x01a1
-f map.eint0_entry 1 @ 0x01a4
+f map.power_up_entry 1 @ 0x01a4
 f map.gpio_state_clr_r7_set_r5_toggle_r3 1 @ 0x01aa
 f map.cmd_func_info 1 @ 0x01ad
 f map.change_from_tx_tune 1 @ 0x01b0

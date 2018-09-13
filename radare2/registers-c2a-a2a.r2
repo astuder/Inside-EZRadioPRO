@@ -47,12 +47,12 @@ f sfr.pti_unk1 1 @ _sfr+0xc1
 f sfr.pti_data 1 @ _sfr+0xc2
 f sfr.pti_cmd 1 @ _sfr+0xc3
 f sfr.pti_status 1 @ _sfr+0xc4
-CCu 0-3: space in output buffer? @ _sfr+0xc4
+CCu 0-3: bytes in pti output buffer? @ _sfr+0xc4
 f sfr.int_ph_pend 1 @ _sfr+0xc5
 f sfr.int_modem_pend 1 @ _sfr+0xc6
 f sfr.int_chip_pend 1 @ _sfr+0xc7
 f sfr.rx_ph_ctrl 1 @ _sfr+0xc9
-CCu 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set after preamble detect @ _sfr+0xc9
+CCu 0:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set after preamble detect @ _sfr+0xc9
 f sfr.irq_0x07_flags 1 @ _sfr+0xca
 
 f sfr.tx_pkt_bits_lsb @ _sfr+0xd2
@@ -82,6 +82,7 @@ f sfr.freq_pll_div_frac1 1 @ _sfr+0xeb
 CCu 0-7:pll divider frac[15:8] @ _sfr+0xeb
 f sfr.freq_pll_div_frac2 1 @ _sfr+0xec
 CCu 0-7:pll divider frac[7:0] @ _sfr+0xec
+CCu 7:fifo_src_sel @ _sfr+0xed
 f sfr.gpio_out_states 1 @ _sfr+0xee
 CCu 0:TX 1:RX 2:RX_FIFO_FULL 3:TX_FIFO_EMPTY 4:LOW_BATT 5:CCA_LATCH 6:HOPPED 7:HOP_TABLE_WRAP @ _sfr+0xee
 
@@ -140,6 +141,8 @@ f xreg.modem_afc_limiter_lsb 1 @ xreg_base+0x33
 CCu 0-7:AFCLIM[7:0] 7: @ xreg_base+0x33
 f xreg.modem_ook_cnt1 1 @ xreg_base+0x36
 CCu 0-1:SQUELCH 2:SLICER_FAST 3:RAW_SYN 4:MA_FREQDWN 5:OOKFRZEN 6-7:S2P_MAP @ xreg_base+0x36
+f xreg.modem_spike_det @ xreg_base+0x37
+CCu 0-6:SPIKE_THRESHOLD 7:SPIKE_REMOVAL_EN @ xreg_base+0x37
 f xreg.modem_ook_pdtc 1 @ xreg_base+0x38
 CCu 0-3:DECAY 4-6:ATTACK 7:OOKFASTMA @ xreg_base+0x38
 f xreg.modem_blopk 1 @ xreg_base+0x39
@@ -336,6 +339,8 @@ f xreg.modem_dsa_ctrl1 @ xreg_base+0xf9
 CCu 0-4:ADJ_SAMP_ERR_TOLERANCE 5:DSA_EN 6-7:QUAL_SOURCE @ xreg+base+0xf9
 f xreg.modem_dsa_ctrl2 1 @ xreg_base+0xfa
 CCu 0-3:ARRIVAL_THD 5:BCR_GEAR_SHIFT(DSA) 6-7:DSA preamble @ xreg_base+0xfa
+f xreg.modem_one_shot_afc 1 @ xreg_base+0xfb
+CCu 0-3:ONESHOT_WAIT_CNT 4:AFCMA_EN 5:EST_OSR_EN 6:BCR_ALIGN_EN 7:ONESHOT_AFC_EN @ xreg_base+0xfb
 f xreg.modem_dsa_qual 1 @ xreg_base+0xfc
 CCu 0-6:ARRQUAL 7:EYE_QUAL_SEL @ xreg_base+0xfc
 f xreg.int_ctl_ph_enable 1 @ xreg_base+0xfd
@@ -367,7 +372,7 @@ f xreg2.modem_bcr_misc 1 @ 0x5115
 CCu 0:MODEM_BCR_MISC0.0 (undoc) 3:OOK_LIMIT_DISCHG(inv) @ 0x5115
 f xreg2.unk_0x1a 1 @ 0x511a
 f xreg2.modem_dsa_misc 1 @ 0x511d
-CCu 0-2:LOW_DUTY 3-5:? 6-7:? @ 0x511d
+CCu 0-2:LOW_DUTY 3-5:FIFO_SRC_SEL 6-7:? @ 0x511d
 f xreg2.modem_decimation_cfg2 1 @ 0x511e
 f xreg2.modem_ook_misc 1 @ 0x511f
 CCu 0-1:OOK_DISCHG_DIV 2:OOK_SQUELCH_EN @ 0x511f
@@ -392,6 +397,7 @@ f dsp.pga_gain 1 @ dsp_base+0x25
 CCu 0-3:PGA_GAIN 7:set with PGA_GAIN @ dsp_base+0x25
 CCu 4:ADC_HIGH_GAIN 0:? @ dsp_base+0x28
 
+f dsp.modem_ifpkd_thresholds @ dsp_base+0x32
 f dsp.pa_ramp_ex 1 @ dsp_base+0x33
 CCu 0-3:TC timing for ext PA signal @ dsp_base+0x33
 f dsp.pa_pwr_lvl 1 @ dsp_base+0x39

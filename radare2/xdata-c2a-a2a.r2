@@ -267,8 +267,10 @@ f const.FUNC_INFO_REVBRANCH 1 @ 0x0712
 f const.FUNC_INFO_REVINT 1 @ 0x0713
 f const.FUNC_INFO_UNK_0x06_to_0x0a 1 @ 0x0714
 f const.FUNC_INFO_FUNC 1 @ 0x0719
-f const.unk_0x071a 1 @ 0x071a
-CCu bit0: tested in several places @ 0x071a
+CCu 0-5:FUNC 7:PATCH @ 0x0719
+f cfg.XTAL_OPTIONS 1 @ 0x071a
+CCu 0:TCXO @ 0x071a
+f cfg.XO_FREQ 4 @ 0x071b
 
 f cfg.gpio_gpio0_cfg2 1 @ 0x071f
 f cfg.gpio_gpio1_cfg2 1 @ 0x0720
@@ -317,8 +319,8 @@ f var.cmd_0xf2_arg4 1 @ 0x073e
 f var.IRCAL_AMP_VAL 1 @ 0x073f
 f var.IRCAL_PH_VAL 1 @ 0x0740
 
-f var.UNK_0x741 1 @ 0x0741
-f var.UNK_0x742 1 @ 0x0742
+f var.rc32k_xtal_cal_msb 1 @ 0x0741
+f var.rc32k_xtal_cal_lsb 1 @ 0x0742
 
 CCu tx delay in usec @ 0x0743
 f var.tx_delay_msb 1 @ 0x0743
