@@ -413,15 +413,16 @@ axd dsp_base+0x56 @ 0x8e59
 f rom.dsp_set_reg_r7_mask_r5_val_r3 1 @ 0x8e5b
 CCu store copy in cache @ 0x8e67
 .(fcn 0x8e6d 0x8ecc rom.config_bufclk)
+CCu DIV_MODE, DIVX @ 0x8e72
 CCu BUFCLK supported? @ 0x8e7a
 CCu DIVIDED_BUFCLK_MODE @ 0x8e7e
 CCu DISABLE @ 0x8e80
 CCu SOUTH_AND_GPIO @ 0x8e83
 CCu NORTH_SOUTH_AND_GPIO @ 0x8e86
-CCu NORTH @ 0x8e8b
-CCu SOUTH_AND_GPIO @ 0x8e95
-CCu NORTH_SOUTH_AND_GPIO @ 0x8e9d
-CCu DISABLE @ 0x8eb4
+CCu mode NORTH @ 0x8e8b
+CCu mode SOUTH_AND_GPIO @ 0x8e95
+CCu mode NORTH_SOUTH_AND_GPIO @ 0x8e9d
+CCu mode DISABLE @ 0x8eb4
 axd dsp_base+0x55 @ 0x8ec8
 .(fcn 0x8ecc 0x8ee5 rom.dsp_set_reg_r7_val_acc_and_0x7f)
 f rom.dsp_set_reg_r7_val_r5 @ 0x8ecf
@@ -869,7 +870,7 @@ CCu current channel @ 0x9ff7
 CCu clear pending as per PH_CLR_PEND @ 0x9fde
 .(fcn 0x9fea 0x9ff9 rom.cmd_request_device_state)
 .(fcn 0x9ff9 0x9ffc rom.fifo_rx_get_count_entry)
-
+.(fcn 0x9ffc 0x9fff rom.ph_reset_entry)
 echo   ..0xa000
 
 .(fcn 0xa000 0xa020 rom.get_modem_status_flags)
@@ -1301,12 +1302,15 @@ CCu packet format IEEE802.15.4g compliance @ 0xb110
 CCu CMD_ERROR_BAD_ARG @ 0xb11b
 .(fcn 0xb134 0xb13e rom.determine_sync_trigger)
 .(fcn 0xb13e 0xb146 rom.xreg0xe5_write_r7_xreg0xe6_write_0)
+axd xreg_base+0xe6 @ 0xb143
 .(fcn 0xb146 0xb14b rom.xreg0x08_write_r7)
 .(fcn 0xb14b 0xb16e rom.rc32k_prep_cal)
 CCu skip if no cal requested @ 0xb14e
 CCu use internal clk @ 0xb151
+axd xreg_base+0xe7 @ 0xb1dc
 .(fcn 0xb1e2 0xb230 rom.rc32k_do_cal)
 axd dsp_base+0x4f @ 0xb22b
+axd 0x076d @ 0xb25e
 .(fcn 0xb35c 0xb371 rom.xreg0xdf_wiggle_bit1_ret_bit3)
 CCu 0xb364 busy wait 10 loops @ 0xb362
 .(fcn 0xb371 0xb3de rom.dsp_reg_r7_unk0xb371)
@@ -1498,7 +1502,7 @@ CCu next state is 10 @ 0xbcb8
 CCu next state is 13 @ 0xbcbc
 CCu next state is not SPI_ACTIVE @ 0xbcc0
 CCu SPI_ACTIVE @ 0xbcc2
-CCu rc32k call requested? @ 0xbccd
+CCu rc32k cal requested? @ 0xbccd
 f rom.change_from_spi_active_to_ready @ 0xbcd8
 CCu READY @ 0xbcd8
 CCu READY @ 0xbce0
@@ -1743,7 +1747,7 @@ CCu LARGE_FREQ_ERR @ 0xc8ad
 .(fcn 0xc8de 0xc8ef rom.clear_int_ph)
 f rom.latch_int_ph_status_pend 1 @ 0xc8e4
 CCu var.INT_PH_PEND @ 0xc8ea
-.(fcn 0xc8ef 0xc8fa rom.rc23k_xtal_cal)
+.(fcn 0xc8ef 0xc8fa rom.rc32k_xtal_cal)
 .(fcn 0xc8fa 0xc909 rom.dsp_set_reg_get_dptr_to_val_cache)
 f rom.get_dptr_to_dsp_cache_at_r7_2 1 @ 0xc8fe
 CCu 0x0798 holds copy of data written to dsp registers @ 0xc8fe

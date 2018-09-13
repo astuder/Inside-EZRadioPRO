@@ -38,7 +38,7 @@ f sfr.int_chip_mask 1 @ _sfr+0xb6
 f sfr.timer1_irq_flag 1 @ _sfr+0xba
 CCu 3-6: timer isr source @ _sfr+0xba
 f sfr.sync_trigger 1 @ _sfr+0xbb
-CCu 0:crc error 1:alt crc error 4: 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
+CCu 0:crc error 1:alt crc error 4:? 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
 
 f sfr.pti_ctl 1 @ _sfr+0xc0
 CCu 7:pti_en 6:rx_en 5:tx_en 4:BIT_ORDER(inv) @ _sfr+0xc0
@@ -335,7 +335,7 @@ f xreg.wut_r 1 @ xreg_base+0xf6
 f xreg.cmd_undoc_0x35 1 @ xreg_base+0xf7
 CCu 0:set by cmd_undoc0x35 @ xreg_base+0xf7
 f xreg.modem_dsa_ctrl1 @ xreg_base+0xf9
-CCu 0-4:ADJ_SAMP_ERR_TOLERANCE 5:DSA_EN 6-7:QUAL_SOURCE @ xreg+base+0xf9
+CCu 0-4:ADJ_SAMP_ERR_TOLERANCE 5:DSA_EN 6-7:QUAL_SOURCE @ xreg_base+0xf9
 f xreg.modem_dsa_ctrl2 1 @ xreg_base+0xfa
 CCu 0-3:ARRIVAL_THD 5:BCR_GEAR_SHIFT(DSA) 6-7:DSA preamble @ xreg_base+0xfa
 f xreg.modem_one_shot_afc 1 @ xreg_base+0xfb
@@ -383,6 +383,8 @@ echo ..dsp
 # virtual, dsp registers are not mapped to xmem
 
 f dsp_base 1 @ 0x7000
+f dsp.bufclk_ctrl 1 @ dsp_base+0x00
+CCu 5:en bufclk @ dsp_base+0x00
 CCu 0:clr after IRCAL @ dsp_base+0x01
 f dsp.clk_ctrl 1 @ dsp_base+0x1a
 CCu 0-2:BAND 3:SY_SEL 4-5:PA_CLKDUTY @ dsp_base+0x1a

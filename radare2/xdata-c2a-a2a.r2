@@ -21,9 +21,9 @@ echo   ..0x051e property groups
 Cd 1 0x2e2 @ 0x51e
 
 f prop.grp_0x24_undoc 9 @ 0x051e
-f prop.grp_0x24_mod_type 1  @ prop.grp_0x24_undoc+0x00
-f prop.grp_0x24_0x01 1  @ prop.grp_0x24_undoc+0x01
-f prop.grp_0x24_xo_tune 1  @ prop.grp_0x24_undoc+0x03
+f prop.grp_0x24_mod_type 1 @ prop.grp_0x24_undoc+0x00
+f prop.grp_0x24_0x01 1 @ prop.grp_0x24_undoc+0x01
+f prop.grp_0x24_xo_tune 1 @ prop.grp_0x24_undoc+0x03
 
 f prop.grp_0x30_match 12 @ 0x0527
 f prop.MATCH_VALUE_1 1	 @ prop.grp_0x30_match+0x00
@@ -91,8 +91,8 @@ f prop.GLOBAL_WUT_CAL 1			 @ prop.grp_0x00_global+0x09
 f prop.GLOBAL_BUFCLK_CFG 1		 @ prop.grp_0x00_global+0x0a
 
 f prop.grp_0x21_modem_chflt 36 @ 0x61c
-f prop.MODEM_CHFLT_RX1_CHFLT_COE 18  @ prop.grp_0x21_modem_chflt+0x00
-f prop.MODEM_CHFLT_RX2_CHFLT_COE 18  @ prop.grp_0x21_modem_chflt+0x12
+f prop.MODEM_CHFLT_RX1_CHFLT_COE 18 @ prop.grp_0x21_modem_chflt+0x00
+f prop.MODEM_CHFLT_RX2_CHFLT_COE 18 @ prop.grp_0x21_modem_chflt+0x12
 
 f prop.group_table_ptr_msb 1 @ 0x0640
 f prop.group_table_ptr_lsb 1 @ 0x0641
@@ -204,7 +204,7 @@ f prop.grp_0xf0_pti 5 @ 0x06cb
 f prop.PTI_CTL 1	 @ prop.grp_0xf0_pti+0x00
 f prop.PTI_BAUD 2	 @ prop.grp_0xf0_pti+0x01
 f prop.PTI_LOG_EN 1	 @ prop.grp_0xf0_pti+0x03
-f prop.PTI_UNDOCUMENTED 1  @ prop.grp_0xf0_pti+0x04
+f prop.PTI_UNDOCUMENTED 1 @ prop.grp_0xf0_pti+0x04
 
 f prop.grp_0x12_pkt 58 @ 0x06d0
 f prop.PKT_CRC_CONFIG 1				 @ prop.grp_0x12_pkt+0x00
@@ -353,53 +353,56 @@ f const.FUNC_INFO_PATCH 2 @ 0x075f
 
 CCu 0x37 bytes copied from NVRAM (cal data?), prop grp 0xf2 @ 0x0761
 f prop.cal_data 0x37 @ 0x0761
-f prop.cal_delay_msb 1  @ prop.cal_data+0x00
-f prop.cal_delay_lsb 1  @ prop.cal_data+0x01
-f prop.cal_tx_tune_delay 1  @ prop.cal_data+0x02
-f prop.cal_ready_delay 1  @ prop.cal_data+0x03
-f prop.cal_rx_tune_dly_msb 1  @ prop.cal_data+0x04
-f prop.cal_rx_tune_dly_lsb 1  @ prop.cal_data+0x05
-f prop.cal_offline2_cal_flags_28 1  @ prop.cal_data+0x06
-f prop.cal_offline2_cal_flags_27 1  @ prop.cal_data+0x07
-f prop.cal_data_0x09 1  @ prop.cal_data+0x09
-f prop.cal_data_0x0d 1  @ prop.cal_data+0x0d
-f prop.cal_data_0x14 1  @ prop.cal_data+0x14
-f prop.cal_data_0x15 1  @ prop.cal_data+0x15
-f prop.cal_data_0x17 1  @ prop.cal_data+0x17
-f prop.cal_dsp0x1f_low_pwr 1  @ prop.cal_data+0x18
-f prop.cal_dsp0x1e_low_pwr 1  @ prop.cal_data+0x19
-f prop.cal_clkgen_band_lpwr_ltmp_0x1a 1  @ prop.cal_data+0x1a
-f prop.cal_dsp0x06_temp_range_lo 1  @ prop.cal_data+0x1b
+f prop.cal_delay_msb 1 @ prop.cal_data+0x00
+f prop.cal_delay_lsb 1 @ prop.cal_data+0x01
+f prop.cal_tx_tune_delay 1 @ prop.cal_data+0x02
+f prop.cal_ready_delay 1 @ prop.cal_data+0x03
+f prop.cal_rx_tune_dly_msb 1 @ prop.cal_data+0x04
+f prop.cal_rx_tune_dly_lsb 1 @ prop.cal_data+0x05
+f prop.cal_offline2_cal_flags_28 1 @ prop.cal_data+0x06
+f prop.cal_offline2_cal_flags_27 1 @ prop.cal_data+0x07
+f prop.cal_data_0x09 1 @ prop.cal_data+0x09
+f prop.cal_data_0x0b 1 @ prop.cal_data+0x0b
+f prop.cal_data_0x0c 1 @ prop.cal_data+0x0c
+f prop.cal_data_0x0d 1 @ prop.cal_data+0x0d
+f prop.cal_data_0x0f 1 @ prop.cal_data+0x0f
+f prop.cal_data_0x14 1 @ prop.cal_data+0x14
+f prop.cal_data_0x15 1 @ prop.cal_data+0x15
+f prop.cal_data_0x17 1 @ prop.cal_data+0x17
+f prop.cal_dsp0x1f_low_pwr 1 @ prop.cal_data+0x18
+f prop.cal_dsp0x1e_low_pwr 1 @ prop.cal_data+0x19
+f prop.cal_clkgen_band_lpwr_ltmp_0x1a 1 @ prop.cal_data+0x1a
+f prop.cal_dsp0x06_temp_range_lo 1 @ prop.cal_data+0x1b
 CCu 4-7:dsp0x06 @ @ prop.cal_data+0x1b
-f prop.cal_clkgen_band_lpw_ltmp_0x1c 1  @ prop.cal_data+0x1c
-f prop.cal_dsp0x08_temp_range_lo_0x1d 1  @ prop.cal_data+0x1d
-f prop.cal_dsp0x1f_norm_pwr 1  @ prop.cal_data+0x1e
-f prop.cal_dsp0x1e_norm_pwr 1  @ prop.cal_data+0x1f
-f prop.cal_clkgen_band_hpwr_ltmp_0x20 1  @ prop.cal_data+0x20
-f prop.cal_dsp0x06_ETSI169 1  @ prop.cal_data+0x21
+f prop.cal_clkgen_band_lpw_ltmp_0x1c 1 @ prop.cal_data+0x1c
+f prop.cal_dsp0x08_temp_range_lo_0x1d 1 @ prop.cal_data+0x1d
+f prop.cal_dsp0x1f_norm_pwr 1 @ prop.cal_data+0x1e
+f prop.cal_dsp0x1e_norm_pwr 1 @ prop.cal_data+0x1f
+f prop.cal_clkgen_band_hpwr_ltmp_0x20 1 @ prop.cal_data+0x20
+f prop.cal_dsp0x06_ETSI169 1 @ prop.cal_data+0x21
 CCu 4-7:dsp0x06 @ @ prop.cal_data+0x21
-f prop.cal_clkgen_band_hpwr_ltmp_0x22 1  @ prop.cal_data+0x22
-f prop.cal_data_0x23 1  @ prop.cal_data+0x23
-f prop.cal_dsp0x06_ETSI868 data_0x24 1  @ prop.cal_data+0x24
+f prop.cal_clkgen_band_hpwr_ltmp_0x22 1 @ prop.cal_data+0x22
+f prop.cal_data_0x23 1 @ prop.cal_data+0x23
+f prop.cal_dsp0x06_ETSI868 data_0x24 1 @ prop.cal_data+0x24
 CCu 4-7:dsp0x06 @ @ prop.cal_data+0x24
-f prop.cal_data_0x25 1  @ prop.cal_data+0x25
-f prop.cal_data_0x26 1  @ prop.cal_data+0x26
-f prop.cal_clkgen_band_hpwr_0x29 1  @ prop.cal_data+0x29
-f prop.cal_data_0x2a 1  @ prop.cal_data+0x2a
-f prop.cal_data_0x2b 1  @ prop.cal_data+0x2b
-f prop.cal_clkgen_band_hpwr_htmp_0x2c 1  @ prop.cal_data+0x2c
-f prop.cal_data_0x2d 1  @ prop.cal_data+0x2d
-f prop.cal_data_0x2e 1  @ prop.cal_data+0x2e
-f prop.cal_dsp0x06_temp_range_hi 1  @ prop.cal_data+0x2e
+f prop.cal_data_0x25 1 @ prop.cal_data+0x25
+f prop.cal_data_0x26 1 @ prop.cal_data+0x26
+f prop.cal_clkgen_band_hpwr_0x29 1 @ prop.cal_data+0x29
+f prop.cal_data_0x2a 1 @ prop.cal_data+0x2a
+f prop.cal_data_0x2b 1 @ prop.cal_data+0x2b
+f prop.cal_clkgen_band_hpwr_htmp_0x2c 1 @ prop.cal_data+0x2c
+f prop.cal_data_0x2d 1 @ prop.cal_data+0x2d
+f prop.cal_data_0x2e 1 @ prop.cal_data+0x2e
+f prop.cal_dsp0x06_temp_range_hi 1 @ prop.cal_data+0x2e
 CCu 4-7:dsp0x06 @ @ prop.cal_data+0x2e
-f prop.cal_data_0x2f 1  @ prop.cal_data+0x2f
-f prop.cal_data_0x30 1  @ prop.cal_data+0x30
-f prop.cal_data_0x31 1  @ prop.cal_data+0x31
-f prop.cal_offline_cal_flags_28 1  @ prop.cal_data+0x32
-f prop.cal_offline_cal_flags_27 1  @ prop.cal_data+0x33
-f prop.cal_data_0x34 1  @ prop.cal_data+0x34
-f prop.cal_data_0x35 1  @ prop.cal_data+0x35
-f prop.cal_data_0x36 1  @ prop.cal_data+0x36
+f prop.cal_data_0x2f 1 @ prop.cal_data+0x2f
+f prop.cal_data_0x30 1 @ prop.cal_data+0x30
+f prop.cal_data_0x31 1 @ prop.cal_data+0x31
+f prop.cal_offline_cal_flags_28 1 @ prop.cal_data+0x32
+f prop.cal_offline_cal_flags_27 1 @ prop.cal_data+0x33
+f prop.cal_data_0x34 1 @ prop.cal_data+0x34
+f prop.cal_data_0x35 1 @ prop.cal_data+0x35
+f prop.cal_data_0x36 1 @ prop.cal_data+0x36
 
 CCu 0x58 bytes copied from NVRAM, related to 0x94/95 @ 0x0798
 f var.dsp_reg_cache 0x58 @ 0x0798
