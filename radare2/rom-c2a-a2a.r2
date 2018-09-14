@@ -1025,9 +1025,10 @@ CCu SPI_ACTIVE @ 0xa5ad
 CCu undoc state @ 0xa5b1
 CCu SPI_ACTIVE @ 0xa5e0
 CCu undoc state @ 0xa5ea
-.(fcn 0xa5ee 0xa647 rom.config_int)
+.(fcn 0xa5ee 0xa657 rom.config_int)
+f rom.config_int_ctl 1 @ 0xa621
 CCu PH_INT_STATUS_EN @ 0xa626
-CCu prop.INT_CTL_PH_ENABLE @ 0xa629
+axd 0x060e @ 0xa629
 CCu MODEM_INT_STATUS_EN @ 0xa635
 CCu CHIP_INT_STATUS_EN @ 0xa646
 .(fcn 0xa657 0xa6ba rom.cmd_offline_recal)
@@ -1593,6 +1594,8 @@ echo   ..0xc000
 
 .(fcn 0xc000 0xc022 rom.group_id_to_index)
 .(fcn 0xc022 0xc07b rom.main_loop_parse_cfg)
+axd _idata+0x91 @ 0xc02b
+axd _idata+0x91 @ 0xc043
 .(fcn 0xc07b 0xc080 rom.invalid_prop_group_get)
 .(fcn 0xc080 0xc0b5 rom.override_pa_sel)
 CCu CMD_ERROR_BAD_PROPERTY @ 0xc07b
@@ -1854,6 +1857,7 @@ CCu bit 0: parse commands @ 0xcbd4
 f rom.prop_group_table 0x40 @ 0xccd4
 Cd 1 0x40 @ 0xccd4
 CCu 16x group, size, xdata addr @ 0xccd4
+Cd 1 4 @ 0xcd14
 .(fcn 0xcd1b 0xcd3c rom.raise_preamble_timeout)
 CCu hop on invalid preamble @ 0xcd21
 .(fcn 0xcd3c 0xcd41 rom.rx_preamble_detected)
@@ -1938,7 +1942,7 @@ CCu clr start condition @0xcf70
 CCu TX @ 0xcf73
 .(fcn 0xcf7b 0xcf7c rom.main_loop_bit6_event)
 axd _idata+0x92 @ 0xcf80
-axd _idate+0x93 @ 0xcf84
+axd _idata+0x93 @ 0xcf84
 .(fcn 0xcf89 0xcf8c rom.config_modem_entry)
 .(fcn 0xcf8d 0xcfae rom.spi_isr)
 CCu was previous cmd undoc_0x35? @ 0xcf95
