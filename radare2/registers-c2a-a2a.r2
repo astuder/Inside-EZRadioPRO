@@ -7,7 +7,14 @@ echo annotating registers
 echo ..sfr
 
 CCu set to 0x50 in boot and reset @ _sfr+0x86
+f sfr.mul_cfg1 @ _sfr+0x88
+f sfr.mul_cfg2 @ _sfr+0x89
+f sfr.mul_a_msb @ _sfr+0x8a
+f sfr.mul_a_lsb @ _sfr+0x8b
+f sfr.mul_b_msb @ _sfr+0x8c
+f sfr.mul_b_lsb @ _sfr+0x8d
 
+f sfr.mul_ctl @ _sfr+0x90
 f sfr.bit_timer_ctl 1 @ _sfr+0x91
 CCu 0:timer running 1:? 4-7:timer_cnt_msb @ _sfr+0x91
 f sfr.bit_timer_cnt_lsb 1 @ _sfr+0x92
@@ -54,10 +61,15 @@ f sfr.rx_ph_ctrl 1 @ _sfr+0xc9
 CCu 0:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set after preamble detect @ _sfr+0xc9
 f sfr.irq_0x07_flags 1 @ _sfr+0xca
 
-f sfr.tx_pkt_bits_lsb @ _sfr+0xd2
-f sfr.tx_pkt_bits_msb @ _sfr+0xd3
-f sfr.tx_ctl @ _sfr+0xd4
-CCU 2:set after writing packet bits @ _sfr+0xd4
+f sfr.ph_cfg_ctl @ _sfr+0xd1
+CCu 0-4:field to cfg (bitfield) 5:1=RX,0=TX @ _sfr+0xd1
+f sfr.ph_field_len_lsb @ _sfr+0xd2
+CCu packet field length in bits @ _sfr+0xd2
+f sfr.ph_field_len_msb @ _sfr+0xd3
+f sfr.ph_ctl @ _sfr+0xd4
+CCU 0:MANCH 1:WHITEN 2:last field 3:PKTLEN_FLD 4:4FSK @ _sfr+0xd4
+f sfr.ph_crc_ctl @ _sfr+0xd5
+CCu 0:ALT_CRC_EN 1:CRC_EN 2:CHECK_ALT_CRC 3:CHECK_CRC 4:SEND_ALT_CRC 5:SEND_CRC @ _sfr+0xd5
 f sfr.ircal_amp 1 @ _sfr+0xd6
 f sfr.ircal_ph 1 @ _sfr+0xd7
 CCu set to 1 and 0 during boot @ _sfr+0xdc

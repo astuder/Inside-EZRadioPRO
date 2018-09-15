@@ -269,28 +269,52 @@ CCu set bit0 of r7 @ 0x8916
 CCu loop until r0 is 0 @ 0x8917
 CCu r2r3 = r1r4, r1r4 = 0 @ 0x8919
 .(fcn 0x8953 0x8966 rom.rrc_r4r5r6r7_by_r0)
-.(fcn 0x8966 0x8a57 rom.pkt_unk_0x8966)
+.(fcn 0x8966 0x8a57 rom.ph_config_pkt)
 CCu DST_FIELD @ 0x896b
-CCu var pkt len disabled @ 0x896e
+CCu variable pkt len disabled @ 0x896e
 CCu SIZE @ 0x8971
 CCu len size is 2 bytes @ 0x8974
-CCu PKT_LEN_FIELD_SRC @ 0x897a
+axd 0x06d9 @0x897a
 CCu SRC_FIELD @ 0x897c
+CCu 0 and 1 are the same @ 0x8985
 CCu number of pkt field configs @ 0x8986
+CCu config/reset all fields @ 0x8989
+CCu field @ 0x8994
+CCu clr CRC errors @ 0x899d
+CCu config field 1 @ 0x89a1
+CCu if TX @ 0x89a6
 CCu PKT_FIELD_n_LENGTH msb @ 0x89b3
+axd 0x06de @ 0x89b6
 CCu PKT_FIELD_n_LENGTH lsb @ 0x89b7
+axd 0x06df @ 0x89ba
+CCu multiply by 8 (len in bits) @ 0x89c7
+CCu 0x89cd trigger HW multiplier @ 0x89cd
 CCu PKT_FIELD_n_CONFIG @ 0x89d0
+axd 0x06e0 @ 0x89d2
 CCu PKT_FIELD_n_CRC_CONFIG @ 0x89d3
+axd 0x06e1 @ 0x89d5
+CCu 1st field? (r4=0) @ 0x89d7
 CCu PN_START @ 0x89da
 CCu CRC_START @ 0x89e1
 CCu ALT_CRC_START @ 0x89e8
 CCu 4FSK,WHITEN,MANCH @ 0x89ef
 CCu various CRC config flags @ 0x89f4
-CCu if pkt len src field @ 0x8a05
+CCu last field? (len=0) @ 0x8a02
+CCu if this is pkt len src field @ 0x8a09
+CCu if tx (=0) @ 0x8a0c
 CCu pkt len 2 bytes? @ 0x8a13
+CCu pkt len w/o len field @ 0x8a1b
+CCu config next field @ 0x8a25
 CCu dec field counter @ 0x8a2a
 CCu process next field @ 0x8a2e
-CCu INFINITE_LEN @ 0x8a43
+CCu only 1 field cfg? @ 0x8a31
+CCu bit for prev field @ 0x8a33
+CCu bit for field 5 @ 0x8a37
+CCu TX? (r7=0) @ 0x8a3d
+CCu INFINITE_LEN rx @ 0x8a43
+CCu don't repeat fields (not infinite) @ 0x8a46
+CCu TX? (r7=0) @ 0x8a4a
+
 .(fcn 0x8a57 0x8ad8 rom.config_frequency)
 CCu CHANNEL_STEP_SIZE[15:8] @ 0x8a61
 CCu CHANNEL_STEP_SIZE[7:0] @ 0x8a65
@@ -1271,8 +1295,10 @@ CCu CRC_BIT_ENDIAN @ 0xaf88
 CCu CRC_PADDING @ 0xaf8f
 CCu EN_3_OF_6 @ 0xaf9f
 CCu PH_FIELD_SPLIT @ 0xafb9
-CCu refer to prop.PKT_RX_FIELD_.. @ 0xafbc
-CCu refer to prop.PKT_FIELD_.. @ 0xafc2
+CCu rx and tx split pkt field cfg @ 0xafbc
+axd 0x06f1 @ 0xafbc
+CCu rx and tx share pkt field cfg @ 0xafc2
+axd 0x06dd @ 0xafc2
 .(fcn 0xafcb 0xafde rom.pkt_end_unk_0xafcb)
 .(fcn 0xafde 0xafed rom.0x33_isr)
 .(fcn 0xafed 0xaff0 rom.rx_byte_isr)
@@ -1857,7 +1883,7 @@ CCu bit 0: parse commands @ 0xcbd4
 f rom.prop_group_table 0x40 @ 0xccd4
 Cd 1 0x40 @ 0xccd4
 CCu 16x group, size, xdata addr @ 0xccd4
-Cd 1 4 @ 0xcd14
+Cd 1 4 @ 0xcd41
 .(fcn 0xcd1b 0xcd3c rom.raise_preamble_timeout)
 CCu hop on invalid preamble @ 0xcd21
 .(fcn 0xcd3c 0xcd41 rom.rx_preamble_detected)
@@ -1875,7 +1901,7 @@ CCu PACKET_RX @ 0xcd6a
 CCu 0=no state change, no rearm @ 0xcd77
 CCu 0=no state change, no rearm @ 0xcda0
 CCu FILTER_MISS @ 0xcd81
-.(fcn 0xcd86 0xcda0 rom.raise_ph_error)
+.(fcn 0xcd86 0xcda6 rom.rx_packet_invalid)
 CCu SYNC_DETECT @ 0xcd8e
 .(fcn 0xcda6 0xcdb0 rom.irq0x07_rssi_jump)
 CCu RSSI_JUMP @ 0xcda6
@@ -1998,7 +2024,7 @@ CCu state 0-8? @ 0xd0ea
 CCu RXTIMEOUT_STATE @ 0xd0f0
 CCu state 0-9? @ 0xd0f4
 CCu CMD_ERROR_BAD_ARG @ 0xd0f8
-CCu copy rx params to 0x05f7 @ 0xd0fd
+CCu copy rx params to vars @ 0xd0fd
 axd 0x05f7 @ 0xd0fd
 CCu CONDITION @ 0xd113
 CCu UPDATE @ 0xd116
@@ -2060,6 +2086,11 @@ CCu continue @ 0xd326
 CCu MATCH_EN @ 0xd32e
 axd 0x0527 @ 0xd33a
 .(fcn 0xd34b 0xd396 rom.rx_ph_init)
+axd 0x05fa @ 0xd355
+CCu pkt len not specified with START_RX @ 0xd359
+CCu config rx field 1 @ 0xd35b
+CCu pkt len * 8 = bits @ 0xd35f
+CCu mark as last field @ 0xd36d
 CCu TX @ 0xd381
 CCu var.rx_nextstate_valid @ 0xd385
 CCu TX @ 0xd387

@@ -19,14 +19,21 @@ echo .
 
 echo annotating imem
 
-f var.loc11 1 @ _idata+0x11
+f var.ph_lenfield_pos @ _idata+0x09
+f var.ph_pktlen_msb @ _idata+0x0a
+f var.ph_pktlen_lsb @ _idata+0x0b
 
+f var.loc11 1 @ _idata+0x11
 f var.postamble_cnt 1 @ _idata+0x13
 CCu values 0-3 for 1-4 bytes @ _idata+0x13
 f var.postamble_byte0 1 @ _idata+0x14
 f var.postamble_byte1 1 @ _idata+0x15
-f var.field_level_prop_msb 1 @ _idata+0x1a
-f var.field_level_prop_lsb 1 @ _idata+0x1b
+f var.loc_ph_pktlen_msb @ _idata+0x16
+f var.loc_ph_pktlen_lsb @ _idata+0x17
+f var.rx_fields_cnt @ _idata+0x18
+f var.tx_fields_cnf @ _idata+0x19
+f var.rx_pkt_field_cfg_msb 1 @ _idata+0x1a
+f var.rx_pkt_field_cfg_lsb 1 @ _idata+0x1b
 f var.rx_byte_in 1 @ _idata+0x1c
 f var.device_curr_state 1 @ _idata+0x1d
 f var.device_next_state 1 @ _idata+0x1e
@@ -51,7 +58,7 @@ CCu related to main loop bit7 @ _idata+0x28
 f var.ph_flags1 1 @ _idata+0x29
 CCu 4:set on PH filter match @ _idata+0x29
 f var.ph_flags2 1 @ _idata+0x2a
-CCu 0:SW_WHT_CTRL 1:SW_CRC_CTRL 4:postamble_en 5:filter_en @ _idata+0x2a
+CCu 0:SW_WHT_CTRL 1:SW_CRC_CTRL 2:variable pktlen 4:postamble_en 5:filter_en @ _idata+0x2a
 f var.ph_flags3 1 @ _idata+0x2b
 f var.main_loop_ctl 1 @ _idata+0x2c
 CCu 0:parse cmds 1:cfg event? 2:change state in progress 3:rxtx_event 5:wut 6:? 7:? @ _idata+0x2c
@@ -233,7 +240,7 @@ f map.change_state_from_10 1 @ 0x0129
 f map.int0x0f_config_callback 1 @ 0x012f
 f map.spi_parse_main_loop_cmds @ 0x0132
 f map.fifo_raise_underflow_overflow_err 1 @ 0x0135
-f map.raise_ph_error 1 @ 0x0138
+f map.rx_packet_invalid 1 @ 0x0138
 f map.eint1_config_callback 1 @ 0x013b
 f map.raise_postamble_detect 1 @ 0x013e
 f map.usec_timer_unk_0xbd85 1 @ 0x0141
