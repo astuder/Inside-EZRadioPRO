@@ -288,7 +288,7 @@ axd 0x06de @ 0x89b6
 CCu PKT_FIELD_n_LENGTH lsb @ 0x89b7
 axd 0x06df @ 0x89ba
 CCu multiply by 8 (len in bits) @ 0x89c7
-CCu 0x89cd trigger HW multiplier @ 0x89cd
+CCu start hw multiplier @ 0x89cd
 CCu PKT_FIELD_n_CONFIG @ 0x89d0
 axd 0x06e0 @ 0x89d2
 CCu PKT_FIELD_n_CRC_CONFIG @ 0x89d3
@@ -314,12 +314,12 @@ CCu TX? (r7=0) @ 0x8a3d
 CCu INFINITE_LEN rx @ 0x8a43
 CCu don't repeat fields (not infinite) @ 0x8a46
 CCu TX? (r7=0) @ 0x8a4a
-
 .(fcn 0x8a57 0x8ad8 rom.config_frequency)
+CCu init hw multiplier @ 0x8a58
 CCu CHANNEL_STEP_SIZE[15:8] @ 0x8a61
 CCu CHANNEL_STEP_SIZE[7:0] @ 0x8a65
-CCu why channel in LSB of PLL div??? @ 0x8a6b
-CCu tl0tl1th0th1 = PLL divider offs for channel as 13.19 fixed point @ 0x8a6c
+CCu channel number @ 0x8a6b
+CCu start 16bit hw multiply @ 0x8a6e
 CCu INTE @ 0x8a76
 CCu FREQ_CONTROL_FRAC @ 0x8a80
 CCu FRAC[19:16] @ 0x8a81
@@ -723,6 +723,8 @@ CCu VCO count RX adjust @ 0x9897
 CCu SY_SEL @ 0x98a8
 CCu high performance mode @ 0x98ab
 CCu low-power mode @ 0x98b4
+CCu start hw multiplier @ 0x98bd
+CCu wait until hw mul done @ 0x98c0
 axd xreg_base+0x94 @ 0x98e6
 .(fcn 0x98e9 0x98fa rom.write_sfr0xed_to_rx_fifo)
 CCu sign extend bit 6 @ 0x98ec
@@ -1737,6 +1739,8 @@ CCu CMD @ 0xc6a8
 .(fcn 0xc6cd 0xc704 rom.pti_dump_imem_and_xmem)
 CCu iterate over imem @ 0xc6d9
 CCu iterate over xmem 0-0x0800 (mirrored at 0x4000) @ 0xc6e9
+CCu start hw multiplier @ 0xc73a
+CCu wait until hw mul done @ 0xc73d
 axd xreg_base+0xdf @ 0xc765
 CCu save xreg 0x00 @ 0xc7c6
 CCu save xreg 0x01 @ 0xc7cf
@@ -2121,8 +2125,8 @@ CCu PACKET_SENT @ 0xd512
 CCu tx_len is zero @ 0xd525
 CCu tx_len * 8 (=pkt bits) @ 0xd537
 CCu tx_num_repeat is zero @ 0xd54f
-CCu set P1.1 @ 0xd565
-CCu wait until P1.1 is clear @ 0xd56a
+CCu start hw multiplier @ 0xd565
+CCu wait until hw mul done @ 0xd56a
 CCu RETRANSMIT @ 0xd58e
 .(fcn 0xd5b1 0xd5c5 rom.pkt_tx_unk_0xd5b1)
 .(fcn 0xd5c5 0xd5dc rom.rx_unk_0xd5c5)
@@ -2218,6 +2222,10 @@ CCu FILTER_MISS @ 0xe2a0
 CCu TX_FIFO_EMPTY @ 0xe2a7
 CCu TX_FIFO_EMPTY @ 0xe2af
 CCu RSSI_LATCH @ 0xe2e2
+CCu start hw multiplier @ 0xe33b
+CCu wait until hw mul done @ 0xe33e
+CCu start hw multiplier @ 0xe353
+CCu wait until hw mul done @ 0xe356
 .(fcn 0xe37d 0xe384 rom.int0x0f_cb_unk0xe37d)
 CCu indicate RX/TX event @ 0xe37f
 CCu int 0x0f impl at 0xe37d @ 0xe3e5

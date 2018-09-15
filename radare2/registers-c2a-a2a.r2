@@ -7,14 +7,16 @@ echo annotating registers
 echo ..sfr
 
 CCu set to 0x50 in boot and reset @ _sfr+0x86
-f sfr.mul_cfg1 @ _sfr+0x88
-f sfr.mul_cfg2 @ _sfr+0x89
-f sfr.mul_a_msb @ _sfr+0x8a
-f sfr.mul_a_lsb @ _sfr+0x8b
-f sfr.mul_b_msb @ _sfr+0x8c
-f sfr.mul_b_lsb @ _sfr+0x8d
-
+f sfr.mul_c_msb @ _sfr+0x88
+f sfr.mul_c_lsb @ _sfr+0x89
+f sfr.mul_b_msb @ _sfr+0x8a
+f sfr.mul_b_lsb @ _sfr+0x8b
+f sfr.mul_a_msb @ _sfr+0x8c
+f sfr.mul_a_lsb @ _sfr+0x8d
+f sfr.spi_unk8e @ _sfr+0x8e
+f sfr.spi_unk8f @ _sfr+0x8f
 f sfr.mul_ctl @ _sfr+0x90
+CCu 0:start hw mul 1:hw mul done @ _sfr+0x90
 f sfr.bit_timer_ctl 1 @ _sfr+0x91
 CCu 0:timer running 1:? 4-7:timer_cnt_msb @ _sfr+0x91
 f sfr.bit_timer_cnt_lsb 1 @ _sfr+0x92
