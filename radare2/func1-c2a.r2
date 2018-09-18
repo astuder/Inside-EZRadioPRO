@@ -306,6 +306,7 @@ f map.irq0x07_bit7 1 @ 0x020d
 f map.main_loop_unknown_cmd 1 @ 0x0213
 f map.cmd_set_property 1 @ 0x0216
 f map.pkt_tx_unk_0xd512 1 @ 0x0219
+f map.xo_wait_until_ready 1 @ 0x021c
 f map.fifo_rx_clear_almost_full 1 @ 0x021f
 f map.cmd_fifo_info 1 @ 0x0225
 f map.fifo_tx_update 1 @ 0x0228

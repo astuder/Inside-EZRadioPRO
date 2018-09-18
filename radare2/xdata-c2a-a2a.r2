@@ -367,7 +367,10 @@ f prop.cal_data_0x09 1 @ prop.cal_data+0x09
 f prop.cal_data_0x0b 1 @ prop.cal_data+0x0b
 f prop.cal_data_0x0c 1 @ prop.cal_data+0x0c
 f prop.cal_data_0x0d 1 @ prop.cal_data+0x0d
+f prop.cal_data_0x0e 1 @ prop.cal_data+0x0e
 f prop.cal_data_0x0f 1 @ prop.cal_data+0x0f
+f prop.cal_data_0x10 1 @ prop.cal_data+0x10
+f prop.cal_data_0x11 1 @ prop.cal_data+0x11
 f prop.cal_data_0x14 1 @ prop.cal_data+0x14
 f prop.cal_data_0x15 1 @ prop.cal_data+0x15
 f prop.cal_data_0x17 1 @ prop.cal_data+0x17

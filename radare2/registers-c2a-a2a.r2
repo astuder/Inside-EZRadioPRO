@@ -61,7 +61,7 @@ f sfr.int_ph_pend 1 @ _sfr+0xc5
 f sfr.int_modem_pend 1 @ _sfr+0xc6
 f sfr.int_chip_pend 1 @ _sfr+0xc7
 f sfr.rx_ph_ctrl 1 @ _sfr+0xc9
-CCu 0:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set after preamble detect @ _sfr+0xc9
+CCu 0:? 1:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set after preamble detect @ _sfr+0xc9
 f sfr.irq_0x07_flags 1 @ _sfr+0xca
 
 f sfr.ph_cfg_ctl @ _sfr+0xd1
@@ -131,8 +131,10 @@ echo ..xreg
 f xreg_base 1 @ _pdata*256
 
 f xreg.bufclk_ctrl 1 @ xreg_base+0x00
-CCu 6:bufclk_en @ xreg_base+0x00
-CCu 6:clr by cmd_undoc35 @ xreg_base+0x05
+CCu 1:? 6:BUFCLK_EN 7:XTAL_READY? @ xreg_base+0x00
+CCu 2:? 3:? 7:? @ xreg_base+0x01
+CCu 0:? 1:? 2:? @ xreg_base+0x02
+CCu 5:related to NVRAM en 6:clr by cmd_undoc35 7:related to adc en @ xreg_base+0x05
 f xreg.div_clk_output_ctrl 1 @ xreg_base+0x09
 CCu 0:enable 1-3:div clk sel 6-7:related to bit timer? @ xreg_base+0x09
 
@@ -329,14 +331,13 @@ f xreg.periph_ctrl2 1 @ xreg_base+0xe1
 CCu 1:NVRAM @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2
 CCu modified in NVRAM enable and disable @ xreg_base+0xe2
-
 f xreg.adc_ctl @ xreg_base+0xea
 CCu 4-7: UDTIME 0-3: set to 9 before ADC read 3: clr when adc done @ xreg_base+0xea
 f xreg.adc_result @ xreg_base+0xeb
 f xreg.adc_status @ xreg_base+0xec
 CCu 0:adc busy 5-7: adc result lsb @ xreg_base+0xec
 f xreg.usec_timer_ctl 1 @ xreg_base+0xee
-CCu 3:stop? @ xreg_base+0xee
+CCu 2:? 3:stop? @ xreg_base+0xee
 f xreg.usec_timer_lsb 1 @ xreg_base+0xef
 
 f xreg.usec_timer_msb 1 @ xreg_base+0xf0
@@ -399,7 +400,7 @@ echo ..dsp
 
 f dsp_base 1 @ 0x7000
 f dsp.bufclk_ctrl 1 @ dsp_base+0x00
-CCu 5:en bufclk @ dsp_base+0x00
+CCu 5:BUFCLK_EN @ dsp_base+0x00
 CCu 0:clr after IRCAL @ dsp_base+0x01
 f dsp.clk_ctrl 1 @ dsp_base+0x1a
 CCu 0-2:BAND 3:SY_SEL 4-5:PA_CLKDUTY @ dsp_base+0x1a

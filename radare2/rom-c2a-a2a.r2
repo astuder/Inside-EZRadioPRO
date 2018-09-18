@@ -1198,6 +1198,7 @@ CCu stop timer @ 0xaaee
 CCu disable timer interrupt @ 0xaaf1
 .(fcn 0xaaf5 0xaafe rom.eint1_pause)
 .(fcn 0xaafe 0xab23 rom.eint1_disable)
+axd xreg_base+0x02 @ 0xab1b
 CCu copy xreg.0x4a-0x4d to 0x0737-0x073a @ 0xab2b
 .(fcn 0xab43 0xab77 rom.rx_ph_isr_sync_detected)
 CCu latch on sync @ 0xab4e
@@ -1417,7 +1418,13 @@ CCu state change in progress @ 0xb8d0
 CCu synth recal @ 0xb8d3
 CCu undoc state @ 0xb8e0
 .(fcn 0xb8e8 0xb92e rom.tx_start)
+axd xreg_base+0x01 @ 0xb904
 CCu EXT_PA_RAMP @ 0xb918
+CCu if TCXO jmp @ 0xb964
+CCu if XO not ready jmp @ 0xb96a
+.(fcn 0xb971 0xb97f rom.xo_wait_until_ready)
+CCu if TCXO jmp @ 0xb975
+CCu wait until XO ready @ 0xb97b
 .(fcn 0xb9c5 0xb9d8 rom.bufclk_enable)
 CCu DIVIDED_BUFCLK_MODE @ 0xb9c9
 CCu disabled? @ 0xb9cb
@@ -1594,6 +1601,7 @@ CCu other states @ 0xbe87
 CCu usec delay expired @ 0xbe99
 CCu DIG_PWR_SEQ @ 0xbebe
 CCu PWR SEQ supported @ 0xbec5
+CCu usec timer expired? @ 0xbeea
 CCu timer stopped? @ 0xbef0
 .(fcn 0xbeff 0xbf15 rom.0x17_isr)
 CCu DIG_PWR_SEQ @ 0xbf03
@@ -1745,7 +1753,7 @@ axd xreg_base+0xdf @ 0xc765
 CCu save xreg 0x00 @ 0xc7c6
 CCu save xreg 0x01 @ 0xc7cf
 CCu restore xreg 0x00 @ 0xc7e4
-CCu restore xreg 0x00 @ 0xc7e9
+CCu restore xreg 0x01 @ 0xc7e9
 .(fcn 0xc825 0xc837 rom.inc_dptr_movx_dptr_to_r0_x3_dptr_to_a)
 f rom.movx_a_to_r0_inc_dptr_dptr_to_r0_x3_dptr_to_a 1 @ 0xc827
 f rom.movx_dptr_to_r0_x3_dptr_to_a 1 @ 0xc82a
@@ -1795,6 +1803,9 @@ CCu TX @ 0xc923
 .(fcn 0xc950 0xc95a rom.set_eint1_callback_r4r5)
 f rom.store_r4r5_at_scratch_r0_ret_r4_or_r5 1 @ 0xc952
 .(fcn 0xc95a 0xc969 rom.bufclk_enable_hw)
+CCu BUFCLK_EN @ 0xc95d
+CCu BUFCLK_EN @ 0xc960
+axd dsp_base+0x00 @ 0xc965
 .(fcn 0xc969 0xc979 rom.modem_dsa_misc_eyexest_to_xreg_r0)
 CCu EYEXEST_EN, EYEXEST_FAST @ 0xc970
 .(fcn 0xc979 0xc988 rom.mul_aaar3_r4r5r6r7_result_r0r1r2r3)
@@ -1841,6 +1852,8 @@ CCu RX @ 0xcad6
 .(fcn 0xcb21 0xcb2a rom.set_xreg_r0_lonib_acc)
 .(fcn 0xcb2a 0xcb33 rom.set_xreg_r0_hinib_acc)
 .(fcn 0xcb33 0xcb3c rom.chip_has_pa)
+.(fcn 0xcb44 0xcb4d rom.xreg_set_0xdc_to_0xbe_clr_0xdb)
+axd xreg_base+0xdb @ 0xcb4a
 .(fcn 0xcb55 0xcb5e rom.is_sfr0xbb_bit4_set)
 .(fcn 0xcb5e 0xcb67 rom.a_andc0_orr7_to_r7_dptr_and1f_orr7_to_a)
 .(fcn 0xcb67 0xcb70 rom.read_dptr_shl2_and20_to_r7)
