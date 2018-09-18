@@ -814,7 +814,7 @@ CCu arg in buf idx += 2 @ 0x9d47
 CCu if addr == 0 @ 0x9d4f
 CCu output 0 @ 0x9d51
 CCu if addr 0x0001-x00ff @ 0x9d5f
-CCu read dsp mem @ 0x9d61
+CCu read sfr @ 0x9d61
 CCu if addr 0x0100-0x51ff @ 0x9d6c
 CCu read xmem @ 0x9d6e
 CCu if addr 0x5200-0x54ff @ 0x9d7f
@@ -831,8 +831,8 @@ CCu arg out buf idx += 1 @ 0x9ddf
 CCu all 8 peeks done? @ 0x9de3
 CCu nope, peek more @ 0x9de8
 CCu fill rest of response with 0 @ 0x9dea
-.(fcn 0x9dfe 0x9e09 rom.peek_dsp_ram)
-CCu or method to read SFR? @ 0x9dfe
+.(fcn 0x9dfe 0x9e09 rom.peek_sfr)
+CCu indirect access of SFR @ 0x9dfe
 .(fcn 0x9e09 0x9e69 rom.spi_parse_more_cmds)
 CCu also called in func2 and func3 images (peek&poke!) @ 0x9e09
 CCu GET_CHIP_STATUS @ 0x9e0c
@@ -877,7 +877,7 @@ CCu if addr 0x0001-0x07ff @ 0x9ef2
 CCu prevent writing to 0x07f0-0x800 @ 0x9ef4
 CCu if addr below 0x0800, skip @ 0x9f02
 CCu if addr 0x0001-0x00ff @ 0x9f09
-CCu write dsp mem @ 0x9f0b
+CCu write sfr @ 0x9f0b
 CCu if addr 0x00ff-0x51ff @ 0x9f18
 CCu write xmem @ 0x9f1a
 CCu if addr 0x5100-0x54ff @ 0x9f2c
@@ -885,8 +885,8 @@ CCu write imem (ignores msb) @ 0x9f2e
 CCu if addr 0x5500-0xf0ff @ 0x9f3f
 CCu write dsp reg (ignores msb) @ 0x9f3f
 CCu CMD_ERROR_BAD_ARG @ 0x9f48
-.(fcn 0x9f50 0x9f5b rom.poke_dsp_ram)
-CCu or method to write SFR? @ 0x9f50
+.(fcn 0x9f50 0x9f5b rom.poke_sfr)
+CCu indirect access to SFR @ 0x9f50
 .(fcn 0x9f5b 0x9f8a rom.cmd_nop)
 CCu echo input args @ 0x9f5b
 .(fcn 0x9f8a 0x9fca rom.get_int_status_flags)
@@ -2042,6 +2042,12 @@ CCu WUT_SLEEP @ 0xd13b
 CCu SLEEP @ 0xd13e
 CCu READY @ 0xd142
 .(fcn 0xd14d 0xd17a rom.cmd_packet_info)
+CCu Diff from doc, LEN not optional, LEN_DIFF missing @ 0xd14d
+CCu FIELD_NUM @ 0xd14f
+CCu LEN[15:8] @ 0xd154
+CCu LEN[0:7] @ 0xd157
+CCu LEN * 8 = bits @ 0xd159
+axd 0x0605 @ 0xd170
 .(fcn 0xd17a 0xd1a4 rom.hop_set_frequency)
 CCu FRAC[19:16] @ 0xd17d
 CCu FRAC[15:8] @ 0xd184
@@ -2119,7 +2125,13 @@ CCu rx hop @ 0xd4a7
 CCu update current channel @ 0xd401
 CCu RX @ 0xd402
 CCu skip entry @ 0xd409
-.(fcn 0xd414 0xd45a rom.pkt_unk_0xd414)
+.(fcn 0xd414 0xd45a rom.ph_process_len_field)
+CCu protocol IEEE802.15.4g @ 0xd417
+CCu pkt len size @ 0xd41f
+CCu SIZE @ 0xd42c
+CCu ENDIAN @ 0xd438
+CCu pkt len size @ 0xd446
+CCu IN_FIFO (store/remove len field) @ 0xd454
 .(fcn 0xd512 0xd5b1 rom.pkt_tx_packet_sent)
 CCu PACKET_SENT @ 0xd512
 CCu tx_len is zero @ 0xd525
@@ -2156,8 +2168,10 @@ axd 0x05b6 @ 0xd681
 axd 0x0575 @ 0xd68a
 CCu SPI_ACTIVE @ 0xd748
 .(fcn 0xd7a9 0xd7bf rom.fifo_tx_increment)
-.(fcn 0xd7bf 0xd7c6 rom.set_xreg91_bit7)
+.(fcn 0xd7bf 0xd7c6 rom.set_spi_status_bit7)
 .(fcn 0xd7c6 0xd7cd rom.get_current_match_filter)
+.(fcn 0xd7cd 0xd7d6 rom.get_global_cfg_protocol)
+CCu PROTOCOL @ 0xd7d1
 .(fcn 0xd7d6 0xd7e2 rom.setup_eint1_cb_rssi_latch)
 CCu r7=delay in Ts (oversampling clk periods) @ 0xd7d6
 CCu 0xce65=rom.eint1_cb_rssi_latch @ 0xd7d9
@@ -2275,8 +2289,6 @@ f func2.map_cmd_0x8c 1 @ 0xf64a-0x57+0x324
 f func2.map_cmd_0x8d 1 @ 0xf64a-0x57+0x2c4
 f func2.map_cmd_0x8a 1 @ 0xf64a-0x57+0x312
 f func2.map_do_cmd_0x8c_0x8d 1 @ 0xf64a-0x57+0x2b8
-
-
 
 Cd 1 2 @ 0xfffe
 f rom.ROMID_REVEXT 1 @ 0xfffe

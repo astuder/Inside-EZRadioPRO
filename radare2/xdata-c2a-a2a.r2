@@ -63,6 +63,8 @@ f var.tx_len_msb 1 @ 0x0600
 f var.tx_len_lsb 1 @ 0x0601
 f var.tx_delay 1 @ 0x0602
 f var.tx_num_repeat 1 @ 0x0603
+f var.rx_curr_pktlen_msb 1 @ 0x0604
+f var.rx_curr_pktlen_lsb 1 @ 0x0605
 f var.global_config_saved @ 0x0606
 f var.rx_hop_table_pos 1 @ 0x0608
 

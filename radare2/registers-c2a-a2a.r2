@@ -26,7 +26,8 @@ f sfr.dsp_reg_addr 1 @ _sfr+0x94
 f sfr.dsp_reg_value 1 @ _sfr+0x95
 CCu 2:clr before GPIO adc read @ _sfr+0x96
 
-f sfr.dsp_ram_rw 1 @ _sfr+0xa6
+f sfr.indirect_sfr 1 @ _sfr+0xa6
+CCu write addr, then read or write value @ _sfr+0xa6
 f sfr.rxtx_byte 1 @ _sfr+0xa7
 CCu read in rx, written in tx @ _sfr+0xa7
 CCu 4:eint1 (bit timer) @ _sfr+0xa8

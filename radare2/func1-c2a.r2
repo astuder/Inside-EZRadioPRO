@@ -41,6 +41,7 @@ f var.pcon_next 1 @ _idata+0x1f
 
 f var.loc21 1 @ _idata+0x21
 f var.ph_flags0 1 @ _idata+0x22
+CCu 3:PKT_LEN.SIZE @ _idata+0x22
 f var.rx_hop_ctl 1 @ _idata+0x23
 CCu 0:rssi 1:preamble 2:sync 3:hop pending @ _idata+0x23
 f var.flags_24 1 @ _idata+0x24
