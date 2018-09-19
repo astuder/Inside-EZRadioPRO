@@ -47,7 +47,7 @@ f sfr.int_modem_mask 1 @ _sfr+0xb5
 f sfr.int_chip_mask 1 @ _sfr+0xb6
 f sfr.timer1_irq_flag 1 @ _sfr+0xba
 CCu 3-6: timer isr source @ _sfr+0xba
-f sfr.sync_trigger 1 @ _sfr+0xbb
+f sfr.ph_status 1 @ _sfr+0xbb
 CCu 0:crc error 1:alt crc error 4:? 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
 
 f sfr.pti_ctl 1 @ _sfr+0xc0
@@ -61,7 +61,7 @@ f sfr.int_ph_pend 1 @ _sfr+0xc5
 f sfr.int_modem_pend 1 @ _sfr+0xc6
 f sfr.int_chip_pend 1 @ _sfr+0xc7
 f sfr.rx_ph_ctrl 1 @ _sfr+0xc9
-CCu 0:? 1:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set after preamble detect @ _sfr+0xc9
+CCu 0:? 1:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set on preamble detect 7:clr on preamble detect @ _sfr+0xc9
 f sfr.irq_0x07_flags 1 @ _sfr+0xca
 
 f sfr.ph_cfg_ctl @ _sfr+0xd1
@@ -88,7 +88,7 @@ f sfr.modem_freq_dev_msb 1 @ _sfr+0xe5
 f sfr.modem_freq_dev_lsb 1 @ _sfr+0xe6
 f sfr.modem_freq_offset_msb 1 @ _sfr+0xe7
 f sfr.modem_freq_offset_lsb 1 @ _sfr+0xe8
-f sfr_freq_pll_div_int 1 @ _sfr+0xe9
+f sfr.freq_pll_div_int 1 @ _sfr+0xe9
 CCu 0-6:pll divider inte[6:0] @ _sfr+0xe9
 f sfr.freq_pll_div_frac0 1 @ _sfr+0xea
 CCu 0-2:pll divider frac[18:16] 3:1 5-7:RAMP_DLY @ _sfr+0xea
@@ -98,7 +98,7 @@ f sfr.freq_pll_div_frac2 1 @ _sfr+0xec
 CCu 0-7:pll divider frac[7:0] @ _sfr+0xec
 CCu 7:fifo_src_sel @ _sfr+0xed
 f sfr.gpio_out_states 1 @ _sfr+0xee
-CCu 0:TX 1:RX 2:RX_FIFO_FULL 3:TX_FIFO_EMPTY 4:LOW_BATT 5:CCA_LATCH 6:HOPPED 7:HOP_TABLE_WRAP @ _sfr+0xee
+CCu 0:TX_STATE 1:RX_STATE 2:RX_FIFO_FULL 3:TX_FIFO_EMPTY 4:LOW_BATT 5:CCA_LATCH 6:HOPPED 7:HOP_TABLE_WRAP @ _sfr+0xee
 
 f sfr.modem_decimation_cfg @ _sfr+0xf1
 CCu 0:RXGAINX2 1-3:NDEC0 4-5:NDEC1 6-7:NDEC2 @ _sfr+0xf1
@@ -155,6 +155,8 @@ f xreg.modem_afc_limiter_msb 1 @ xreg_base+0x32
 CCu 0-6:AFCLIM[14:8] 7:ENAFCFRZ @ xreg_base+0x32
 f xreg.modem_afc_limiter_lsb 1 @ xreg_base+0x33
 CCu 0-7:AFCLIM[7:0] 7: @ xreg_base+0x33
+f xreg.modem_afc_freq_offset_msb @ xreg_base+0x34
+f xreg.modem_afc_freq_offset_lsb @ xreg_base+0x35
 f xreg.modem_ook_cnt1 1 @ xreg_base+0x36
 CCu 0-1:SQUELCH 2:SLICER_FAST 3:RAW_SYN 4:MA_FREQDWN 5:OOKFRZEN 6-7:S2P_MAP @ xreg_base+0x36
 f xreg.modem_spike_det @ xreg_base+0x37

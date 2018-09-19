@@ -317,11 +317,14 @@ CCu TX? (r7=0) @ 0x8a4a
 .(fcn 0x8a57 0x8ad8 rom.config_frequency)
 CCu init hw multiplier @ 0x8a58
 CCu CHANNEL_STEP_SIZE[15:8] @ 0x8a61
+axd 0x06a7 @ 0x8a64
 CCu CHANNEL_STEP_SIZE[7:0] @ 0x8a65
 CCu channel number @ 0x8a6b
 CCu start 16bit hw multiply @ 0x8a6e
 CCu INTE @ 0x8a76
-CCu FREQ_CONTROL_FRAC @ 0x8a80
+axd 0x06a3 @ 0x8a80
+axd 0x06a4 @ 0x8a86
+axd 0x06a5 @ 0x8a89
 CCu FRAC[19:16] @ 0x8a81
 CCu FRAC[15:8] @ 0x8a87
 CCu FRAC[7:0] @ 0x8a8a
@@ -692,6 +695,7 @@ CCu store cal for reference @ 0x97bd
 CCu build reply stream (undocumented) @ 0x97cf
 .(fcn 0x97ef 0x97f0 rom.irq0x07_bit7)
 .(fcn 0x97f0 0x97ff rom.irq0x07_preamble_timeout)
+CCu if preamble detected, no timeout @ 0x97f0
 .(fcn 0x97ff 0x9800 rom.irq0x07_bit3)
 .(fcn 0x9800 0x981f rom.ircal_bit_timer_oneshot)
 CCu r7=delay lsb (bit clock) @ 0x9814
@@ -716,6 +720,7 @@ CCu loc39=RSSI @ 0x986a
 CCu calc avg RSSI @ 0x9873
 CCu return avg RSSI in r7 @ 0x987f
 .(fcn 0x9882 0x988d rom.irq0x07_sync_timout)
+CCu clr preamble detected flag @ 0x9885
 .(fcn 0x988d 0x9897 rom.latch_rssi)
 CCu store LATCHED_RSSI for FRR access @ 0x988f
 .(fcn 0x9897 0x98e9 rom.modem_start_unk0x9897)
@@ -744,11 +749,12 @@ CCu r7=new byte @ 0x99b8
 CCu loop over 8 bits @ 0x99ba
 CCu polynom = 0x8005 (CRC-16, Mod-bus, ANSI..) @ 0x99da
 .(fcn 0x99e3 0x9a19 rom.whiten_byte)
-CCu r7=address of byte to process @ 0x0x99e3
+CCu r7=address of byte to process @ 0x99e3
 .(fcn 0x9a19 0x9a89 rom.tx_process_byte)
 .(fcn 0x9a89 0x9a95 rom.fifo_tx_add_r7_to_out_pos)
 CCu out pos modulo size @ 0x9a90
-.(fcn 0x9a95 0x9abc rom.fifo_tx_increment_ptr)
+.(fcn 0x9a95 0x9abc rom.fifo_tx_inc_ptr_ret_byte)
+CCu r7=latest TX byte @ 0x9a9c
 .(fcn 0x9abc 0x9acf rom.irq0x07_bit0)
 .(fcn 0x9acf 0x9ae3 rom.ircal_set_cal_val_r7)
 CCu amp or ph stage @ 0x9ad9
@@ -928,6 +934,10 @@ f rom.update_frr_data_safe @ 0xa11d
 .(fcn 0xa127 0xa1eb rom.wut_unk_0xa127)
 CCu 0x40=wait forever for pkt rx @ 0xa12e
 CCu if LDC disabled @ 0xa139
+CCu sync detected? @ 0xa13d
+CCu preamble detected? @ 0xa13f
+CCu jmp if no sync or preamble detected @ 0xa144
+CCu var.wut_periods @ 0xa146
 CCu WUT @ 0xa15d
 CCu WUT @ 0xa161
 CCu no 32k clk cal @ 0xa169
@@ -1199,10 +1209,20 @@ CCu disable timer interrupt @ 0xaaf1
 .(fcn 0xaaf5 0xaafe rom.eint1_pause)
 .(fcn 0xaafe 0xab23 rom.eint1_disable)
 axd xreg_base+0x02 @ 0xab1b
+.(fcn 0xab23 0xab43 rom.copy_xreg0x4a_to_0x737)
 CCu copy xreg.0x4a-0x4d to 0x0737-0x073a @ 0xab2b
+axd xreg_base+0x4b @ 0xab32
+axd 0x0738 @ 0xab34
+axd xreg_base+0x4c @ 0xab36
+axd 0x0739 @ 0xab38
+axd xreg_base+0x4d @ 0xab3a
+axd 0x073a @ 0xab3c
 .(fcn 0xab43 0xab77 rom.rx_ph_isr_sync_detected)
+CCu sync detected @ 0xab43
 CCu latch on sync @ 0xab4e
 CCu CCA_LATCH @ 0xab56
+axd 0x0736 @ 0xab63
+axd _idata+0x87 @ 0xab74
 .(fcn 0xab77 0xaba1 rom.config_preamble_timeout)
 CCu RX_PREAMBLE_TIMEOUT @ 0xab7c
 CCu RX_PREAMBLE_TIMEOUT_EXTEND @ 0xab80
@@ -1312,8 +1332,10 @@ echo   ..0xb000
 
 .(fcn 0xb000 0xb027 rom.rx_ph_isr)
 .(fcn 0xb027 0xb03e rom.0x2f_isr)
+CCu clr crc errors @ 0xb02a
 CCu report PH filter match @ 0xb079
 .(fcn 0xb07e 0xb09b rom.rx_ph_isr_preamble_detected)
+CCu preamble detected @ 0xb07e
 CCu latch RSSI on preamble detect @ 0xb08f
 .(fcn 0xb09b 0xb0a5 rom.xreg0x02_bit0_set_and_clr)
 .(fcn 0xb0a5 0xb0be rom.movx_0x0737_to_xreg0x46)
@@ -1345,7 +1367,7 @@ axd 0x076d @ 0xb25e
 CCu 0xb364 busy wait 10 loops @ 0xb362
 .(fcn 0xb371 0xb3de rom.dsp_reg_r7_unk0xb371)
 CCu r7 = dsp reg addr @ 0xb371
-CCu r7 = value written to dsp reg 0x47 @ 0xb373
+CCu r5 = value written to dsp reg 0x47 @ 0xb373
 CCu exit if r5 is 0x7f @ 0xb376
 CCu 0x0798: dsp_reg_cache @ 0xb38c
 axd 0x0798 @ 0xb38c
@@ -1735,6 +1757,7 @@ CCu disable PTI for tx @ 0xc62e
 CCu wait for space in PTI output buffer @ 0xc636
 CCu enable PTI for tx @ 0xc64c
 .(fcn 0xc650 0xc683 rom.pti_send_rx_info)
+CCu sync detected? clr bit @ 0xc650
 CCu PTI_EN @ 0xc658
 CCu disable PTI for rx @ 0xc65b
 CCu wait for space in PTI output buffer? @ 0xc663
@@ -1799,6 +1822,7 @@ axd xreg_base+0x02 @ 0xc91b
 .(fcn 0xc91e 0xc92f rom.change_from_ready_or_tune_to_tx)
 CCu TX @ 0xc91e
 CCu TX @ 0xc923
+CCu TX @ 0xc928
 .(fcn 0xc92f 0xc93d rom.rc32k_enable)
 .(fcn 0xc950 0xc95a rom.set_eint1_callback_r4r5)
 f rom.store_r4r5_at_scratch_r0_ret_r4_or_r5 1 @ 0xc952
@@ -1815,7 +1839,7 @@ f rom.copy_int_chip_status_pend_to_dptr 1 @ 0xc99a
 CCu var.INT_CHIP_PEND @ 0xc99d
 .(fcn 0xc9a2 0xc9ad rom.latch_int_modem_status_pend)
 f rom.latch_int_modem_status_to_dptr 1 @ 0xc9a5
-CCu var.INT_MODEM_PEND @ 0xc9a8
+axd 0x0753 @ 0xc9a8
 .(fcn 0xc9b9 0xc9c2 rom.movx_dptr_to_r0_inc_dptr_dec_r0_x2)
 .(fcn 0xc9d0 0xc9d9 rom.wut_set_cal_counter)
 .(fcn 0xc9d9 0xc9e7 rom.acc_bit7_orl_mode_in_r0_dec_r0_r7_shl1_in_acc)
@@ -1900,7 +1924,7 @@ CCu bit 0: parse commands @ 0xcbd4
 f rom.prop_group_table 0x40 @ 0xccd4
 Cd 1 0x40 @ 0xccd4
 CCu 16x group, size, xdata addr @ 0xccd4
-Cd 1 4 @ 0xcd41
+Cd 1 4 @ 0xcd14
 .(fcn 0xcd1b 0xcd3c rom.raise_preamble_timeout)
 CCu hop on invalid preamble @ 0xcd21
 .(fcn 0xcd3c 0xcd41 rom.rx_preamble_detected)
@@ -2160,6 +2184,7 @@ CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xd5c9
 .(fcn 0xd5f4 0xd5f5 rom.rx_nextstate_remain)
 .(fcn 0xd5f5 0xd5ff rom.0x17_isr_finish)
 .(fcn 0xd5ff 0xd60f rom.rx_hop_trigger)
+CCu RX hop @ 0xd608
 CCu indicate RX/TX event @ 0xd60a
 .(fcn 0xd60f 0xd65a rom.rx_hop_unk_0xd60f)
 CCu mask HOP_EN @ 0xd61a

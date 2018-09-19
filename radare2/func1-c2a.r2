@@ -61,6 +61,7 @@ CCu 4:set on PH filter match @ _idata+0x29
 f var.ph_flags2 1 @ _idata+0x2a
 CCu 0:SW_WHT_CTRL 1:SW_CRC_CTRL 2:variable pktlen 4:postamble_en 5:filter_en @ _idata+0x2a
 f var.ph_flags3 1 @ _idata+0x2b
+CCu 4:sync detected 5:preamble detected @ _idata+0x2b
 f var.main_loop_ctl 1 @ _idata+0x2c
 CCu 0:parse cmds 1:cfg event? 2:change state in progress 3:rxtx_event 5:wut 6:? 7:? @ _idata+0x2c
 f var.main_loop_event_ex 1 @ _idata+0x2d

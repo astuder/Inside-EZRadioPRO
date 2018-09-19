@@ -28,6 +28,7 @@ Cd 1 0x100 @_pdata*0x100
 f sfr.sp 1 @ _sfr+0x81
 f sfr.dl 1 @ _sfr+0x82
 f sfr.dh 1 @ _sfr+0x83
+f sfr.pcon 1 @ _sfr+0x87
 f sfr.ie 1 @ _sfr+0xa8
 f sfr.ip 1 @ _sfr+0xb8
 f sfr.psw 1 @ _sfr+0xd0
