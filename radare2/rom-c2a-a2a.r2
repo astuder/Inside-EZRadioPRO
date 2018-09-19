@@ -1061,7 +1061,7 @@ axd xreg_base+0xee @ 0xa581
 CCu SPI_ACTIVE @ 0xa5ad
 CCu undoc state @ 0xa5b1
 CCu SPI_ACTIVE @ 0xa5e0
-CCu EZConfig supported? @ 0xa5ed
+CCu EZConfig supported? @ 0xa5e3
 CCu EZCONFIG @ 0xa5ea
 .(fcn 0xa5ee 0xa657 rom.config_int)
 f rom.config_int_ctl 1 @ 0xa621
@@ -1746,12 +1746,10 @@ CCu store by in fifo @ 0xc5ae
 CCu 1 byte stored @ 0xc5cd
 CCu 0 bytes stored @ 0xc5d6
 .(fcn 0xc5d9 0xc603 rom.fifo_tx_update)
-CCu tx fifo in pos @ 0xc5dd
-CCu tx fifo out pos @ 0xc5e1
 CCu branch if fifo out pos < in pos @ 0xc5e6
 CCu fifo space = out - in @ 0xc5e8
 CCu fifo space = size - in + out @ 0xc5ee
-.(fcn 0xc603 0xc621 rom.fifo_tx_unk0xc603)
+.(fcn 0xc603 0xc621 rom.fifo_tx_read_at_pos_plus_r7)
 .(fcn 0xc621 0xc627 rom.pti_wait_status_bit7_clr)
 .(fcn 0xc627 0xc650 rom.pti_send_tx_info)
 CCu PTI_EN @ 0xc62b
@@ -1965,6 +1963,7 @@ CCu return 0x80 @ 0xcde4
 CCu return 0x80 @ 0xcdea
 .(fcn 0xcdef 0xce12 rom.fifo_tx_check_almost_empty)
 CCu EZConfig state? @ 0xcdef
+CCu tx fifo contains EZConfig array @ 0xcdf2
 CCu TX_FIFO_EMPTY @ 0xce05
 CCu TX_FIFO_EMPTY @ 0xce0d
 CCu TX_FIFO_ALMOST_EMPTY @ 0xcdfe
@@ -2028,7 +2027,7 @@ CCu GET_INT_STATUS @ 0xcfcf
 CCu GET_PH_STATUS @ 0xcfd5
 CCu GET_MODEM_STATUS @ 0xcfdb
 CCu PACKET_INFO @ 0xcfe1
-CCu UNDOCUMENTED 0x19 @ 0xcfe7
+CCu EZCONFIG_CHECK @ 0xcfe7
 .(fcn 0xcff0 0xd000 rom.cmd_get_int_status)
 CCu read cal type @ 0xcff6
 CCu returns as INFO_FLAGS @ 0xcffc
@@ -2037,7 +2036,10 @@ echo   ..0xd000
 
 .(fcn 0xd001 0xd004 rom.cmd_get_ph_status)
 .(fcn 0xd004 0xd031 rom.cmd_get_modem_status)
-CCu get afc_freq_offset_lsb/msb @ 0xd01c
+axd 0x0736 @ 0xd018
+CCu return ant1/2 RSSI @ 0xd016
+axd _idata+0x87 @ 0xd020
+CCu return afc_freq_offset_lsb/msb @ 0xd022
 .(fcn 0xd031 0xd05e rom.cmd_change_state)
 CCu branch if new state greater than 8 @ 0xd039
 .(fcn 0xd05e 0xd0de rom.cmd_start_tx)
@@ -2112,8 +2114,9 @@ CCu READY @ 0xd201
 CCu response: BAD_CHECKSUM @ 0xd20c
 CCu response: INVALID_STATE @ 0xd211
 CCu repsonse buffer @ 0xd216
-.(fcn 0xd21c 0xd22a rom.set_crc16_to_ffff_0x97_to_0)
+.(fcn 0xd21c 0xd22a rom.ezconfig_reset)
 .(fcn 0xd22a 0xd249 rom.ezconfig_start)
+axd 0x06bc @ 0xd22c
 CCu enter EZConfig state @ 0xd22a
 CCu set FIFO_MODE half duplex @ 0xd23a
 .(fcn 0xd249 0xd251 rom.change_from_spi_active_to_ezconfig)
@@ -2130,7 +2133,7 @@ CCu loc22.1 = polarity @ 0xd27a
 CCu MATCH_MASK_x @ 0xd284
 CCu MATCH_VALUE_x @ 0xd28a
 CCu found match @ 0xd28d
-CCu found miss @ 0x2d91
+CCu found miss @ 0xd291
 CCu MATCH_EN @ 0xd2e8
 CCu MATCH_EN @ 0xd2fd
 CCu MATCH_EN @ 0xd312
@@ -2211,11 +2214,17 @@ axd 0x0575 @ 0xd674
 CCu config fifo for full duplex @ 0xd67f
 axd 0x05b6 @ 0xd681
 axd 0x0575 @ 0xd68a
+.(fcn 0xd691 0xd6a9 rom.ezconfig_decrypt_byte)
+CCu property val @ 0xd694
+.(fcn 0xd6a9 0xd71b rom.ezconfig_set_property)
+CCu translate array pos to property ptr @ 0xd6b3
+CCu property val @ 0xd717
 CCu in EZConfig state? @ 0xd73c
 CCu EZCONFIG @ 0xd73f
 CCu EZCONFIG @ 0xd742
 CCu SPI_ACTIVE @ 0xd748
 CCu EZConfig supported? @ 0xd757
+.(fcn 0xd78f 0xd7a9 rom.ezconfig_array_read)
 .(fcn 0xd7a9 0xd7bf rom.fifo_tx_increment)
 .(fcn 0xd7bf 0xd7c6 rom.set_spi_status_bit7)
 .(fcn 0xd7c6 0xd7cd rom.get_current_match_filter)

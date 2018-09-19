@@ -26,8 +26,8 @@ f var.ph_pktlen_lsb @ _idata+0x0b
 f var.loc11 1 @ _idata+0x11
 f var.postamble_cnt 1 @ _idata+0x13
 CCu values 0-3 for 1-4 bytes @ _idata+0x13
-f var.postamble_byte0 1 @ _idata+0x14
-f var.postamble_byte1 1 @ _idata+0x15
+f var.loc14 1 @ _idata+0x14
+f var.loc15 1 @ _idata+0x15
 f var.loc_ph_pktlen_msb @ _idata+0x16
 f var.loc_ph_pktlen_lsb @ _idata+0x17
 f var.rx_fields_cnt @ _idata+0x18
@@ -95,10 +95,10 @@ f var.fifo_tx_end_msb 1 @ _idata+0x47
 f var.fifo_tx_end_lsb 1 @ _idata+0x48
 f var.fifo_rx_count 1 @ _idata+0x49
 CCu set to xreg0x8e - xreg0x6b, this+xreg6f=rx fifo count @ _idata+0x49
-f var.fifo_tx_unk4a 1 @ _idata+0x4a
+f var.fifo_tx_count 1 @ _idata+0x4a
 f var.fifo_rx_out_pos 1 @ _idata+0x4b
-f var.fifo_rx_count 1 @ _idata+0x4c
-f var.fifo_tx_count 1 @ _idata+0x4d
+f var.fifo_rx_count2 1 @ _idata+0x4c
+f var.fifo_tx_count2 1 @ _idata+0x4d
 f var.fifo_rx_size 1 @ _idata+0x4e
 f var.fifo_tx_size 1 @ _idata+0x4f
 
@@ -134,6 +134,8 @@ f var.loc6a 1 @ _idata+0x6a
 f var.loc6b 1 @ _idata+0x6b
 f var.loc6c 1 @ _idata+0x6c
 
+f var.ezconfig_ptr_msb 1 @ _idata+0x73
+f var.ezconfig_ptr_lsb 1 @ _idata+0x74
 f var.tx_num_repeat_cnt 1 @ _idata+0x75
 
 f var.modem_fsk4_map_val2 1 @ _idata+0x84
@@ -146,8 +148,10 @@ f var.eint1_callback_msb 1 @ _idata+0x8b
 f var.eint1_callback_lsb 1 @ _idata+0x8c
 f var.scratch_unk0x8e 1 @ _idata+0x8e
 f var.info_flags_cal_type 1 @ _idata+0x8f
+
 f var.cfg_steps 3 @ _idata+0x91
 f var.adc_cfg 1 @ _idata+0x94
+f var.ezconfig_pos @ _idata+0x97
 
 # CODE
 
@@ -352,13 +356,16 @@ f map.cmd_start_rx 1 @ 0x02be
 f map.cmd_start_tx 1 @ 0x02c1
 f map.rx_nextstate_remain 1 @ 0x02c4
 f map.cmd_rx_hop 1 @ 0x02c7
+f map.ezconfig_decrypt_byte 1 @ 0x02cd
 f map.spi_parse_cmds 1 @ 0x02d0
 f map.cmd_ezconfig_check 1 @ 0x02d3
 f map.pkt_tx_unk_0xd5b1 1 @ 0x02d6
+f map.ezconfig_set_property 1 @ 0x02d9
 f map.cmd_packet_info 1 @ 0x02dc
 f map.cmd_change_state 1 @ 0x02df
 f map.rx_hop_trigger 1 @ 0x02e2
 f map.cmd_get_ph_status 1 @ 0x02e5
+f map.ezconfig_array_read 1 @ 0x02e8
 
 afu $$+3 @@s:0x0057 0x02eb 3
 
@@ -382,7 +389,7 @@ CCu clr hop pending @ 0x0374
 .(fcn 0x0377 0x038e patch.modem_start_rx)
 .(fcn 0x038e 0x039e patch.cmd_start_tx)
 .(fcn 0x039e 0x03a4 patch.rx_hop_trigger)
-
+.(fcn 0x03a4 0x03b6 patch.ezconfig_array_read)
 .(fcn 0x0488 0x049c hack.memory_dump)
 
 # run r2 analysis
