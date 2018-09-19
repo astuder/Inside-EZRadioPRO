@@ -47,7 +47,7 @@ CCu 0:rssi 1:preamble 2:sync 3:hop pending @ _idata+0x23
 f var.flags_24 1 @ _idata+0x24
 CCu 0:? 1:? 2:txrx started? 4:rx hop? 5:rc32k cal due 6:wht bit8 7:state change in progress? @ _idata+0x24
 f var.flags_25 1 @ _idata+0x25
-CCu 0:? 1:low power 3:? 4:zeroif 5:synth recal 7:OOK @ _idata+0x25
+CCu 0:? 1:low power 3:EZConfig? 4:zeroif 5:synth recal 7:OOK @ _idata+0x25
 CCu low power flag @@/c 0x25.1 > /dev/null
 f-hit*
 f var.flags_26 1 @ _idata+0x26
@@ -238,7 +238,7 @@ f map.main_loop_parse_cfg 1 @ 0x011d
 f map.rx_start_dsp_unk_0xc182 1 @ 0x0120
 f map.rx_packet_received 1 @ 0x0123
 f map.set_pcon 1 @ 0x0126
-f map.change_state_from_10 1 @ 0x0129
+f map.change_state_from_ezconfig 1 @ 0x0129
 f map.int0x0f_config_callback 1 @ 0x012f
 f map.spi_parse_main_loop_cmds @ 0x0132
 f map.fifo_raise_underflow_overflow_err 1 @ 0x0135
@@ -340,7 +340,7 @@ f map.eint1_pause 1 @ 0x028e
 f map.wut_set_mantissa_r5r7 1 @ 0x0291
 f map.tx_sequencer_mode_delay 1 @ 0x0297
 f map.change_state_from_ready 1 @ 0x029a
-f map.change_from_spi_active_to_10 1 @ 0x029d
+f map.change_from_spi_active_to_ezconfig 1 @ 0x029d
 f map.config_modem_clkgen_band 1 @ 0x02a0
 f map.pti_send_rx_info 1 @ 0x02a6
 f map.main_loop_bit7_cmd1_2 @ 0x02a9
@@ -353,7 +353,7 @@ f map.cmd_start_tx 1 @ 0x02c1
 f map.rx_nextstate_remain 1 @ 0x02c4
 f map.cmd_rx_hop 1 @ 0x02c7
 f map.spi_parse_cmds 1 @ 0x02d0
-f map.cmd_undoc_0x19 1 @ 0x02d3
+f map.cmd_ezconfig_check 1 @ 0x02d3
 f map.pkt_tx_unk_0xd5b1 1 @ 0x02d6
 f map.cmd_packet_info 1 @ 0x02dc
 f map.cmd_change_state 1 @ 0x02df
@@ -367,11 +367,14 @@ echo ..patches
 .(fcn 0x02eb 0x0309 patch.timer0_isr)
 f patch.pop_acc_exit_isr @ 0x0306
 .(fcn 0x0309 0x032f patch.config_modem)
+CCu IFPKD @ 0x0328
 .(fcn 0x032f 0x034b patch.reset_finish)
 .(fcn 0x034b 0x0358 patch.change_state_from_spi_active)
-CCu unknown state 10 @ 0x0350
-.(fcn 0x0358 0x0367 patch.change_state_from_10)
-CCu unknown state 10 @ 0x035b
+CCu EZCONFIG @ 0x034d
+CCu EZCONFIG @ 0x0350
+.(fcn 0x0358 0x0367 patch.change_state_from_ezconfig)
+CCu EZConfig state? @ 0x0358
+CCu EZCONFIG @ 0x035b
 CCu SPI_ACTIVE @ 0x035f
 .(fcn 0x0367 0x036a patch.rx_packet_received)
 CCu check if RX @ 0x036c

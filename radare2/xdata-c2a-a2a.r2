@@ -20,10 +20,12 @@ echo   ..0x051e property groups
 
 Cd 1 0x2e2 @ 0x51e
 
-f prop.grp_0x24_undoc 9 @ 0x051e
-f prop.grp_0x24_mod_type 1 @ prop.grp_0x24_undoc+0x00
-f prop.grp_0x24_0x01 1 @ prop.grp_0x24_undoc+0x01
-f prop.grp_0x24_xo_tune 1 @ prop.grp_0x24_undoc+0x03
+f prop.grp_0x24_ezconfig 9 @ 0x051e
+CCu see EZRadio Si4455 @ 0x051e
+f prop.EZCONFIG_MODULATION 1 @ prop.grp_0x24_ezconfig+0x00
+f prop.EZCONFIG_UNDOC_0x01 1 @ prop.grp_0x24_ezconfig+0x01
+f prop.EZCONFIG_UNDOC_0x02 1 @ prop.grp_0x24_ezconfig+0x02
+f prop.EZCONFIG_XO_TUNE 1 @ prop.grp_0x24_ezconfig+0x03
 
 f prop.grp_0x30_match 12 @ 0x0527
 f prop.MATCH_VALUE_1 1	 @ prop.grp_0x30_match+0x00
@@ -435,7 +437,7 @@ f const.PART_INFO_ID 2 @ 0x07f3
 f const.PART_INFO_CUSTOMER 1 @ 0x07f5
 f const.group_info_mask 2 @ 0x07f6
 f const.chip_features1 1 @ 0x07f9
-CCu 0:PEEK 1:POKE 2:? @ 0x07f9
+CCu 0:PEEK 1:POKE 2:EZConfig? @ 0x07f9
 f const.chip_features2 1 @ 0x07fa
 CCu 0:HP PA 1:LP PA 2:MP PA 3:ETSI 4:PWR SEQ 6:BUFCLK @ 0x07fa
 f const.chip_features3 1 @ 0x07fb

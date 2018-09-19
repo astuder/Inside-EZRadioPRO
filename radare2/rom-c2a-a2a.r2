@@ -620,6 +620,7 @@ CCu CC_ASSESS_SEL @ 0x943f
 axd 0x0697 @ 0x9454
 CCu FIFO_SRC_SEL (doc Si4467) @ 0x945d
 CCu FIFO contents are phase samples taken on the oversampled bit clock @ 0x9460
+f rom.config_modem_ifpkd 1 @ 0x946b
 CCu FIFO contents come from packet handler @ 0x946b
 CCu set to default @ 0x9483
 .(fcn 0x948a 0x94c9 rom.config_modem_chflt)
@@ -1060,7 +1061,8 @@ axd xreg_base+0xee @ 0xa581
 CCu SPI_ACTIVE @ 0xa5ad
 CCu undoc state @ 0xa5b1
 CCu SPI_ACTIVE @ 0xa5e0
-CCu undoc state @ 0xa5ea
+CCu EZConfig supported? @ 0xa5ed
+CCu EZCONFIG @ 0xa5ea
 .(fcn 0xa5ee 0xa657 rom.config_int)
 f rom.config_int_ctl 1 @ 0xa621
 CCu PH_INT_STATUS_EN @ 0xa626
@@ -1585,7 +1587,7 @@ CCu if not ZEROIF @ 0xbd50
 CCu if no channel change in progress @ 0xbd5a
 CCu if ZEROIF @ 0xbd5f
 CCu FORCE_SY_RECAL (1=no) @ 0xbd66
-.(fcn 0xbd6c 0xbd6f rom.change_state_from_10)
+.(fcn 0xbd6c 0xbd6f rom.change_state_from_ezconfig)
 CCu RX @ 0xbd72
 .(fcn 0xbd76 0xbd85 rom.change_from_ready_to_11)
 CCu unknown state 11 @ 0xbd79
@@ -1961,7 +1963,8 @@ CCu TX @ 0xcde0
 CCu do nothing if state TX @ 0xcde2
 CCu return 0x80 @ 0xcde4
 CCu return 0x80 @ 0xcdea
-.(fcn 0xcdf5 0xce12 rom.fifo_tx_check_almost_empty)
+.(fcn 0xcdef 0xce12 rom.fifo_tx_check_almost_empty)
+CCu EZConfig state? @ 0xcdef
 CCu TX_FIFO_EMPTY @ 0xce05
 CCu TX_FIFO_EMPTY @ 0xce0d
 CCu TX_FIFO_ALMOST_EMPTY @ 0xcdfe
@@ -2100,17 +2103,21 @@ CCu indicate RX/TX event @ 0xd1b4
 .(fcn 0xd1ba 0xd1ee rom.cmd_tx_hop)
 CCu TX @ 0xd1bc
 CCu exit with error if not in TX state @ 0xd1be
-.(fcn 0xd1ee 0xd21c rom.cmd_undoc_0x19)
+.(fcn 0xd1ee 0xd21c rom.cmd_ezconfig_check)
+CCu in EZConfig state? @ 0xd1ee
 CCu compare args with CRC @ 0xd1f1
-CCu CRC ok @ 0xd1fc
-CCu response: 0 @ 0xd1ff
+CCu CRC ok, exit EZConfig state @ 0xd1fc
+CCu response: VALID @ 0xd1ff
 CCu READY @ 0xd201
-CCu response: 1 @ 0xd20c
-CCu response: 2 @ 0xd211
+CCu response: BAD_CHECKSUM @ 0xd20c
+CCu response: INVALID_STATE @ 0xd211
 CCu repsonse buffer @ 0xd216
 .(fcn 0xd21c 0xd22a rom.set_crc16_to_ffff_0x97_to_0)
+.(fcn 0xd22a 0xd249 rom.ezconfig_start)
+CCu enter EZConfig state @ 0xd22a
 CCu set FIFO_MODE half duplex @ 0xd23a
-.(fcn 0xd249 0xd251 rom.change_from_spi_active_to_10)
+.(fcn 0xd249 0xd251 rom.change_from_spi_active_to_ezconfig)
+CCu EZCONFIG @ 0xd24b
 .(fcn 0xd255 0xd270 rom.rx_ph_filter)
 CCu 1=match, 0=miss @ 0xd25a
 CCu FILTER_MATCH @ 0xd25d
@@ -2204,7 +2211,11 @@ axd 0x0575 @ 0xd674
 CCu config fifo for full duplex @ 0xd67f
 axd 0x05b6 @ 0xd681
 axd 0x0575 @ 0xd68a
+CCu in EZConfig state? @ 0xd73c
+CCu EZCONFIG @ 0xd73f
+CCu EZCONFIG @ 0xd742
 CCu SPI_ACTIVE @ 0xd748
+CCu EZConfig supported? @ 0xd757
 .(fcn 0xd7a9 0xd7bf rom.fifo_tx_increment)
 .(fcn 0xd7bf 0xd7c6 rom.set_spi_status_bit7)
 .(fcn 0xd7c6 0xd7cd rom.get_current_match_filter)
