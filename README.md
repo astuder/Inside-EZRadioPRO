@@ -40,9 +40,9 @@ It is likely, that parts in the EZRadio and EZRadioPRO product families share th
 
 ## Tools
 
-- [ezradiopro.py](python/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](python/README.md) for usage.
-- [radare2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radare/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
-- [find-refs.py](python/find-refs.py): Python script to create r2 xrefs for indirect data and register access
+- [/python/ezradiopro.py](python/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](python/README.md) for usage.
+- [/radare2/*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radare/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
+- [/python/find-refs.py](python/find-refs.py): Python script to create r2 xrefs for indirect data and register access
 
 ## Documentation
 
