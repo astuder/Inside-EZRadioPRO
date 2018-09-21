@@ -7,7 +7,7 @@ echo   ..0x0000 variables
 
 f var.clk_32k_sel 1 @ 0x0022
 Cd 1 1 @ 0x0022
-CCu 0:disabled 1:internal 2:external 1 @ 0x0022
+CCu 0:disabled 1:internal 2:external @ 0x0022
 f var.CMD_ERR_STATUS 1 @ 0x0026
 Cd 1 1 @ 0x0026
 f var.CURRENT_CHANNEL 1 @ 0x002a

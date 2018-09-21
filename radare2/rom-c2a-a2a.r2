@@ -932,7 +932,7 @@ CCu ADC_GPIO_EN @ 0xa0ed
 CCu ADC_GPIO_PIN @ 0xa0f0
 .(fcn 0xa110 0xa127 rom.clear_int_chip_update_frr)
 f rom.update_frr_data_safe @ 0xa11d
-.(fcn 0xa127 0xa1eb rom.wut_unk_0xa127)
+.(fcn 0xa127 0xa1eb rom.wut_event_handler)
 CCu 0x40=wait forever for pkt rx @ 0xa12e
 CCu if LDC disabled @ 0xa139
 CCu sync detected? @ 0xa13d
@@ -975,6 +975,9 @@ CCu CMD @ 0xa2fe
 CCu CMD_ERROR @ 0xa30b
 CCu CMD_ERROR @ 0xa30f
 .(fcn 0xa313 0xa331 rom.main_loop_wut_event)
+CCu WUT @ 0xa313
+CCu RC32K cal @ 0xa31a
+CCu WUT expired @ 0xa321
 CCu check WUT_SLEEP flag @ 0xa327
 CCu SLEEP @ 0xa32b
 .(fcn 0xa331 0xa38c rom.adc_read_gpio_r7)
@@ -1168,6 +1171,7 @@ CCu max len? @ 0xa92b
 CCu count: r5 @ 0xa92f
 CCu done when r7==0 @ 0xa940
 .(fcn 0xa949 0xa974 rom.power_up_entry)
+CCu signal state change @ 0xa94d
 CCu READY @ 0xa968
 .(fcn 0xa974 0xa97b rom.init_sfr0x93_sfr0x86)
 .(fcn 0xa97b 0xa9a8 rom.reset_entry)
@@ -1705,19 +1709,28 @@ CCu add 5 to src addr for next loop @ 0xc3c8
 CCu stop when 1st byte read from NVRAM is 0 (count) @ 0xc3d5
 CCu copy count bytes from src to dst @ 0xc3da
 CCu next block @ 0xc3e8
-.(fcn 0xc3f3 0xc426 rom.0x3f_isr)
+.(fcn 0xc3f3 0xc426 rom.wut_isr)
+CCu RC32K cal event @ 0xc3fd
+CCu WUT event @ 0xc401
+CCu clear interrupt flags @ 0xc403
 CCu raise WUT event @ 0xc421
-.(fcn 0xc426 0xc464 rom.config_wut)
+.(fcn 0xc426 0xc464 rom.wut_config)
 CCu bug? CAL_EN and WUT_EN swapped? @ 0xc426
 CCu WUT_EN @ 0xc42e
 CCu WUT_R @ 0xc446
 CCu CAL_EN @ 0xc44c
 CCu WUT_CAL_PERIOD @ 0xc453
-.(fcn 0xc464 0xc48a rom.wut_unk_0xc464)
+axd xreg_base+0xf2 @ 0xc460
+.(fcn 0xc464 0xc48a rom.wut_expired)
+axd 0x616 @ 0xc469
 CCu WUT_SLEEP @ 0xc47d
 CCu SLEEP @ 0xc480
 CCu READY @ 0xc484
 .(fcn 0xc48a 0xc4a9 rom.wut_set_mantissa_r5r7)
+axd xreg_base+0xf2 @ 0xc48a
+axd xreg_base+0xf4 @ 0xc496
+axd xreg_base+0xf4 @ 0xc49e
+axd xreg_base+0xf2 @ 0xc4a2
 CCu wait for first timeout? @ 0xc499
 .(fcn 0xc4a9 0xc4aa rom.reset_callback)
 .(fcn 0xc4aa 0xc4b8 rom.fifo_tx_set_addr_r6r7_len_r5)
@@ -1914,7 +1927,7 @@ CCu bit 0: parse commands @ 0xcbd4
 .(fcn 0xcc94 0xcc9d rom.0x33_handler)
 .(fcn 0xcc9d 0xcca6 rom.rx_byte_handler)
 .(fcn 0xcca6 0xccaf rom.0x3b_handler)
-.(fcn 0xccaf 0xccb8 rom.0x3f_handler)
+.(fcn 0xccaf 0xccb8 rom.wut_handler)
 .(fcn 0xccb8 0xccc1 rom.timer2_handler)
 .(fcn 0xccc1 0xccca rom.rx_ph_handler)
 .(fcn 0xccca 0xccd3 rom.0x2f_handler)
@@ -2003,17 +2016,20 @@ CCu average 2 @ 0xcf24
 CCu BIT1 @ 0xcf29
 CCu PH_RX_DISABLE @ 0xcf51
 CCu if packet handler disabled @ 0xcf52
+.(fcn 0xcf5b 0xcf7b rom.wut_start_rx_tx)
 CCu start on WUT? @0xcf5f
 CCu clr start condition @0xcf62
 CCu RX @ 0xcf65
 CCu start on WUT? @0xcf6d
 CCu clr start condition @0xcf70
 CCu TX @ 0xcf73
+CCu WUT expired @ 0xcf78
 .(fcn 0xcf7b 0xcf7c rom.main_loop_bit6_event)
 axd _idata+0x92 @ 0xcf80
 axd _idata+0x93 @ 0xcf84
 .(fcn 0xcf89 0xcf8c rom.config_modem_entry)
 .(fcn 0xcf8d 0xcfae rom.spi_isr)
+CCu WUT expired (??) @ 0xcf90
 CCu was previous cmd undoc_0x35? @ 0xcf95
 CCu bytes in spi buffer @ 0xcf9e
 CCu set if cmd parsing handed to main loop @ 0xcfa7
@@ -2271,6 +2287,7 @@ CCu RSSI_LATCH @ 0xda98
 .(fcn 0xdbae 0xdbba func2.cmd_0x87)
 .(fcn 0xdbba 0xdbcc func2.cmd_0x8a)
 .(fcn 0xdbcc 0xdbed func2.spi_isr)
+CCu WUT expired (???) @ 0xdbcf
 .(fcn 0xdbf5 0xdc4c func2.cmd_0x80)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xdd44
 CCu CRC_ERROR @ 0xddb2

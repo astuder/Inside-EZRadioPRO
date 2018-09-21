@@ -345,8 +345,9 @@ f xreg.usec_timer_lsb 1 @ xreg_base+0xef
 f xreg.usec_timer_msb 1 @ xreg_base+0xf0
 CCu 0-3: timer msb 5-7: PA FSK_MOD_DLY usec @ xreg_base+0xf0
 f xreg.wut_cal_period 1 @ xreg_base+0xf2
-CCu 1: cleared before setting wut_m, set after @ xreg_base+0xf2
-f xref.wut_cal_ctl 1 @ xreg_base+0xf3
+CCu 1: cleared before setting wut_m, set after 3-5: WUT_CAL_PERIOD @ xreg_base+0xf2
+f xreg.wut_int_ctl 1 @ xreg_base+0xf3
+CCu 0:WUT_EN(?) 2:rc32k cal event 3:clr rc32k cal event 4:set on config 6:wut event 7:clr wut event @ xreg_base+0xf3
 f xreg.wut_m_lsb 1 @ xreg_base+0xf4
 f xreg.wut_m_msb 1 @ xreg_base+0xf5
 f xreg.wut_r 1 @ xreg_base+0xf6

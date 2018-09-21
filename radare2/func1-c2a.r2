@@ -41,13 +41,13 @@ f var.pcon_next 1 @ _idata+0x1f
 
 f var.loc21 1 @ _idata+0x21
 f var.ph_flags0 1 @ _idata+0x22
-CCu 3:PKT_LEN.SIZE @ _idata+0x22
+CCu 3:PKT_LEN.SIZE 4:? @ _idata+0x22
 f var.rx_hop_ctl 1 @ _idata+0x23
 CCu 0:rssi 1:preamble 2:sync 3:hop pending @ _idata+0x23
 f var.flags_24 1 @ _idata+0x24
 CCu 0:? 1:? 2:txrx started? 4:rx hop? 5:rc32k cal due 6:wht bit8 7:state change in progress? @ _idata+0x24
 f var.flags_25 1 @ _idata+0x25
-CCu 0:? 1:low power 3:EZConfig? 4:zeroif 5:synth recal 7:OOK @ _idata+0x25
+CCu 0:wut expired 1:low power 3:EZConfig? 4:zeroif 5:synth recal 7:OOK @ _idata+0x25
 CCu low power flag @@/c 0x25.1 > /dev/null
 f-hit*
 f var.flags_26 1 @ _idata+0x26
@@ -176,7 +176,7 @@ f vect.unk_0x2f 1 @ 0x002f
 f vect.unk_0x33 1 @ 0x0033
 f vect.rx_byte 1 @ 0x0037
 f vect.unk_0x3b 1 @ 0x003b
-f vect.unk_0x3f 1 @ 0x003f
+f vect.wut 1 @ 0x003f
 f vect.unk_0x43 1 @ 0x0043
 f patch.tx_ph_start 1 @ 0x0046
 CCu TX @ 0x0046
@@ -215,7 +215,7 @@ f map.config_unk_0x8dab 1 @ 0x00c0
 f map.irq0x07_bit0 1 @ 0x00c6
 f map.usec_delay_unk_0xbda1 1 @ 0x0x00c9
 f map.change_from_ready_to_11 1 @ 0x00cc
-f map.wut_unk_0xc464 1 @ 0x00cf
+f map.wut_expired 1 @ 0x00cf
 f map.gpio_read_pin_cfg 1 @ 0x00d2
 f map.tx_pwr_seq_start 1 @ 0x00d5
 f map.nvram_disable 1 @ 0x00d8
@@ -231,6 +231,7 @@ f map.config_modem 1 @ 0x00f3
 f map.irq0x07_rssi_jump 1 @ 0x00ff
 
 f map.gpio_state_clr_r7 1 @ 0x0102
+f map.wut_start_rx_tx 1 @ 0x0105
 f map.modem_start_unk0xba27 1 @ 0x0108
 f map.fifo_rx_update 1 @ 0x010b
 f map.rx_sync_timeout 1 @ 0x010e
