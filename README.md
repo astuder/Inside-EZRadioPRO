@@ -29,8 +29,8 @@ The remaining functionality is implemented in hardware:
 - GPIO seems to be controlled by multiplexers, with only indirect ways for the 8051 MCU to interact with pins.
 - According to [patents](https://patents.google.com/patent/US8050313B2), the RF modem is implemented with a DSP. No access to DSP RAM or firmware has been found (yet).
 
-It seems likely, that parts of the EZRadio and EZRadioPRO product family share the same silicon die and firmware ROM, and are differntiated at the factory through programming of the NVRAM. See also [this patent](https://patents.google.com/patent/US7613913B2/en). Clues include:
-- Firmware ROM is identical for all C2A and A2A parts, but significant changes from B1B to C2A/A2A.
+It is likely, that parts in the EZRadio and EZRadioPRO product families share the same silicon die, and are differentiated at the factory through programming of the NVRAM. See also [this patent](https://patents.google.com/patent/US7613913B2/en). Evidence for this conclusion includes:
+- The firmware ROM is identical for all C2A and A2A parts, but significantly changes changes from older B1B to the newer C2A/A2A parts.
 - Code in RAM is identical among the C2A parts investigated, with small differences compared to A2A parts.
 - Code in RAM, hardware presets and calibration data is copied from NVRAM during boot and power up.
 - NVRAM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
@@ -40,9 +40,9 @@ It seems likely, that parts of the EZRadio and EZRadioPRO product family share t
 
 ## Tools
 
-- [ezradiopro.py](python/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](python/README.md) for usage.
-- [radare2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radare/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
-- [find-refs.py](python/find-refs.py): Python script to create r2 xrefs for indirect data and register access
+- [/python/ezradiopro.py](python/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](python/README.md) for usage.
+- [/radare2/*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radare/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
+- [/python/find-refs.py](python/find-refs.py): Python script to create r2 xrefs for indirect data and register access
 
 ## Documentation
 
