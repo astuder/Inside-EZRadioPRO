@@ -334,18 +334,18 @@ CCu 1:NVRAM @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2
 CCu modified in NVRAM enable and disable @ xreg_base+0xe2
 f xreg.adc_ctl @ xreg_base+0xea
-CCu 4-7: UDTIME 0-3: set to 9 before ADC read 3: clr when adc done @ xreg_base+0xea
+CCu 4-7:UDTIME 0-3:set to 9 before ADC read 3:clr when adc done @ xreg_base+0xea
 f xreg.adc_result @ xreg_base+0xeb
 f xreg.adc_status @ xreg_base+0xec
-CCu 0:adc busy 5-7: adc result lsb @ xreg_base+0xec
+CCu 0:adc busy 5-7:adc result lsb @ xreg_base+0xec
 f xreg.usec_timer_ctl 1 @ xreg_base+0xee
 CCu 2:? 3:stop? @ xreg_base+0xee
 f xreg.usec_timer_lsb 1 @ xreg_base+0xef
 
 f xreg.usec_timer_msb 1 @ xreg_base+0xf0
-CCu 0-3: timer msb 5-7: PA FSK_MOD_DLY usec @ xreg_base+0xf0
+CCu 0-3:timer msb 5-7:PA FSK_MOD_DLY usec @ xreg_base+0xf0
 f xreg.wut_cal_period 1 @ xreg_base+0xf2
-CCu 1: cleared before setting wut_m, set after 3-5: WUT_CAL_PERIOD @ xreg_base+0xf2
+CCu 1:clr before setting wut_m, set after 3-5:WUT_CAL_PERIOD @ xreg_base+0xf2
 f xreg.wut_int_ctl 1 @ xreg_base+0xf3
 CCu 0:WUT_EN(?) 2:rc32k cal event 3:clr rc32k cal event 4:set on config 6:wut event 7:clr wut event @ xreg_base+0xf3
 f xreg.wut_m_lsb 1 @ xreg_base+0xf4
