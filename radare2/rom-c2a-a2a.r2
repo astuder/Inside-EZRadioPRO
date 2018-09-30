@@ -344,6 +344,9 @@ CCu repeat r0 times @ 0x8b03
 .(fcn 0x8b50 0x8b6e rom.nvram_read_src_r4r5_dst_r6r7_len_r2r3)
 .(fcn 0x8b6e 0x8b8b rom.update_frr_data)
 CCu frr a-d at xreg 0x80-83 @ 0x8b75
+axd xreg_base+0x81 @ 0x8b7c
+axd xreg_base+0x82 @ 0x8b82
+axd xreg_base+0x83 @ 0x8b88
 f rom.gpio_pin_mode_map @ 0x8c2b
 Cd 2 40 @ 0x8c2b
 CCu TRISTATE @ 0x8c2d
