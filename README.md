@@ -47,4 +47,5 @@ It is likely, that parts in the EZRadio and EZRadioPRO product families share th
 ## Documentation
 
 - [Memory map](docs/memory-map.md)
+- [SPI peripheral](docs/spi.md)
 - [Talks](talks)
