@@ -227,21 +227,21 @@ CCu this + imem 0x49 = rx fifo count @ xreg_base+0x6f
 f xreg.spi_buffer 16 @ xreg_base+0x70
 
 CCu Data written here is read with FRR_x_READ commands @ xreg_base+0x80
-f xreg.frr_a 1 @ xreg_base+0x80
-f xreg.frr_b 1 @ xreg_base+0x81
-f xreg.frr_c 1 @ xreg_base+0x82
-f xreg.frr_d 1 @ xreg_base+0x83
+f xreg.spi_frr_a 1 @ xreg_base+0x80
+f xreg.spi_frr_b 1 @ xreg_base+0x81
+f xreg.spi_frr_c 1 @ xreg_base+0x82
+f xreg.spi_frr_d 1 @ xreg_base+0x83
 f xreg.spi_unk0x84 1 @ xreg_base+0x84
 CCu set to 0xff on cmd exit w/o error @ xreg_base+0x84
 f xreg.boot_unk0x85 1 @ xreg_base+0x85
 CCu 0-1:set in timer2 isr 2:set before exiting bootloader 7:if set 0x07xx not init from NVRAM, clr before exiting bootloader @ xreg_base+0x85
-f xreg.fifo_tx_length 1 @ xreg_base+0x87
-f xreg.fifo_rx_length 1 @ xreg_base+0x88
-f xreg.fifo_unk89 1 @ xreg_base+0x89
+f xreg.spi_tx_fifo_size 1 @ xreg_base+0x87
+f xreg.spi_rx_fifo_size 1 @ xreg_base+0x88
+f xreg.spi_fifo_unk89 1 @ xreg_base+0x89
 CCu 3:clr in rx fifo rst 7:clr in tx fifo rst @ xreg_base+0x89
-f xreg.fifo_tx_ptr_lsb 1 @ xreg_base+0x8a
-f xreg.fifo_rx_ptr_lsb 1 @ xreg_base+0x8b
-f xreg.fifo_ptr_msb 1 @ xreg_base+0x8c
+f xreg.spi_tx_fifo_loc_lsb 1 @ xreg_base+0x8a
+f xreg.spi_rx_fifo_loc_lsb 1 @ xreg_base+0x8b
+f xreg.spi_fifo_loc_msb 1 @ xreg_base+0x8c
 CCu 0-3:rx 4-7:tx @ xreg_base+0x8c
 f xreg.fifo_tx_out_pos 1 @ xreg_base+0x8d
 f xreg.fifo_rx_out_pos 1 @ xreg_base+0x8e

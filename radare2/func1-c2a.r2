@@ -245,7 +245,7 @@ f map.rx_packet_received 1 @ 0x0123
 f map.set_pcon 1 @ 0x0126
 f map.change_state_from_ezconfig 1 @ 0x0129
 f map.int0x0f_config_callback 1 @ 0x012f
-f map.spi_parse_main_loop_cmds @ 0x0132
+f map.spi_unknown_cmd @ 0x0132
 f map.fifo_raise_underflow_overflow_err 1 @ 0x0135
 f map.rx_packet_invalid 1 @ 0x0138
 f map.eint1_config_callback 1 @ 0x013b

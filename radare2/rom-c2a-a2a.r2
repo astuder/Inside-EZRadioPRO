@@ -466,7 +466,7 @@ CCu ETSI_868 @ 0x8f61
 CCu check ETSI support @ 0x8f77
 CCu ETSI_169 @ 0x8f7d
 .(fcn 0x8fca 0x8fe0 rom.adc_read_battery_voltage)
-.(fcn 0x8fe0 0x8fe3 rom.spi_parse_main_loop_cmds)
+.(fcn 0x8fe0 0x8fe3 rom.spi_unknown_cmd)
 .(fcn 0x8fe5 0x8feb rom.main_loop_raise_rx_event)
 CCu raise rx/tx main loop event @ 0x8fe7
 .(fcn 0x8feb 0x8fed rom.rx_event_isr)
