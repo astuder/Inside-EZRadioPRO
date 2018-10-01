@@ -78,7 +78,7 @@ The SPI commands `FRR_A_READ` through `FRR_D_READ` provide fast access to config
 
 ## RX and TX FIFOs
 
-The SPI commands 'READ_RX_FIFO' and 'WRITE_TX_FIFO' access XDATA RAM via DMA. The location of the FIFO is set with XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size).
+The SPI commands `READ_RX_FIFO` and `WRITE_TX_FIFO` access XDATA RAM via DMA. The location of the FIFO is set with XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size).
 
 ### Registers
 
