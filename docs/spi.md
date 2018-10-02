@@ -1,14 +1,14 @@
 # SPI peripheral
 
 The SPI peripheral of the EZRadioPRO handles the SPI communication:
-	- Receiving command and argument stream
-	- Controlling CTS status and pin
-	- Sending the reply stream via the command `READ_CMD_BUFF`
+* Receiving command and argument stream
+* Controlling CTS status and pin
+* Sending the reply stream via the command `READ_CMD_BUFF`
 
 The SPI peripheral handles the following commands autonomously without invoking the 8051 core:
-	- `FRR_x_READ` to read fast response registers (FRR) A-D
-	- `WRITE_TX_FIFO` to write bytes into the transmit FIFO
-	- `READ_RX_FIFO` to read bytes from the receive FIFO
+* `FRR_x_READ` to read fast response registers (FRR) A-D
+* `WRITE_TX_FIFO` to write bytes into the transmit FIFO
+* `READ_RX_FIFO` to read bytes from the receive FIFO
 
 ## SPI communication
 
