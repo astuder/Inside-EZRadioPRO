@@ -23,8 +23,10 @@ f var.ph_lenfield_pos @ _idata+0x09
 f var.ph_pktlen_msb @ _idata+0x0a
 f var.ph_pktlen_lsb @ _idata+0x0b
 
-f var.loc11 1 @ _idata+0x11
-f var.postamble_cnt 1 @ _idata+0x13
+f var.ph_tx_byte @ _idata+0x10
+f var.ph_peramble_timeout 1 @ _idata+0x11
+f var.ph_tx_bytes_sent @ _iadata+0x12
+f var.ph_postamble_cnt 1 @ _idata+0x13
 CCu values 0-3 for 1-4 bytes @ _idata+0x13
 f var.loc14 1 @ _idata+0x14
 f var.loc15 1 @ _idata+0x15
@@ -69,6 +71,7 @@ CCu 0:rx 1:wut 2:rc32k cal 3:tx 4:manual rx hop 5:rx hop @ _idata+0x2d
 f var.pti_flags 1 @ _idata+0x2e
 CCu 3:? (idata 0x8d,8e,90) 4:spi_en (undoc) 5:tx_en 6:rx_en @ _idata+0x2e
 f var.irq_0x07_flags 1 @ _idata+0x2f
+CCu 0:phase sample 1:packet sent 4:preamble timeout 5:sync timout 6:RSSI jump @ _idata+0x2f
 
 f var.loc30 1 @ _idata+0x30
 f var.loc31 1 @ _idata+0x31
@@ -103,10 +106,10 @@ f var.fifo_tx_count2 1 @ _idata+0x4d
 f var.fifo_rx_size 1 @ _idata+0x4e
 f var.fifo_tx_size 1 @ _idata+0x4f
 
-f var.fifo_rx_ptr_msb 1 @ _idata+0x50
-f var.fifo_rx_ptr_lsb 1 @ _idata+0x51
-f var.fifo_tx_ptr_msb 1 @ _idata+0x52
-f var.fifo_tx_ptr_lsb 1 @ _idata+0x53
+f var.fifo_rx_wr_ptr_msb 1 @ _idata+0x50
+f var.fifo_rx_wr_ptr_lsb 1 @ _idata+0x51
+f var.fifo_tx_rd_ptr_msb 1 @ _idata+0x52
+f var.fifo_tx_rd_ptr_lsb 1 @ _idata+0x53
 f var.ircal_stage 1 @ _idata+0x54
 CCu starts at 8, rrc to 0 @ _idata+0x54
 f var.ircal_max_rssi 1 @ _idata+0x55
@@ -170,12 +173,12 @@ f vect.unk_0x0f 1 @ 0x000f
 f vect.eint1 1 @ 0x0013
 f vect.unk_0x17 1 @ 0x0017
 f vect.rx_ph 1 @ 0x001b
-f vect.spi 1 @ 0x001f
+f vect.spi_cmd 1 @ 0x001f
 f vect.tx_event 1 @ 0x0023
 f vect.rx_event 1 @ 0x0027
-f vect.timer2 1 @ 0x002b
+f vect.spi_fifo_err 1 @ 0x002b
 f vect.unk_0x2f 1 @ 0x002f
-f vect.unk_0x33 1 @ 0x0033
+f vect.tx_byte 1 @ 0x0033
 f vect.rx_byte 1 @ 0x0037
 f vect.unk_0x3b 1 @ 0x003b
 f vect.wut 1 @ 0x003f
@@ -193,6 +196,7 @@ f map.fifo_config 1 @ 0x0060
 f map.xreg0xdf_wiggle_bit1_ret_bit3 1 @ 0x0063
 f map.pti_send_tx_info 1 @ 0x006c
 f map.cmd_undoc_0xd0 1 @ 0x006f
+f map.psm_eint1_callback 1 @ 0x0075
 f map.rx_preamble_timeout 1 @ 0x0078
 f map.config_bufclk 1 @ 0x007b
 f map.main_loop_rxtx_event_part2 1 @ 0x0081
@@ -200,6 +204,7 @@ f map.eint1_disable 1 @ 0x0084
 f map.main_loop_bit6_event 1 @ 0x0087
 f map.fifo_tx_check_almost_empty 1 @ 0x008a
 f map.irq0x07_bit2 1 @ 0x008d
+f map.psm_enable 1 @ 0x0090
 f map.cmd_protocol_cfg 1 @ 0x0093
 f map.rx_process_byte 1 @ 0x0096
 f map.rx_ph_isr_bit5 1 @ 0x0099
@@ -214,7 +219,7 @@ f map.rx_start_dsp_unk_0xc1db 1 @ 0x00b4
 f map.nvram_read 1 @ 0x00b7
 f map.rx_hop_unk_0xd60f 1 @ 0x00ba
 f map.config_unk_0x8dab 1 @ 0x00c0
-f map.irq0x07_bit0 1 @ 0x00c6
+f map.irq0x07_phase_sample 1 @ 0x00c6
 f map.usec_delay_unk_0xbda1 1 @ 0x0x00c9
 f map.change_from_ready_to_11 1 @ 0x00cc
 f map.wut_expired 1 @ 0x00cf
@@ -262,13 +267,13 @@ f map.rc32k_set_source 1 @ 0x0153
 f map.config_clk 1 @ 0x0156
 f map.rx_unk_0xd5dc 1 @ 0x0159
 f map.wut_check_low_batt 1 @ 0x015c
-f map.write_sfr0xed_to_rx_fifo @ 0x015f
+f map.fifo_rx_write_phase_sample @ 0x015f
 f map.rx_start_dsp_unk_0xc0f5 1 @ 0x0162
 f map.cmd_ircal 1 @ 0x0165
 f map.cmd_get_property 1 @ 0x0168
 f map.fifo_rx_reset_hw 1 @ 0x016b
-f map.change_state_from_9 1 @ 0x016e
-f map.fifo_rx_write_r7 1 @ 0x0171
+f map.change_state_from_rx_idle 1 @ 0x016e
+f map.fifo_rx_write_byte 1 @ 0x0171
 f map.override_pa_sel 1 @ 0x0174
 f map.cmd_part_info 1 @ 0x017d
 f map.dsp_set_0x03_0x58_from_cache_set_0x87_to_0x02 1 @ 0x0180
@@ -316,6 +321,7 @@ f map.cmd_set_property 1 @ 0x0216
 f map.pkt_tx_unk_0xd512 1 @ 0x0219
 f map.xo_wait_until_ready 1 @ 0x021c
 f map.fifo_rx_clear_almost_full 1 @ 0x021f
+f map.tx_process_byte_entry 1 @ 0x0222
 f map.cmd_fifo_info 1 @ 0x0225
 f map.fifo_tx_update 1 @ 0x0228
 f map.set_frr_var_r7_to_r5 1 @ 0x022b
@@ -334,7 +340,7 @@ f map.cmd_gpio_pin_config 1 @ 0x0258
 f map.gpio_state_set_r7 1 @ 0x025b
 f map.main_loop_bit7_event 1 @ 0x0261
 f map.cmd_request_device_state 1 @ 0x0264
-f map.rx_ph_isr_payload 1 @ 0x0267
+f map.rx_ph_isr_pkt_end 1 @ 0x0267
 f map.fifo_tx_reset_hw 1 @ 0x0270
 f map.pkt_tx_unk_0xd5c5 1 @ 0x0273
 f map.change_from_rx 1 @ 0x0276

@@ -12,7 +12,7 @@ The SPI peripheral handles the following commands autonomously without invoking 
 
 ## SPI communication
 
-After receiving a SPI command that is not handled by the SPI peripheral itself, the 8051 will receive an interrupt on vector `0x1f`.
+After receiving a SPI command that is not handled by the SPI peripheral itself, the 8051 will receive an interrupt on `vector.spi_cmd` (0x1f).
 
 The SPI argument stream is accessible to the EZRadioPRO firmware in `xreg.spi_buffer` (XREG 0x70-0x7f, IDATA 0x5070-0x507f), starting with CMD at `xreg.spi_buffer + 0`. 
 
@@ -80,15 +80,21 @@ The SPI commands `FRR_A_READ` through `FRR_D_READ` provide fast access to config
 
 The SPI peripheral processes the commands `READ_RX_FIFO` and `WRITE_TX_FIFO` without invoking the 8051. The FIFOs are located in XDATA RAM and accessed by the SPI peripheral with DMA.
 
-Location and size of the FIFOs is configured through the XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size).
+Location and size of the FIFOs in RAM is configured through the XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size).
+
+If a read of write SPI command causes a FIFO underflow or overlow condition, the 8051 will receive an interrupt on `vector.spi_fifo_err` (0x2b).
 
 ### Registers
 
 <table>
 <tr><th>Index</th><th>Name</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
-<tr><td>0x87</td><td>spi_tx_fifo_size</td><td align="center" colspan="8">SPI_TX_FIFO_SIZE</td></tr>
-<tr><td>0x88</td><td>spi_rx_fifo_size</td><td align="center" colspan="8">SPI_RX_FIFO_SIZE</td></tr>
-<tr><td>0x8a</td><td>spi_tx_fifo_loc_lsb</td><td align="center" colspan="8">SPI_TX_FIFO_LOC[7:0]</td></tr>
-<tr><td>0x8b</td><td>spi_rx_fifo_loc_lsb</td><td align="center" colspan="8">SPI_RX_FIFO_LOC[7:0]</td></tr>
+<tr><td>0x6a</td><td>spi_fifo_tx_pos_wr</td><td align="center" colspan="8">SPI_TX_FIFO_WRITE_POS</td></tr>
+<tr><td>0x6b</td><td>spi_fifo_rx_pos_rd</td><td align="center" colspan="8">SPI_RX_FIFO_READ_POS</td></tr>
+<tr><td>0x87</td><td>spi_fifo_tx_size</td><td align="center" colspan="8">SPI_TX_FIFO_SIZE</td></tr>
+<tr><td>0x88</td><td>spi_fifo_rx_size</td><td align="center" colspan="8">SPI_RX_FIFO_SIZE</td></tr>
+<tr><td>0x8a</td><td>spi_fifo_tx_loc_lsb</td><td align="center" colspan="8">SPI_TX_FIFO_LOC[7:0]</td></tr>
+<tr><td>0x8b</td><td>spi_fifo_rx_loc_lsb</td><td align="center" colspan="8">SPI_RX_FIFO_LOC[7:0]</td></tr>
 <tr><td>0x8c</td><td>spi_fifo_loc_msb</td><td align="center" colspan="4">SPI_TX_FIFO_LOC[11:8]</td><td align="center" colspan="4">SPI_RX_FIFO_LOC[11:8]</td></tr>
+<tr><td>0x8d</td><td>spi_fifo_tx_pos_rd</td><td align="center" colspan="8">SPI_TX_FIFO_READ_POS</td></tr>
+<tr><td>0x8e</td><td>spi_fifo_rx_pos_rd</td><td align="center" colspan="8">SPI_RX_FIFO_WRITE_POS</td></tr>
 </table>

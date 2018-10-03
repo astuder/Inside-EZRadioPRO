@@ -45,10 +45,10 @@ f sfr.int_chip_status 1 @ _sfr+0xb3
 f sfr.int_ph_mask 1 @ _sfr+0xb4
 f sfr.int_modem_mask 1 @ _sfr+0xb5
 f sfr.int_chip_mask 1 @ _sfr+0xb6
-f sfr.timer1_irq_flag 1 @ _sfr+0xba
-CCu 3-6: timer isr source @ _sfr+0xba
+f sfr.ph_irq_flags 1 @ _sfr+0xba
+CCu 3:preamble detected 4:sync detected 5:? 7:pkt end @ _sfr+0xba
 f sfr.ph_status 1 @ _sfr+0xbb
-CCu 0:crc error 1:alt crc error 4:? 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
+CCu 0:crc error 1:alt crc error 2:? 3:? 4:? 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
 
 f sfr.pti_ctl 1 @ _sfr+0xc0
 CCu 7:pti_en 6:rx_en 5:tx_en 4:BIT_ORDER(inv) @ _sfr+0xc0
@@ -63,6 +63,7 @@ f sfr.int_chip_pend 1 @ _sfr+0xc7
 f sfr.rx_ph_ctrl 1 @ _sfr+0xc9
 CCu 0:? 1:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set on preamble detect 7:clr on preamble detect @ _sfr+0xc9
 f sfr.irq_0x07_flags 1 @ _sfr+0xca
+CCu 0:phase sample 1:packet sent 4:preamble timeout 5:sync timout 6:RSSI jump @ _idata+0x2f
 
 f sfr.ph_cfg_ctl @ _sfr+0xd1
 CCu 0-4:field to cfg (bitfield) 5:1=RX,0=TX @ _sfr+0xd1
@@ -96,7 +97,8 @@ f sfr.freq_pll_div_frac1 1 @ _sfr+0xeb
 CCu 0-7:pll divider frac[15:8] @ _sfr+0xeb
 f sfr.freq_pll_div_frac2 1 @ _sfr+0xec
 CCu 0-7:pll divider frac[7:0] @ _sfr+0xec
-CCu 7:fifo_src_sel @ _sfr+0xed
+f sfr.phase_sample @ _sfr+0xed
+CCu 0-6:phase sample 7:fifo_src_sel @ _sfr+0xed
 f sfr.gpio_out_states 1 @ _sfr+0xee
 CCu 0:TX_STATE 1:RX_STATE 2:RX_FIFO_FULL 3:TX_FIFO_EMPTY 4:LOW_BATT 5:CCA_LATCH 6:HOPPED 7:HOP_TABLE_WRAP @ _sfr+0xee
 
@@ -235,8 +237,8 @@ f xreg.spi_frr_c 1 @ xreg_base+0x82
 f xreg.spi_frr_d 1 @ xreg_base+0x83
 f xreg.spi_unk0x84 1 @ xreg_base+0x84
 CCu set to 0xff on cmd exit w/o error @ xreg_base+0x84
-f xreg.boot_unk0x85 1 @ xreg_base+0x85
-CCu 0-1:set in timer2 isr 2:set before exiting bootloader 7:if set 0x07xx not init from NVRAM, clr before exiting bootloader @ xreg_base+0x85
+f xreg.spi_fifo_unk0x85 1 @ xreg_base+0x85
+CCu 0-1:set in spi fifo err isr 2:set before exiting bootloader 7:if set 0x07xx not init from NVRAM, clr before exiting bootloader @ xreg_base+0x85
 f xreg.spi_fifo_tx_size 1 @ xreg_base+0x87
 f xreg.spi_fifo_rx_size 1 @ xreg_base+0x88
 f xreg.spi_fifo_unk0x89 1 @ xreg_base+0x89

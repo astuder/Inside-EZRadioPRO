@@ -220,7 +220,7 @@ CCu r6:r7 = [ba] * 8, a = [ba+1] @ 0x85f8
 CCu 4d:4e = r6:r7 + a @ 0x85fa
 CCu 47:48 = r4:r5 @ 0x8601
 CCu 49:4a = r4:r5 @ 0x8605
-.(fcn 0x860d 0x8663 boot.spi_handler)
+.(fcn 0x860d 0x8663 boot.spi_cmd_handler)
 CCu copy SPI buffer to IMEM 0x2b-3a @ 0x862c
 CCu copy IMEM 0x2b-3a to SPI buffer @ 0x863d
 .(fcn 0x8663 0x866d boot.spi_ready)
@@ -274,7 +274,7 @@ CCu DST_FIELD @ 0x896b
 CCu variable pkt len disabled @ 0x896e
 CCu SIZE @ 0x8971
 CCu len size is 2 bytes @ 0x8974
-axd 0x06d9 @0x897a
+axd 0x06d9 @ 0x897a
 CCu SRC_FIELD @ 0x897c
 CCu 0 and 1 are the same @ 0x8985
 CCu number of pkt field configs @ 0x8986
@@ -528,7 +528,7 @@ CCu DISTOGG, PH0SIZE @ 0x913c
 CCu CHFLT_LOWP, DROOPFLTBYP @ 0x9143
 CCu RXOSR[11:8] @ 0x914b
 CCu RXOSR[7:0] @ 0x9158
-axd 0x0666 @0x915e
+axd 0x0666 @ 0x915e
 CCu BCRFBBYP, SLICEFBBYP @ 0x9167
 CCu NCOFF[15:8] @ 0x916c
 CCu NCOFF[7:0] @ 0x9172
@@ -643,6 +643,8 @@ CCu BCR_GEAR_SHIFT, ARRIVAL_THD @ 0x94ec
 .(fcn 0x94f5 0x9513 rom.irq0x07_packet_sent)
 CCu usec delay expired @ 0x950b
 .(fcn 0x9513 0x9556 rom.0x07_isr)
+CCu not implemented @ 0x9542
+CCu not implemented @ 0x9552
 .(fcn 0x9556 0x95f6 rom.config_modem_clkgen_band)
 CCu use override @ 0x955e
 CCu BAND (FVCO divider) @ 0x9563
@@ -666,6 +668,7 @@ CCu set xreg2 modem_rssi_ctrl bit 4 @ 0x9603
 CCu wait until timer done @ 0x9622
 .(fcn 0x9635 0x9647 rom.timer_wait_r6r7_minus_1_x_30)
 .(fcn 0x966c 0x96e9 rom.rx_start)
+CCu clear ph irq flags @ 0x96c6
 CCu FIFO_SRC_SEL @ 0x96e0
 CCu src is packet handler @ 0x96e3
 .(fcn 0x96e9 0x96f4 rom.write_dsp_reg_r7_from_cache)
@@ -735,11 +738,11 @@ CCu low-power mode @ 0x98b4
 CCu start hw multiplier @ 0x98bd
 CCu wait until hw mul done @ 0x98c0
 axd xreg_base+0x94 @ 0x98e6
-.(fcn 0x98e9 0x98fa rom.write_sfr0xed_to_rx_fifo)
+.(fcn 0x98e9 0x98fa rom.fifo_rx_write_phase_sample)
 CCu sign extend bit 6 @ 0x98ec
 .(fcn 0x98fa 0x990d rom.fifo_rx_update_pos)
 CCu r7 = bytes added to fifo @ 0x98fc
-CCu pos = pos+bytes modulo size @ 0x9900
+CCu write pos = (write pos + bytes) mod size @ 0x9900
 CCu PH filter match @ 0x9904
 .(fcn 0x990d 0x99b8 rom.rx_process_byte)
 CCu read byte received @ 0x9924
@@ -760,12 +763,23 @@ CCu polynom = 0x8005 (CRC-16, Mod-bus, ANSI..) @ 0x99da
 .(fcn 0x99e3 0x9a19 rom.whiten_byte)
 CCu r7 = address of byte to process @ 0x99e3
 .(fcn 0x9a19 0x9a89 rom.tx_process_byte)
+CCu decrement pktlen @ 0x9a44
+CCu SW_WHT_CTRL @ 0x9a4a
+CCu SW_CRC_CTRL @ 0x9a4d
+CCu branch if pktlen not 1 @ 0x9a61
+CCu branch if pktlen not 0 @ 0x9a61
+CCu ptr to var.ph_tx_byte @ 0x9a6c
+CCu number of bytes processed @ 0x9a79
 .(fcn 0x9a89 0x9a95 rom.fifo_tx_update_pos)
 CCu r7 = bytes removed from fifo @ 0x9a8c
-CCu out pos modulo size @ 0x9a90
-.(fcn 0x9a95 0x9abc rom.fifo_tx_inc_ptr_ret_byte)
-CCu r7 = latest TX byte @ 0x9a9c
-.(fcn 0x9abc 0x9acf rom.irq0x07_bit0)
+CCu read pos = (read pos + bytes) mod size @ 0x9a90
+.(fcn 0x9a95 0x9abc rom.fifo_tx_read_byte)
+CCu r7 = TX byte to return @ 0x9a9c
+CCu reached end of ring buffer? @ 0x9a9d
+axd 0x0730 @ 0x9aac
+CCu reset/warp tx read ptr @ 0x9aa7
+CCu increment tx read ptr @ 0x9ab4
+.(fcn 0x9abc 0x9acf rom.irq0x07_phase_sample)
 .(fcn 0x9acf 0x9ae3 rom.ircal_set_cal_val_r7)
 CCu amp or ph stage @ 0x9ad9
 .(fcn 0x9ae3 0x9b9b rom.ircal_calibration_step)
@@ -1012,7 +1026,7 @@ CCu TX_TUNE @ 0xa3ab
 CCu RX_TUNE @ 0xa3ad
 CCu TX @ 0xa3af
 CCu RX @ 0xa3b1
-CCu state=9 @ 0xa3b3
+CCu RX_IDLE @ 0xa3b3
 CCu state=10 @ 0xa3b5
 CCu state=11 @ 0xa3b7
 CCu case SPI_ACTIVE: @ 0xa3b9
@@ -1020,7 +1034,7 @@ CCu case READY: @ 0xa3be
 CCu case TX_TUNE: @ 0xa3c3
 CCu case RX_TUNE: @ 0xa3c8
 CCu case TX: @ 0xa3cd
-CCu case 9: @ 0xa3d2
+CCu case RX_IDLE: @ 0xa3d2
 CCu case RX: @ 0xa3d7
 CCu case 11: @ 0xa3dc
 CCu case 10: @ 0xa3e1
@@ -1035,7 +1049,7 @@ CCu return tx fifo space @ 0xa40f
 .(fcn 0xa41b 0xa424 rom.raise_cal)
 CCu CAL @ 0xa41b
 CCu undocumented @ 0xa41f
-.(fcn 0xa424 0xa42e rom.timer2_isr)
+.(fcn 0xa424 0xa42e rom.spi_fifo_err_isr)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xa42a
 .(fcn 0xa42e 0xa43d rom.clear_int_modem)
 .(fcn 0xa43d 0xa44e rom.exit_cmd_check_busy)
@@ -1132,7 +1146,8 @@ CCu 100 dec @ 0xa7c0
 CCu some math together with 0x071b @ 0xa7c5
 .(fcn 0xa7d2 0xa7d7 rom.main_loop_unknown_cmd)
 CCu CMD_ERROR_BAD_COMMAND @ 0xa7d2
-.(fcn 0xa7d7 0xa7f3 rom.change_state_from_9)
+.(fcn 0xa7d7 0xa7f3 rom.change_state_from_rx_idle)
+CCu is next state RX_IDLE_TIMEOUT (0x0e) @ 0xa7dd
 CCu RX @ 0xa7e4
 .(fcn 0xa7f3 0xa7f7 rom.change_state_from_11)
 .(fcn 0xa7f7 0xa7fa rom.set_flags_25_6)
@@ -1224,6 +1239,7 @@ CCu disable timer interrupt @ 0xaaf1
 .(fcn 0xaaf5 0xaafe rom.eint1_pause)
 .(fcn 0xaafe 0xab23 rom.eint1_disable)
 axd xreg_base+0x02 @ 0xab1b
+CCu clear ph irq flags @ 0xab1f
 .(fcn 0xab23 0xab43 rom.copy_xreg0x4a_to_0x737)
 CCu copy xreg.0x4a-0x4d to 0x0737-0x073a @ 0xab2b
 axd xreg_base+0x4b @ 0xab32
@@ -1338,7 +1354,8 @@ axd 0x06f1 @ 0xafbc
 CCu rx and tx share pkt field cfg @ 0xafc2
 axd 0x06dd @ 0xafc2
 .(fcn 0xafcb 0xafde rom.pkt_end_unk_0xafcb)
-.(fcn 0xafde 0xafed rom.0x33_isr)
+CCu clr ph irq flags @ 0xafd5
+.(fcn 0xafde 0xafed rom.tx_byte_isr)
 .(fcn 0xafed 0xaff0 rom.rx_byte_isr)
 .(fcn 0xaff0 0xaffd rom.0x3b_isr)
 CCu usec delay expired @ 0xaff0
@@ -1346,6 +1363,7 @@ CCu usec delay expired @ 0xaff0
 echo   ..0xb000
 
 .(fcn 0xb000 0xb027 rom.rx_ph_isr)
+CCu not implemented @ 0xb01b
 .(fcn 0xb027 0xb03e rom.0x2f_isr)
 CCu clr crc errors @ 0xb02a
 CCu report PH filter match @ 0xb079
@@ -1357,7 +1375,8 @@ CCu latch RSSI on preamble detect @ 0xb08f
 CCu copy 0x0737-0x073a to xreg.0x46-0x49 @ 0xb0ac
 axd xreg_base+0x46 @ 0xb0b0
 axd xreg_base+0x49 @ 0xb0b5
-.(fcn 0xb0be 0xb0f9 rom.rx_ph_isr_payload)
+.(fcn 0xb0be 0xb0f9 rom.rx_ph_isr_pkt_end)
+CCu SW_CRC_CTRL @ 0xb0c4
 CCu raise PH CRC error @ 0xb0d3
 CCu raise PH ALT CRC error @ 0xb0e2
 CCu raise PH CRC error @ 0xb0eb
@@ -1413,9 +1432,9 @@ CCu next bit7 cmd @ 0xb5ea
 .(fcn 0xb5f9 0xb617 rom.main_loop_bit7_cmd0)
 axd dsp_base+0x00 @ 0xb635
 .(fcn 0xb6ad 0xb6c5 rom.wut_check_low_batt)
-CCu en ADC, BATT @0xb6b0
-CCu low batt bit @0xb6bd
-CCu disable ADC, BATT @0xb6c1
+CCu en ADC, BATT @ 0xb6b0
+CCu low batt bit @ 0xb6bd
+CCu disable ADC, BATT @ 0xb6c1
 .(fcn 0xb6c5 0xb6dc rom.dsp_set_0x03_0x57_from_cache_set_0x87_to_0x02)
 .(fcn 0xb6dc 0xb713 rom.raise_int_ph)
 .(fcn 0xb713 0xb74a rom.raise_int_modem)
@@ -1441,19 +1460,23 @@ CCu TX (set) or RX (clr)? @ 0xb823
 .(fcn 0xb853 0xb872 rom.modem_start_rx)
 CCu indicate we're in RX @ 0xb853
 CCu var.modem_fsk4_map_val2 @ 0xb86a
+.(fcn 0xb872 0xb8c7 rom.psm_enable)
 CCu IDLE_TIME msb @ 0xb875
+axd 0x069c @ 0xb879
 CCu IDLE_TIME lsb @ 0xb87a
+CCu skip if PSM idle time is longer than ?? @ 0xb887
 CCu is state RX? @ 0xb893
 CCu state change in progress? @ 0xb897
 CCu state change in progress? @ 0xb89a
 CCu eint1 will call 0x0075 @ 0xb8b7
 axc 0x0075 @ 0xb8b7
-CCu undoc state @ 0xb8be
-CCu undoc state @ 0xb8c9
+CCu RX_IDLE @ 0xb8be
+.(fcn 0xb8c7 0xb8e8 rom.psm_eint1_callback)
+CCu RX_IDLE @ 0xb8c9
 CCu state change in progress @ 0xb8cd
 CCu state change in progress @ 0xb8d0
 CCu synth recal @ 0xb8d3
-CCu undoc state @ 0xb8e0
+CCu RX_IDLE_TIMEOUT @ 0xb8e0
 .(fcn 0xb8e8 0xb92e rom.tx_start)
 axd xreg_base+0x01 @ 0xb904
 CCu EXT_PA_RAMP @ 0xb918
@@ -1475,6 +1498,7 @@ CCu set enable bit as configured @ 0xba07
 CCu BUFCLK @ 0xba18
 .(fcn 0xba27 0xba40 rom.modem_start_unk0xba27)
 .(fcn 0xba40 0xba63 rom.modem_start_unk0xba40)
+axd xreg_base+0xd9 @ 0xba68
 .(fcn 0xba78 0xbb11 rom.cmd_gpio_pin_config)
 CCu GPIO0 (pin 9) @ 0xba78
 CCu GPIO1 (pin 10) @ 0xba81
@@ -1509,13 +1533,13 @@ CCu inc ptr to cfg.gpio_xx_cfg1 @ 0xbb8b
 CCu inc ptr to xreg.gpio_xx_cfg1 @ 0xbb93
 CCu shr gpio pin state2 @ 0xbb94
 .(fcn 0xbba1 0xbba5 rom.gpio_state_set_r7)
-CCu set gpio output for modes 32-39 @0xbba1
+CCu set gpio output for modes 32-39 @ 0xbba1
 .(fcn 0xbba5 0xbbaa rom.gpio_state_clr_r7)
-CCu clear gpio output for modes 32-39 @0xbba5
+CCu clear gpio output for modes 32-39 @ 0xbba5
 .(fcn 0xbbaa 0xbbae rom.gpio_state_toggle_r7)
-CCu toggle gpio output for modes 32-39 @0xbbaa
+CCu toggle gpio output for modes 32-39 @ 0xbbaa
 .(fcn 0xbbae 0xbbbf rom.gpio_state_clr_r7_set_r5_toggle_r3)
-CCu update gpio output for modes 32-39 @0xbbae
+CCu update gpio output for modes 32-39 @ 0xbbae
 .(fcn 0xbbbf 0xbc2b rom.gpio_read_pin_cfg)
 CCu pin @ 0xbbbf
 CCu cfg @ 0xbbc1
@@ -1762,19 +1786,26 @@ axd xreg_base+0x8b @ 0xc53f
 CCu r7 = rx fifo read pos @ 0xc552
 CCu r6 = rx fifo write pos @ 0xc556
 CCu branch if write pos < read pos @ 0xc559
-CCu fifo space = write - read pos @ 0xc55b
-CCu fifo space = size - read + write pos @ 0xc561
-CCu todo: clarify role of 0x49,0x4b,0x4c @ 0xc56c
+CCu fifo count = write - read pos @ 0xc55b
+CCu fifo count = size - read + write pos @ 0xc561
+CCu todo: clarify 0x4b,0x4c,0x44 @ 0xc56c
 .(fcn 0xc584 0xc59a rom.fifo_rx_read_at_pos_plus_r7)
-.(fcn 0xc5a1 0xc5d9 rom.fifo_rx_write_r7)
+.(fcn 0xc5a1 0xc5d9 rom.fifo_rx_write_byte)
 CCu if rx fifo full @ 0xc5a3
-CCu store by in fifo @ 0xc5ae
+CCu r7 = byte @ 0xc5ad
+CCu store byte in fifo @ 0xc5ae
+CCu check if ring buffer warps @ 0xc5af
+CCu reset/warp ring buffer @ 0xc5b9
+axd 0x072e @ 0xc5be
+CCu increment write ptr @ 0xc5c6
 CCu 1 byte stored @ 0xc5cd
 CCu 0 bytes stored @ 0xc5d6
 .(fcn 0xc5d9 0xc603 rom.fifo_tx_update)
-CCu branch if fifo out pos < in pos @ 0xc5e6
-CCu fifo space = out - in @ 0xc5e8
-CCu fifo space = size - in + out @ 0xc5ee
+CCu r7 = write pos @ 0xc5e0
+CCu branch if read pos < write pos @ 0xc5e6
+CCu fifo space = read - write pos @ 0xc5e8
+CCu fifo space = size - write + read pos @ 0xc5ee
+CCu todo: clarify 0x4a,0x4d @ 0xc5f9
 .(fcn 0xc603 0xc621 rom.fifo_tx_read_at_pos_plus_r7)
 .(fcn 0xc621 0xc627 rom.pti_wait_status_bit7_clr)
 .(fcn 0xc627 0xc650 rom.pti_send_tx_info)
@@ -1933,15 +1964,15 @@ CCu bit 0: parse commands @ 0xcbd4
 .(fcn 0xcc55 0xcc5e rom.0x07_handler)
 .(fcn 0xcc5e 0xcc67 rom.0x0f_handler)
 .(fcn 0xcc67 0xcc70 rom.eint1_handler)
-.(fcn 0xcc70 0xcc79 rom.spi_handler)
+.(fcn 0xcc70 0xcc79 rom.spi_cmd_handler)
 .(fcn 0xcc79 0xcc82 rom.tx_event_handler)
 .(fcn 0xcc82 0xcc8b rom.rx_event_handler)
 .(fcn 0xcc8b 0xcc94 rom.0x43_handler)
-.(fcn 0xcc94 0xcc9d rom.0x33_handler)
+.(fcn 0xcc94 0xcc9d rom.tx_byte_handler)
 .(fcn 0xcc9d 0xcca6 rom.rx_byte_handler)
 .(fcn 0xcca6 0xccaf rom.0x3b_handler)
 .(fcn 0xccaf 0xccb8 rom.wut_handler)
-.(fcn 0xccb8 0xccc1 rom.timer2_handler)
+.(fcn 0xccb8 0xccc1 rom.spi_fifo_err_handler)
 .(fcn 0xccc1 0xccca rom.rx_ph_handler)
 .(fcn 0xccca 0xccd3 rom.0x2f_handler)
 
@@ -1953,6 +1984,7 @@ CCu 16x group, size, xdata addr @ 0xccd4
 Cd 1 4 @ 0xcd14
 .(fcn 0xcd1b 0xcd3c rom.raise_preamble_timeout)
 CCu hop on invalid preamble @ 0xcd21
+CCu next state is RX_IDLE @ 0xcd27
 .(fcn 0xcd3c 0xcd41 rom.rx_preamble_detected)
 CCu PREAMBLE_DETECT @ 0xcd3c
 .(fcn 0xcd41 0xcd58 rom.rx_sync_timeout)
@@ -1993,6 +2025,7 @@ CCu tx fifo contains EZConfig array @ 0xcdf2
 CCu TX_FIFO_EMPTY @ 0xce05
 CCu TX_FIFO_EMPTY @ 0xce0d
 CCu TX_FIFO_ALMOST_EMPTY @ 0xcdfe
+.(fcn 0xce12 0xce17 rom.tx_process_byte_entry)
 .(fcn 0xce17 0xce1c rom.fifo_raise_underflow_overflow_err)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xce17
 .(fcn 0xce1c 0xce26 rom.fifo_rx_raise_almost_full)
@@ -2029,19 +2062,21 @@ CCu average 2 @ 0xcf24
 CCu BIT1 @ 0xcf29
 CCu PH_RX_DISABLE @ 0xcf51
 CCu if packet handler disabled @ 0xcf52
+CCu bit0:ph enabled @ 0xcf55
+CCu bit0:ph enabled @ 0xcf58
 .(fcn 0xcf5b 0xcf7b rom.wut_start_rx_tx)
-CCu start on WUT? @0xcf5f
-CCu clr start condition @0xcf62
+CCu start on WUT? @ 0xcf5f
+CCu clr start condition @ 0xcf62
 CCu RX @ 0xcf65
-CCu start on WUT? @0xcf6d
-CCu clr start condition @0xcf70
+CCu start on WUT? @ 0xcf6d
+CCu clr start condition @ 0xcf70
 CCu TX @ 0xcf73
 CCu WUT expired @ 0xcf78
 .(fcn 0xcf7b 0xcf7c rom.main_loop_bit6_event)
 axd _idata+0x92 @ 0xcf80
 axd _idata+0x93 @ 0xcf84
 .(fcn 0xcf89 0xcf8c rom.config_modem_entry)
-.(fcn 0xcf8d 0xcfae rom.spi_isr)
+.(fcn 0xcf8d 0xcfae rom.spi_cmd_isr)
 CCu WUT expired (??) @ 0xcf90
 CCu was previous cmd undoc_0x35? @ 0xcf95
 CCu bytes in spi buffer @ 0xcf9e
@@ -2290,7 +2325,7 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 .(fcn 0xd86c 0xd875 func2.0x07_handler)
 .(fcn 0xd875 0xd87e func2.0x0f_handler)
 .(fcn 0xd87e 0xd887 func2.eint1_handler)
-.(fcn 0xd887 0xd890 func2.spi_handler)
+.(fcn 0xd887 0xd890 func2.spi_cmd_handler)
 .(fcn 0xd890 0xd899 func2.tx_event_handler)
 .(fcn 0xd899 0xd8a2 func2.rx_event_handler)
 .(fcn 0xd8a2 0xd8ab func2.0x43_handler)
@@ -2298,7 +2333,7 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 .(fcn 0xd8b4 0xd8bd func2.rx_byte_handler)
 .(fcn 0xd8bd 0xd8c6 func2.0x3b_handler)
 .(fcn 0xd8c6 0xd8cf func2.0x3f_handler)
-.(fcn 0xd8cf 0xd8d8 func2.timer2_handler)
+.(fcn 0xd8cf 0xd8d8 func2.spi_fifo_err_handler)
 .(fcn 0xd8d8 0xd8e1 func2.rx_ph_handler)
 .(fcn 0xd8e1 0xd8ea func2.0x2f_handler)
 CCu RSSI_LATCH @ 0xda98
@@ -2312,7 +2347,7 @@ CCu RSSI_LATCH @ 0xda98
 .(fcn 0xdb9c 0xdbae func2.cmd_0x84)
 .(fcn 0xdbae 0xdbba func2.cmd_0x87)
 .(fcn 0xdbba 0xdbcc func2.cmd_0x8a)
-.(fcn 0xdbcc 0xdbed func2.spi_isr)
+.(fcn 0xdbcc 0xdbed func2.spi_cmd_isr)
 CCu WUT expired (???) @ 0xdbcf
 .(fcn 0xdbf5 0xdc4c func2.cmd_0x80)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xdd44
