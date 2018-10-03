@@ -29,8 +29,8 @@ The remaining functionality is implemented in hardware:
 - GPIO seems to be controlled by multiplexers, with only indirect ways for the 8051 MCU to interact with pins.
 - According to [patents](https://patents.google.com/patent/US8050313B2), the RF modem is implemented with a DSP. No access to DSP RAM or firmware has been found (yet).
 
-It is likely, that parts in the EZRadio and EZRadioPRO product families share the same silicon die, and are differentiated at the factory through programming of the NVRAM. See also [this patent](https://patents.google.com/patent/US7613913B2/en). Evidence for this conclusion includes:
-- The firmware ROM is identical for all C2A and A2A parts, but significantly changes changes from older B1B to the newer C2A/A2A parts.
+It is likely, that members of the EZRadio and EZRadioPRO product families share the same silicon die, and are differentiated at the factory through programming of the NVRAM. See also [this patent](https://patents.google.com/patent/US7613913B2/en). Evidence for this conclusion includes:
+- The firmware ROM is identical for all C2A and A2A parts, but significantly changes from older B1B to the newer C2A/A2A parts.
 - Code in RAM is identical among the C2A parts investigated, with small differences compared to A2A parts.
 - Code in RAM, hardware presets and calibration data is copied from NVRAM during boot and power up.
 - NVRAM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
