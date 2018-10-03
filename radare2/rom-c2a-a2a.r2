@@ -738,6 +738,7 @@ axd xreg_base+0x94 @ 0x98e6
 .(fcn 0x98e9 0x98fa rom.write_sfr0xed_to_rx_fifo)
 CCu sign extend bit 6 @ 0x98ec
 .(fcn 0x98fa 0x990d rom.fifo_rx_update_pos)
+CCu r7 = bytes added to fifo @ 0x98fc
 CCu pos = pos+bytes modulo size @ 0x9900
 CCu PH filter match @ 0x9904
 .(fcn 0x990d 0x99b8 rom.rx_process_byte)
@@ -746,19 +747,24 @@ CCu SW_WHT_CTRL @ 0x992b
 CCu address of byte read @ 0x992e
 CCu POSTAMBLE_SIZE (8-32 bits) @ 0x995f
 CCu shift in postamble byte @ 0x9944
+CCu postamble_en @ 0x994a
 CCu prop POSTAMBLE_PATTERN 1 @ 0x994d
 CCu postamble match? @ 0x9958
+CCu expect_len_field @ 0x9975
+CCu don't write byte if bit set @ 0x9989
+CCu r7 = bytes written to fifo @ 0x9991
 .(fcn 0x99b8 0x99e3 rom.crc16_byte)
-CCu r7=new byte @ 0x99b8
+CCu r7 = new byte @ 0x99b8
 CCu loop over 8 bits @ 0x99ba
 CCu polynom = 0x8005 (CRC-16, Mod-bus, ANSI..) @ 0x99da
 .(fcn 0x99e3 0x9a19 rom.whiten_byte)
-CCu r7=address of byte to process @ 0x99e3
+CCu r7 = address of byte to process @ 0x99e3
 .(fcn 0x9a19 0x9a89 rom.tx_process_byte)
-.(fcn 0x9a89 0x9a95 rom.fifo_tx_add_r7_to_out_pos)
+.(fcn 0x9a89 0x9a95 rom.fifo_tx_update_pos)
+CCu r7 = bytes removed from fifo @ 0x9a8c
 CCu out pos modulo size @ 0x9a90
 .(fcn 0x9a95 0x9abc rom.fifo_tx_inc_ptr_ret_byte)
-CCu r7=latest TX byte @ 0x9a9c
+CCu r7 = latest TX byte @ 0x9a9c
 .(fcn 0x9abc 0x9acf rom.irq0x07_bit0)
 .(fcn 0x9acf 0x9ae3 rom.ircal_set_cal_val_r7)
 CCu amp or ph stage @ 0x9ad9
@@ -1737,24 +1743,28 @@ axd xreg_base+0xf2 @ 0xc4a2
 CCu wait for first timeout? @ 0xc499
 .(fcn 0xc4a9 0xc4aa rom.reset_callback)
 .(fcn 0xc4aa 0xc4b8 rom.fifo_tx_set_addr_r6r7_len_r5)
+axd 0x0730 @ 0xc4af
 .(fcn 0xc4b8 0xc4c6 rom.fifo_rx_set_addr_r6r7_len_r5)
+axd 0x072e @ 0xc4bd
 .(fcn 0xc4c6 0xc4cc rom.fifo_set_rx_out_pos_from_xreg)
 .(fcn 0xc4cc 0xc4d2 rom.fifo_reset_hw)
 .(fcn 0xc4d2 0xc50d rom.fifo_tx_reset_hw)
 axd xreg_base+0x8c @ 0xc4ec
 axd xreg_base+0x89 @ 0xc4f5
+CCu clr bits 4-6 @ 0xc4f7
 .(fcn 0xc50d 0xc54b rom.fifo_rx_reset_hw)
 axd xreg_base+0x8e @ 0xc511
+CCu clr bits 0-2 @ 0xc52a
 axd xreg_base+0x88 @ 0xc531
 axd xreg_base+0x8c @ 0xc53a
 axd xreg_base+0x8b @ 0xc53f
 .(fcn 0xc54b 0xc584 rom.fifo_rx_update)
-CCu rx fifo in pos @ 0xc54f
-CCu rx fifo out pos @ 0xc553
-CCu branch if fifo out pos < in pos @ 0xc559
-CCu fifo space = out - in @ 0xc55b
-CCu fifo space = size - in + out @ 0xc561
-CCu branch if imem4b < out pos @ 0xc56c
+CCu r7 = rx fifo read pos @ 0xc552
+CCu r6 = rx fifo write pos @ 0xc556
+CCu branch if write pos < read pos @ 0xc559
+CCu fifo space = write - read pos @ 0xc55b
+CCu fifo space = size - read + write pos @ 0xc561
+CCu todo: clarify role of 0x49,0x4b,0x4c @ 0xc56c
 .(fcn 0xc584 0xc59a rom.fifo_rx_read_at_pos_plus_r7)
 .(fcn 0xc5a1 0xc5d9 rom.fifo_rx_write_r7)
 CCu if rx fifo full @ 0xc5a3
@@ -2187,17 +2197,30 @@ CCu HOP_TABLE_WRAP @ 0xd3e6
 CCu get ptr into hop table (0x0535) @ 0xd3ef
 CCu read hop table entry @ 0xd3f8
 CCu check if entry is 0xff (skip entry) @ 0xd3fa
-CCu rx hop @ 0xd4a7
+CCu rx hop @ 0xd3fd
 CCu update current channel @ 0xd401
 CCu RX @ 0xd402
 CCu skip entry @ 0xd409
 .(fcn 0xd414 0xd45a rom.ph_process_len_field)
 CCu protocol IEEE802.15.4g @ 0xd417
-CCu pkt len size @ 0xd41f
+CCu branch and clr if 2nd byte of len field @ 0xd41f
+CCu first byte of len field @ 0xd422
+CCu set bit if we expect 2nd len byte @ 0xd42e
 CCu SIZE @ 0xd42c
+CCu len field was 2 bytes @ 0xd434
 CCu ENDIAN @ 0xd438
-CCu pkt len size @ 0xd446
+CCu branch if len field not complete @ 0xd446
+CCu clr expect_len_field @ 0xd449
+CCu write 0 bytes to rx fifo @ 0xd452
 CCu IN_FIFO (store/remove len field) @ 0xd454
+CCu write 1 byte to rx fifo @ 0xd457
+.(fcn 0xd45a 0xd512 rom.ph_pkt_len_adjust)
+CCu protocol IEEE802.15.4g? @ 0xd461
+CCu branch if not @ 0xd463
+axd 0x0605 @ 0xd4a2
+CCu PKT_LEN_ADJUST @ 0xd4a6
+CCu PKT_LEN_ADJUST @ 0xd4ab
+CCu DST_FIELD @ 0xd4b9
 .(fcn 0xd512 0xd5b1 rom.pkt_tx_packet_sent)
 CCu PACKET_SENT @ 0xd512
 CCu tx_len is zero @ 0xd525
@@ -2303,6 +2326,7 @@ CCu FILTER_MATCH @ 0xde7d
 echo   ..0xe000
 
 CCu PREAMBLE_DETECT @ 0xe1a9
+CCu expect_len_field @ 0xe1c8
 CCu SYNC_DETECT @ 0xe201
 CCu int 0x0f impl at 0xe443 @ 0xe27b
 axc 0xe443 @ 0xe27b
@@ -2327,6 +2351,7 @@ CCu store current RSSI for FRR (11 is undoc) @ 0xe437
 CCu indicate RX/TX event @ 0xe43e
 .(fcn 0xe443 0xe498 rom.int0x0f_cb_unk0xe443)
 CCu int 0x0f impl at 0xe435 @ 0xe4a4
+CCu clr expect_len_field @ 0xe5a3
 CCu POSTAMBLE_DETECT @ 0xe7d9
 CCu RX_FIFO_FULL @ 0xe7de
 CCu POSTAMBLE_DETECT @ 0xe7e3

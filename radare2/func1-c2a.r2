@@ -58,10 +58,10 @@ f var.flags_28 1 @ _idata+0x28
 CCu related to main loop bit7 @ _idata+0x28
 f var.ph_flags1 1 @ _idata+0x29
 CCu 4:set on PH filter match @ _idata+0x29
-f var.ph_flags2 1 @ _idata+0x2a
-CCu 0:SW_WHT_CTRL 1:SW_CRC_CTRL 2:variable pktlen 4:postamble_en 5:filter_en @ _idata+0x2a
+f var.ph_field_flags 1 @ _idata+0x2a
+CCu 0:SW_WHT_CTRL 1:SW_CRC_CTRL 2:variable pktlen 3:expect_len_field 4:postamble_en 5:filter_en @ _idata+0x2a
 f var.ph_flags3 1 @ _idata+0x2b
-CCu 4:sync detected 5:preamble detected @ _idata+0x2b
+CCu 2:don't write byte into fifo if set 4:sync detected 5:preamble detected @ _idata+0x2b
 f var.main_loop_ctl 1 @ _idata+0x2c
 CCu 0:parse cmds 1:cfg event? 2:change state in progress 3:rxtx_event 5:wut 6:? 7:? @ _idata+0x2c
 f var.main_loop_event_ex 1 @ _idata+0x2d
@@ -87,6 +87,7 @@ f var.loc3d 1 @ _idata+0x3d
 f var.loc3e 1 @ _idata+0x3e
 f var.loc3f 1 @ _idata+0x3f
 
+f var.fifo_rx_bytes_added @ _idata+0x42
 f var.fifo_tx_space 1 @ _idata+0x43
 f var.fifo_rx_space 1 @ _idata+0x44
 f var.fifo_rx_end_msb 1 @ _idata+0x45
@@ -96,7 +97,7 @@ f var.fifo_tx_end_lsb 1 @ _idata+0x48
 f var.fifo_rx_count 1 @ _idata+0x49
 CCu set to xreg0x8e - xreg0x6b, this+xreg6f=rx fifo count @ _idata+0x49
 f var.fifo_tx_count 1 @ _idata+0x4a
-f var.fifo_rx_out_pos 1 @ _idata+0x4b
+f var.fifo_rx_pos_wr 1 @ _idata+0x4b
 f var.fifo_rx_count2 1 @ _idata+0x4c
 f var.fifo_tx_count2 1 @ _idata+0x4d
 f var.fifo_rx_size 1 @ _idata+0x4e
@@ -134,6 +135,8 @@ f var.loc6a 1 @ _idata+0x6a
 f var.loc6b 1 @ _idata+0x6b
 f var.loc6c 1 @ _idata+0x6c
 
+f var.ph_field_len_msb 1 @ _idata+0x71
+f var.ph_field_len_lsb 1 @ _idata+0x72
 f var.ezconfig_ptr_msb 1 @ _idata+0x73
 f var.ezconfig_ptr_lsb 1 @ _idata+0x74
 f var.tx_num_repeat_cnt 1 @ _idata+0x75
@@ -165,7 +168,6 @@ f vect.unk_0x07 1 @ 0x0007
 f vect.timer0 1 @ 0x000b
 f vect.unk_0x0f 1 @ 0x000f
 f vect.eint1 1 @ 0x0013
-f vect.unk_0x16 1 @ 0x0016
 f vect.unk_0x17 1 @ 0x0017
 f vect.rx_ph 1 @ 0x001b
 f vect.spi 1 @ 0x001f
@@ -236,7 +238,7 @@ f map.modem_start_unk0xba27 1 @ 0x0108
 f map.fifo_rx_update 1 @ 0x010b
 f map.rx_sync_timeout 1 @ 0x010e
 f map.xreg0x02_bit0_set_and_clr 1 @ 0x0111
-f map.pkt_unk_0xd414 1 @ 0x0114
+f map.ph_process_len_field 1 @ 0x0114
 f map.main_loop_wut_event 1 @ 0x0117
 f map.rc32k_do_cal 1 @ 0x011a
 f map.main_loop_parse_cfg 1 @ 0x011d
@@ -353,6 +355,7 @@ f map.change_device_state 1 @ 0x02ac
 f map.cmd_tx_hop 1 @ 0x02b2
 f map.cmd_get_int_status 1 @ 0x02b5
 f map.cmd_get_modem_status 1 @ 0x02b8
+f map.ph_pkt_len_adjust 1 @0x02bb
 f map.cmd_start_rx 1 @ 0x02be
 f map.cmd_start_tx 1 @ 0x02c1
 f map.rx_nextstate_remain 1 @ 0x02c4

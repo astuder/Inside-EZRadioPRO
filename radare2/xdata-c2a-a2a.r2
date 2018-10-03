@@ -47,7 +47,9 @@ f prop.RX_HOP_TABLE_SIZE 1		 @ prop.grp_0x50_rx_hop+0x01
 f prop.RX_HOP_TABLE_ENTRY 64	 @ prop.grp_0x50_rx_hop+0x02
 
 f var.fifo_buffer_low 0x40 @ 0x0575
+CCu RX fifo in full duplex mode @ 0x0575
 f var.fifo_buffer_high 0x40 @ 0x05b6
+CCu TX fifo in full duplex mode @ 0x05b6
 
 CCu parameters of START_RX command @ 0x05f7
 f var.rx_channel 1 @ 0x05f7

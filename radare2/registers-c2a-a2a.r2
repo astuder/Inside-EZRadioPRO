@@ -217,11 +217,13 @@ CCu 0-1: IF_FREQ[17:16] 2: undoc 3: FIXIF 4:ZEROIF 5: AFC_GAIN_COR_EN @ xreg_bas
 f xref.modem_if_freq_msb @ xreg_base+0x66
 f xref.modem_if_freq_lsb @ xreg_base+0x67
 f xreg.modem_dsm_ctrl 1 @ xreg_base+0x68
-f xreg.fifo_unk69 1 @ xreg_base+0x69
-CCu value written, then busy wait until 0 @ xreg_base+0x69
-f xreg.fifo_tx_in_pos 1 @ xreg_base+0x6a
-f xreg.fifo_rx_in_pos 1 @ xreg_base+0x6b
-f xreg.fifo_rx_count 1 @ xreg_base+0x6f
+f xreg.spi_fifo_unk0x69 1 @ xreg_base+0x69
+CCu in rx and tx fifo rst: value written, then busy wait until 0 @ xreg_base+0x69
+f xreg.spi_fifo_tx_pos_wr 1 @ xreg_base+0x6a
+f xreg.spi_fifo_rx_pos_rd 1 @ xreg_base+0x6b
+f xreg.spi_fifo_unk0x6d 1 @ xreg_base+0x6d
+CCu set to 0x06 in ph rst after fifo rst @ xreg_base+0x6d
+f xreg.spi_fifo_rx_count 1 @ xreg_base+0x6f
 CCu this + imem 0x49 = rx fifo count @ xreg_base+0x6f
 
 f xreg.spi_buffer 16 @ xreg_base+0x70
@@ -235,23 +237,24 @@ f xreg.spi_unk0x84 1 @ xreg_base+0x84
 CCu set to 0xff on cmd exit w/o error @ xreg_base+0x84
 f xreg.boot_unk0x85 1 @ xreg_base+0x85
 CCu 0-1:set in timer2 isr 2:set before exiting bootloader 7:if set 0x07xx not init from NVRAM, clr before exiting bootloader @ xreg_base+0x85
-f xreg.spi_tx_fifo_size 1 @ xreg_base+0x87
-f xreg.spi_rx_fifo_size 1 @ xreg_base+0x88
-f xreg.spi_fifo_unk89 1 @ xreg_base+0x89
-CCu 3:clr in rx fifo rst 7:clr in tx fifo rst @ xreg_base+0x89
-f xreg.spi_tx_fifo_loc_lsb 1 @ xreg_base+0x8a
-f xreg.spi_rx_fifo_loc_lsb 1 @ xreg_base+0x8b
+f xreg.spi_fifo_tx_size 1 @ xreg_base+0x87
+f xreg.spi_fifo_rx_size 1 @ xreg_base+0x88
+f xreg.spi_fifo_unk0x89 1 @ xreg_base+0x89
+CCu 0-2:clr in rx fifo rst 4-6:clr in tx fifo rst @ xreg_base+0x89
+f xreg.spi_fifo_tx_loc_lsb 1 @ xreg_base+0x8a
+f xreg.spi_fifo_rx_loc_lsb 1 @ xreg_base+0x8b
 f xreg.spi_fifo_loc_msb 1 @ xreg_base+0x8c
 CCu 0-3:rx 4-7:tx @ xreg_base+0x8c
-f xreg.fifo_tx_out_pos 1 @ xreg_base+0x8d
-f xreg.fifo_rx_out_pos 1 @ xreg_base+0x8e
+f xreg.spi_fifo_tx_pos_rd 1 @ xreg_base+0x8d
+CCu set to fifo size in tx fifo rst @ xreg_base+0x8d
+f xreg.spi_fifo_rx_pos_wr 1 @ xreg_base+0x8e
 CCu set 0 in rx fifo rst @ xreg_base+0x8e
-f xreg.fifo_rx_unk8f 1 @ xreg_base+0x8f
+f xreg.spi_fifo_rx_unk0x8f 1 @ xreg_base+0x8f
 CCu set 0 in rx fifo rst @ xreg_base+0x8f
 
 f xreg.spi_status 1 @ xreg_base+0x91
 CCu 0-4:bytes in buf 5:cmd busy error if 1 7:Set when done processing cmd (cts?) @ xreg_base+0x91
-f xreg.fifo_tx_unk2 1 @ xreg_base+0x92
+f xreg.spi_fifo_tx_unk0x92 1 @ xreg_base+0x92
 CCu set 0 in tx fifo rst @ xreg_base+0x92
 f xreg.freq_vco_cnt_msb 1 @ xreg_base+0x93
 CCu set in RX/TX_HOP @ xreg_base+0x93
