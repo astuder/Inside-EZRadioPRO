@@ -137,6 +137,8 @@ CCu 1:? 6:BUFCLK_EN 7:XTAL_READY? @ xreg_base+0x00
 CCu 2:? 3:? 7:? @ xreg_base+0x01
 CCu 0:? 1:? 2:? @ xreg_base+0x02
 CCu 5:related to NVRAM en 6:clr by cmd_undoc35 7:related to adc en @ xreg_base+0x05
+f xreg.rc32k_internal_unk0x08 @ xreg_base+0x08
+CCu set to 0x02 at start of calibration @ xreg_base+0x08
 f xreg.div_clk_output_ctrl 1 @ xreg_base+0x09
 CCu 0:enable 1-3:div clk sel 6-7:related to bit timer? @ xreg_base+0x09
 
@@ -338,7 +340,17 @@ f xreg.periph_ctrl2 1 @ xreg_base+0xe1
 CCu 1:NVRAM @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2
 CCu modified in NVRAM enable and disable @ xreg_base+0xe2
-f xreg.adc_ctl @ xreg_base+0xea
+f xreg.rc32k_unk0xe5 1 @ xreg_base+0xe5
+CCu set to XO freq/25K @ xreg_base+0xe5
+f xreg.rc32k_unk0xe6 1 @ xreg_base+0xe6
+CCu set to 0 when 0xe5 is written @ xreg_base+0xe6
+f xreg.rc32k_unk0xe7_lsb 1 @ xreg_base+0xe7
+CCu read after 0xe9 is 0 @ xreg_base+0xe7
+f xreg.rc32k_unk0xe8_msb 1 @ xreg_base+0xe8
+CCu read after 0xe9 is 0 @ xreg_base+0xe8
+f xreg.rc32k_unk0xe9 1 @ xreg_base+0xe9
+CCu during rc32k cal, set to 1, then busy wait to clr @ xreg_base+0xe9
+f xreg.adc_ctl 1 @ xreg_base+0xea
 CCu 4-7:UDTIME 0-3:set to 9 before ADC read 3:clr when adc done @ xreg_base+0xea
 f xreg.adc_result @ xreg_base+0xeb
 f xreg.adc_status @ xreg_base+0xec
@@ -432,6 +444,9 @@ f dsp.pa_ob 1 @ dsp_base+0x40
 CCu 0-5:OB bias current per PA finger @ dsp_base+0x40
 f dsp.pa_tc 1 @ dsp_base+0x46
 CCu 0-4:TC timing of PA ramp up and down @ dsp_base+0x46
-
 f dsp.prot0_ctrl @ dsp_base+0x48
 CCu 0-2: NVM_BLOWN (1 factory, 3 user, 7 run) @ dsp_base+0x48
+f dsp.rc32k_internal_unk0x4e @ dsp_base+0x4e
+f dsp.rc32k_internal_unk0x4f @ dsp_base+0x4f
+
+f dsp.rc32k_internal_unk0x50 @ dsp_base+0x50

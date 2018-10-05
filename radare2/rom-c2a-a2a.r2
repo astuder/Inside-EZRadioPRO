@@ -259,7 +259,12 @@ echo ..firmware rom
 .(fcn 0x87de 0x87ea rom.movx_xreg_to_r4r5r6r7)
 .(fcn 0x87ea 0x87f6 rom.movx_r4r5r6r7_to_dptr)
 .(fcn 0x87f6 0x8802 rom.movx_r4r5r6r7_to_xreg)
+.(fcn 0x880e 0x8830 rom.math_div_ab_signed)
 CCu psw.5 = general purpose flag @ 0x880e
+.(fcn 0x8830 0x883e rom.math_div16)
+CCu div 8bit by 8bit @ 0x8836
+.(fcn 0x883e 0x885f rom.math_div16_16)
+.(fcn 0x885f 0x8885 rom.math_div16_8)
 .(fcn 0x8885 0x88c1 rom.math_div32_32)
 .(fcn 0x88c1 0x88f7 rom.math_div32)
 CCu e.g. r0r1r2r3=32K r4r5r6r7=XO_FREQ @ 0x88c1
@@ -457,6 +462,7 @@ CCu NORTH_SOUTH_AND_GPIO @ 0x8e86
 CCu mode NORTH @ 0x8e8b
 CCu mode SOUTH_AND_GPIO @ 0x8e95
 CCu mode NORTH_SOUTH_AND_GPIO @ 0x8e9d
+CCu SPI_ACTIVE @ 0x8eab
 CCu mode DISABLE @ 0x8eb4
 axd dsp_base+0x55 @ 0x8ec8
 .(fcn 0x8ecc 0x8ee5 rom.dsp_set_reg_r7_val_acc_and_0x7f)
@@ -682,9 +688,12 @@ CCu done if value didn't change @ 0x96f9
 CCu CLK_32K_SEL = 1? @ 0x96fe
 CCu CLK_32K_SEL = 2? @ 0x9701
 CCu external clk source @ 0x9703
+axd xreg_base+0xac @ 0x9709
 CCu internal clk source @ 0x970e
+axd xreg_base+0xac @ 0x9714
 axd dsp_base+0x4f @ 0x9720
 CCu disable clk 32k @ 0x9724
+axd xreg_base+0xaa @ 0x972a
 .(fcn 0x9736 0x97e1 rom.cmd_ircal)
 CCu CMD_ERROR_BAD_COMMAND @ 0x973d
 CCu RX_CHAIN_SETTING1 arg @ 0x9755
@@ -1032,7 +1041,7 @@ CCu RX_TUNE @ 0xa3ad
 CCu TX @ 0xa3af
 CCu RX @ 0xa3b1
 CCu RX_IDLE @ 0xa3b3
-CCu state=10 @ 0xa3b5
+CCu EZCONFIG @ 0xa3b5
 CCu state=11 @ 0xa3b7
 CCu case SPI_ACTIVE: @ 0xa3b9
 CCu case READY: @ 0xa3be
@@ -1042,9 +1051,11 @@ CCu case TX: @ 0xa3cd
 CCu case RX_IDLE: @ 0xa3d2
 CCu case RX: @ 0xa3d7
 CCu case 11: @ 0xa3dc
-CCu case 10: @ 0xa3e1
+CCu case EZCONFIG: @ 0xa3e1
 CCu default: change from READY to SLEEP @ 0xa3e6
+CCu SLEEP @ 0xa3e9
 CCu after switch() @ 0xa3ec
+CCu state change in progress? @ 0xa3f0
 CCu done with state change processing @ 0xa3fe
 CCu state hasn't changed yet, loop @ 0xa402
 CCu clr state change in process flag @ 0xa409
@@ -1090,7 +1101,7 @@ axd xreg_base+0xee @ 0xa581
 .(fcn 0xa58d 0xa5ad rom.config_frr_ctl)
 .(fcn 0xa5ad 0xa5ee rom.config_radio_after_power_up)
 CCu SPI_ACTIVE @ 0xa5ad
-CCu undoc state @ 0xa5b1
+CCu POWER_UP @ 0xa5b1
 CCu SPI_ACTIVE @ 0xa5e0
 CCu EZConfig supported? @ 0xa5e3
 CCu EZCONFIG @ 0xa5ea
@@ -1135,8 +1146,10 @@ CCu next state is not READY @ 0xa728
 CCu READY @ 0xa72a
 .(fcn 0xa73b 0xa748 rom.change_from_ready_to_rx_tune)
 CCu RX_TUNE @ 0xa73b
+CCu RX_TUNE @ 0xa744
 .(fcn 0xa748 0xa755 rom.change_from_ready_to_tx_tune)
 CCu TX_TUNE @ 0xa748
+CCu TX_TUNE @ 0xa751
 .(fcn 0xa755 0xa764 rom.change_from_ready_to_rx)
 CCu RX @ 0xa758
 CCu RX @ 0xa75c
@@ -1144,6 +1157,7 @@ CCu RX @ 0xa75c
 CCu RX_TUNE @ 0xa764
 CCu RX,CCA_LATCH @ 0xa76b
 .(fcn 0xa774 0xa786 rom.change_state_from_tx_to_rx)
+CCu RX_TUNE @ 0xa770
 CCu RX @ 0xa776
 CCu RX @ 0xa77c
 CCu TX @ 0xa77e
@@ -1167,6 +1181,7 @@ CCu undocumented property @ 0xa830
 CCu zero if PTI disabled @ 0xa836
 .(fcn 0xa84c 0xa858 rom.change_from_rx_tune_to_ready)
 CCu READY @ 0xa84c
+CCu READY @ 0xa854
 .(fcn 0xa858 0xa881 rom.gpio_reset_cfg)
 axd xreg_base+0x99 @ 0xa861
 CCu copy gpio_xx_cfg2 into xreg @ 0xa865
@@ -1395,13 +1410,14 @@ CCu packet format generic @ 0xb10d
 CCu packet format IEEE802.15.4g compliance @ 0xb110
 CCu CMD_ERROR_BAD_ARG @ 0xb11b
 .(fcn 0xb134 0xb13e rom.determine_sync_trigger)
-.(fcn 0xb13e 0xb146 rom.xreg0xe5_write_r7_xreg0xe6_write_0)
+.(fcn 0xb13e 0xb146 rom.rc32k_xreg0xe5_write_r7_xreg0xe6_write_0)
 axd xreg_base+0xe6 @ 0xb143
-.(fcn 0xb146 0xb14b rom.xreg0x08_write_r7)
-.(fcn 0xb14b 0xb16e rom.rc32k_prep_cal)
+.(fcn 0xb146 0xb14b rom.rc32k_xreg0x08_write_r7)
+.(fcn 0xb14b 0xb16e rom.rc32k_calibrate)
 CCu skip if no cal requested @ 0xb14e
 CCu use internal clk @ 0xb151
-.(fcn 0xb1cd 0xb1e2 rom.rc32k_cal_unk0xb1cd)
+.(fcn 0xb16e 0xb1cd rom.rc32k_cal_unk0xb16e)
+.(fcn 0xb1cd 0xb1e2 rom.rc32k_read_xreg_0xe7_0xe8)
 axd xreg_base+0xe7 @ 0xb1dc
 .(fcn 0xb1e2 0xb230 rom.rc32k_do_cal)
 axd dsp_base+0x4f @ 0xb22b
@@ -1501,19 +1517,21 @@ axd xreg_base+0x01 @ 0xb904
 CCu EXT_PA_RAMP @ 0xb918
 CCu if TCXO jmp @ 0xb964
 CCu if XO not ready jmp @ 0xb96a
-.(fcn 0xb971 0xb97f rom.xo_wait_until_ready)
+.(fcn 0xb971 0xb97f rom.clk_wait_for_xo_ready)
 CCu if TCXO jmp @ 0xb975
+.(fcn 0xb97f 0xb9c5 rom.clk_unk0xb97f)
 CCu wait until XO ready @ 0xb97b
-.(fcn 0xb9c5 0xb9d8 rom.bufclk_enable)
+.(fcn 0xb9c5 0xb9d8 rom.clk_bufclk_enable)
 CCu DIVIDED_BUFCLK_MODE @ 0xb9c9
 CCu disabled? @ 0xb9cb
-.(fcn 0xb9d8 0xba0d rom.config_div_clk_output)
+.(fcn 0xb9d8 0xba0d rom.clk_config_div_clk_output)
 CCu mask DIVIDED_CLK_SEL @ 0xb9dd
 CCu DIVIDED_CLK_EN @ 0xb9e7
 CCu skip if no change @ 0xb9f5
 CCu first clear enable bit @ 0xba01
 CCu update div clk output setting @ 0xba04
 CCu set enable bit as configured @ 0xba07
+.(fcn 0xba0d 0xba27 rom.clk_bufclk_unk0xba0d)
 CCu BUFCLK @ 0xba18
 .(fcn 0xba27 0xba40 rom.modem_start_unk0xba27)
 .(fcn 0xba40 0xba63 rom.modem_start_unk0xba40)
@@ -1614,7 +1632,7 @@ CCu is current state TX @ 0xbca3
 CCu raise change state event @ 0xbca9
 .(fcn 0xbcb1 0xbd04 rom.change_state_from_spi_active)
 CCu next state is SLEEP @ 0xbcb4
-CCu next state is 10 @ 0xbcb8
+CCu next state is EZCONFIG @ 0xbcb8
 CCu next state is 13 @ 0xbcbc
 CCu next state is not SPI_ACTIVE @ 0xbcc0
 CCu SPI_ACTIVE @ 0xbcc2
@@ -1625,6 +1643,8 @@ CCu READY @ 0xbce0
 f rom.change_from_spi_active_to_sleep @ 0xbce4
 CCu SLEEP @ 0xbce4
 CCu SPI_ACTIVE @ 0xbcf2
+CCu SLEEP @ 0xbcfb
+CCu SPI_ACTIVE @ 0xbcfe
 .(fcn 0xbd04 0xbd19 rom.change_from_tx_tune)
 CCu is next state TX? @ 0xbd06
 CCu READY @ 0xbd0d
@@ -1876,7 +1896,7 @@ f rom.read_dptr_to_r4_r6 1 @ 0xc875
 .(fcn 0xc87d 0xc887 rom.pti_check_fifo_space_clr_ie)
 f rom.compare_pti_check_fifo_space 1 @ 0xc87f
 .(fcn 0xc887 0xc893 rom.wut_get_ldc_en)
-f rom.get_dptr_bits_76_to_acc_01 1 @ 0xc88a
+f rom.get_dptr_bits_76_to_acc 1 @ 0xc88a
 .(fcn 0xc893 0xc89e rom.get_dptr_to_dsp_cache_at_r7)
 f rom.get_dptr_0x0700_plus_a 1 @ 0xc896
 .(fcn 0xc89e 0xc8bc rom.config_afc_gain_div_freq_err)
@@ -1887,7 +1907,7 @@ CCu LARGE_FREQ_ERR @ 0xc8ad
 .(fcn 0xc8de 0xc8ef rom.clear_int_ph)
 f rom.latch_int_ph_status_pend 1 @ 0xc8e4
 CCu var.INT_PH_PEND @ 0xc8ea
-.(fcn 0xc8ef 0xc8fa rom.xo_get_divider_for_r2r3)
+.(fcn 0xc8ef 0xc8fa rom.clk_get_xo_divider_for_r2r3)
 f rom.xo_get_divider_for_r0r1r2r3 1 @ 0xc8f1
 .(fcn 0xc8fa 0xc909 rom.dsp_set_reg_get_dptr_to_val_cache)
 f rom.get_dptr_to_dsp_cache_at_r7_2 1 @ 0xc8fe
@@ -1900,7 +1920,10 @@ axd xreg_base+0x02 @ 0xc91b
 CCu TX @ 0xc91e
 CCu TX @ 0xc923
 CCu TX @ 0xc928
+CCu TX @ 0xc92b
 .(fcn 0xc92f 0xc93d rom.rc32k_enable)
+axd xreg_base+0xab @ 0xc935
+axd xreg_base+0xac @ 0xc93a
 .(fcn 0xc950 0xc95a rom.set_eint1_callback_r4r5)
 f rom.store_r4r5_at_scratch_r0_ret_r4_or_r5 1 @ 0xc952
 .(fcn 0xc95a 0xc969 rom.bufclk_enable_hw)

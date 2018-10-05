@@ -55,7 +55,7 @@ f-hit*
 f var.flags_26 1 @ _idata+0x26
 CCu 0:usec delay expired 1:tx hop? 3:RX(0)/TX(1) 4:Cal LOW/HIGH_TEMP 5:? @ _idata+0x26
 f var.flags_27 1 @ _idata+0x27
-CCu 1:rc32k cal requested 2:? @ _idata+0x27
+CCu 0:rc32k? 1:rc32k cal requested 2:? 3:cal due? @ _idata+0x27
 f var.flags_28 1 @ _idata+0x28
 CCu related to main loop bit7 @ _idata+0x28
 f var.ph_flags1 1 @ _idata+0x29
@@ -194,6 +194,7 @@ f map.packet_sent 1 @ 0x0057
 f map.invalid_prop_group_get 1 @ 0x005a
 f map.fifo_config 1 @ 0x0060
 f map.xreg0xdf_wiggle_bit1_ret_bit3 1 @ 0x0063
+f map.clk_unk0xb97f 1 @ 0x0069
 f map.pti_send_tx_info 1 @ 0x006c
 f map.cmd_undoc_0xd0 1 @ 0x006f
 f map.psm_eint1_callback 1 @ 0x0075
@@ -209,7 +210,7 @@ f map.psm_enable 1 @ 0x0090
 f map.cmd_protocol_cfg 1 @ 0x0093
 f map.rx_process_byte 1 @ 0x0096
 f map.rx_ph_isr_bit5 1 @ 0x0099
-f map.config_div_clk_output 1 @ 0x009c
+f map.clk_config_div_clk_output 1 @ 0x009c
 f map.ircal_measure_rssi 1 @ 0x009f
 f map.change_state_from_11 1 @ 0x00a5
 f map.check_thresh_at_latch 1 @ 0x00a8
@@ -236,7 +237,7 @@ f map.exit_cmd_with_err 1 @ 0x00ed
 f map.main_loop_parse_cmds 1 @ 0x00f6
 f map.adc_calculate_result 1 @ 0x00f0
 f map.config_modem 1 @ 0x00f3
-f map.rc32k_cal_unk0xb1cd @ 0x00f9
+f map.rc32k_read_xreg_0xe7_0xe8 @ 0x00f9
 f map.irq0x07_rssi_jump 1 @ 0x00ff
 
 f map.gpio_state_clr_r7 1 @ 0x0102
@@ -293,6 +294,7 @@ f map.gpio_state_clr_r7_set_r5_toggle_r3 1 @ 0x01aa
 f map.cmd_func_info 1 @ 0x01ad
 f map.change_from_tx_tune 1 @ 0x01b0
 f map.pti_send_curr_state 1 @ 0x01b3
+f map.rc32k_cal_unk0xb16e 1 @ 0x01b6
 f map.irq0x07_bit3 1 @ 0x01b9
 f map.config_modem_etsi 1 @ 0x01bc
 f map.rx_ph_isr_preamble_detected 1 @ 0x01bf
@@ -316,14 +318,14 @@ f map.ircal_set_cal_val_r7 1 @ 0x01fb
 f map.modem_start_unk0x9897 1 @ 0x01fe
 
 f map.tx_process_byte 1 @ 0x201
-f map.xreg0xe5_write_r7_xreg0xe6_write_0 1 @ 0x0207
+f map.rc32k_xreg0xe5_write_r7_xreg0xe6_write_0 1 @ 0x0207
 f map.dsp_config_reg_0x06 1 @ 0x020a
 f map.irq0x07_bit7 1 @ 0x020d
 f map.rc32k_cal_unk0xb2d2 @ 0x0210
 f map.main_loop_unknown_cmd 1 @ 0x0213
 f map.cmd_set_property 1 @ 0x0216
 f map.pkt_tx_unk_0xd512 1 @ 0x0219
-f map.xo_wait_until_ready 1 @ 0x021c
+f map.clk_wait_for_xo_ready 1 @ 0x021c
 f map.fifo_rx_clear_almost_full 1 @ 0x021f
 f map.tx_process_byte_entry 1 @ 0x0222
 f map.cmd_fifo_info 1 @ 0x0225
@@ -332,7 +334,7 @@ f map.set_frr_var_r7_to_r5 1 @ 0x022b
 f map.reset_callback 1 @ 0x022e
 CCu hook for custom reset code @ 0x022e
 f map.rx_ph_filter 1 @ 0x0231
-f map.rc32k_prep_cal 1 @ 0x0234
+f map.rc32k_calibrate 1 @ 0x0234
 f map.invalid_prop_group_set 1 @ 0x237
 f map.irq0x07_sync_timeout 1 @ 0x023a
 f map.ircal_perform_calibration 1 @ 0x0240
@@ -342,6 +344,7 @@ f map.pti_send_r7 1 @ 0x0252
 f map.config_run_r7 1 @ 0x0255
 f map.cmd_gpio_pin_config 1 @ 0x0258
 f map.gpio_state_set_r7 1 @ 0x025b
+f map.clk_bufclk_unk0xba0d 1 @ 0x025e
 f map.main_loop_bit7_event 1 @ 0x0261
 f map.cmd_request_device_state 1 @ 0x0264
 f map.rx_ph_isr_pkt_end 1 @ 0x0267

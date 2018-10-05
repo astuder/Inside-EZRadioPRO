@@ -370,10 +370,15 @@ f prop.cal_offline2_cal_flags_28 1 @ prop.cal_data+0x06
 f prop.cal_offline2_cal_flags_27 1 @ prop.cal_data+0x07
 f prop.cal_data_0x09 1 @ prop.cal_data+0x09
 f prop.cal_data_0x0b 1 @ prop.cal_data+0x0b
+CCu rc32k cal related @ prop.cal_data+0x0b
 f prop.cal_data_0x0c 1 @ prop.cal_data+0x0c
+CCu rc32k cal related @ prop.cal_data+0x0c
 f prop.cal_data_0x0d 1 @ prop.cal_data+0x0d
+CCu rc32k cal related @ prop.cal_data+0x0d
 f prop.cal_data_0x0e 1 @ prop.cal_data+0x0e
+CCu rc32k related, upper nibble written to xreg 0xe5 @ prop.cal_data+0x0e
 f prop.cal_data_0x0f 1 @ prop.cal_data+0x0f
+CCu rc32k related, 0-5:written to xreg 0xe5 6-7:written to dsp 0x50 @ prop.cal_data+0x0f
 f prop.cal_data_0x10 1 @ prop.cal_data+0x10
 f prop.cal_data_0x11 1 @ prop.cal_data+0x11
 f prop.cal_data_0x14 1 @ prop.cal_data+0x14
@@ -429,6 +434,7 @@ f var.dsp_reg_cache_0x3b 1 @var.dsp_reg_cache+0x3b
 f var.dsp_reg_cache_0x41 1 @var.dsp_reg_cache+0x41
 f var.dsp_reg_cache_0x4f 1 @var.dsp_reg_cache+0x4f
 f var.dsp_reg_cache_0x53 1 @var.dsp_reg_cache+0x53
+f var.dsp_reg_cache_0x54 1 @var.dsp_reg_cache+0x54
 f var.dsp_reg_cache_0x55 1 @var.dsp_reg_cache+0x55
 f var.dsp_reg_cache_0x56 1 @var.dsp_reg_cache+0x56
 f var.dsp_reg_cache_0x57 1 @var.dsp_reg_cache+0x57
