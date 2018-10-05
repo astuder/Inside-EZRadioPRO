@@ -253,14 +253,18 @@ CCu extract bit 3 of command @ 0x8744
 
 echo ..firmware rom
 
-.(fcn 0x8771 0x8783 rom.mul_r4r5_r6r7)
-.(fcn 0x8783 0x87d2 rom.mul_r0r1r2r3_r4r5r6r7)
-.(fcn 0x87d2 0x87de rom.dptr_to_r4_r5_r6_r7)
-.(fcn 0x87de 0x87ea rom.xreg_r0_to_r4_r5_r6_r7)
-.(fcn 0x87ea 0x87f6 rom.r4_r5_r6_r7_to_dptr)
-.(fcn 0x87f6 0x8802 rom.r4_r5_r6_r7_to_xreg_r0)
+.(fcn 0x8771 0x8783 rom.math_mul16)
+.(fcn 0x8783 0x87d2 rom.math_mul32)
+.(fcn 0x87d2 0x87de rom.movx_dptr_to_r4r5r6r7)
+.(fcn 0x87de 0x87ea rom.movx_xreg_to_r4r5r6r7)
+.(fcn 0x87ea 0x87f6 rom.movx_r4r5r6r7_to_dptr)
+.(fcn 0x87f6 0x8802 rom.movx_r4r5r6r7_to_xreg)
 CCu psw.5 = general purpose flag @ 0x880e
-CCu r4r5r6r7=XO_FREQ @ 0x88c1
+.(fcn 0x8885 0x88c1 rom.math_div32_32)
+.(fcn 0x88c1 0x88f7 rom.math_div32)
+CCu e.g. r0r1r2r3=32K r4r5r6r7=XO_FREQ @ 0x88c1
+CCu div 32bit by 8bit @ 0x88ca
+.(fcn 0x88f7 0x8920 rom.math_div32_16)
 CCu counter @ 0x88f7
 CCu shift left r1r4r5r6r7 @ 0x88f9
 CCu compare r1r4 to r2r3 @ 0x890b
@@ -268,7 +272,8 @@ CCu r1r4 -= r2r3 @ 0x8910
 CCu set bit0 of r7 @ 0x8916
 CCu loop until r0 is 0 @ 0x8917
 CCu r2r3 = r1r4, r1r4 = 0 @ 0x8919
-.(fcn 0x8953 0x8966 rom.rrc_r4r5r6r7_by_r0)
+.(fcn 0x8920 0x8953 rom.math_div32_24)
+.(fcn 0x8953 0x8966 rom.math_rrc_arg2_by_r0)
 .(fcn 0x8966 0x8a57 rom.ph_config_pkt)
 CCu DST_FIELD @ 0x896b
 CCu variable pkt len disabled @ 0x896e
@@ -1106,6 +1111,8 @@ CCu OFFLINE_CAL type @ 0xa66d
 CCu cal type OFFLINE2_CAL @ 0xa670
 CCu cal type OFFLINE_CAL @ 0xa694
 .(fcn 0xa6c2 0xa6cd rom.clr_eint1_int0x1f_callbacks)
+.(fcn 0xa6cd 0xa6de rom.set_const_xo_div_250000)
+CCu 0x03d090 = 250000 decimal @ 0xa6cd
 .(fcn 0xa6de 0xa6f5 rom.update_state_change_flag)
 CCu if r7 is different from next state, return @ 0xa6e0
 CCu if r7 is RX or TX @ 0xa6e3
@@ -1187,6 +1194,7 @@ CCu bytes in spi buffer @ 0xa8ff
 CCu spi buffer empty? @ 0xa903
 CCu is XO freq provided? @ 0xa905
 axd 0x0719 @ 0xa90d
+CCu r2r3 = 0x8000 (=32K) @ 0xa916
 axd 0x0742 @ 0xa921
 .(fcn 0xa925 0xa949 rom.movx_spibuf_to_r6r7_lenr5)
 CCu dest: r6r7 @ 0xa925
@@ -1393,10 +1401,21 @@ axd xreg_base+0xe6 @ 0xb143
 .(fcn 0xb14b 0xb16e rom.rc32k_prep_cal)
 CCu skip if no cal requested @ 0xb14e
 CCu use internal clk @ 0xb151
+.(fcn 0xb1cd 0xb1e2 rom.rc32k_cal_unk0xb1cd)
 axd xreg_base+0xe7 @ 0xb1dc
 .(fcn 0xb1e2 0xb230 rom.rc32k_do_cal)
 axd dsp_base+0x4f @ 0xb22b
+.(fcn 0xb230 0xb2b2 rom.rc32k_cal_unk0xb230)
 axd 0x076d @ 0xb25e
+.(fcn 0xb2b2 0xb2bf rom.rc32k_cal_unk0xb2b2)
+.(fcn 0xb2bf 0xb2d2 rom.rc32k_cal_unk0xb2bf)
+.(fcn 0xb2d2 0xb35c rom.rc32k_cal_unk0xb2d2)
+CCu rc32k_xtal_cal_msb @ 0xb2d2
+CCu rc32k_xtal_cal_lsb @ 0xb2d4
+CCu select lo (0) or hi (1) nibble of cal_data_0x0e @ 0xb2d6
+CCu r5 is 0x4e or 0x4f @ 0xb2e7
+CCu compare to rc32k_xtal_cal @ 0xb303
+CCu compare to rc32k_xtal_cal @ 0xb311
 .(fcn 0xb35c 0xb371 rom.xreg0xdf_wiggle_bit1_ret_bit3)
 CCu 0xb364 busy wait 10 loops @ 0xb362
 .(fcn 0xb371 0xb3de rom.dsp_reg_r7_unk0xb371)
@@ -1868,7 +1887,8 @@ CCu LARGE_FREQ_ERR @ 0xc8ad
 .(fcn 0xc8de 0xc8ef rom.clear_int_ph)
 f rom.latch_int_ph_status_pend 1 @ 0xc8e4
 CCu var.INT_PH_PEND @ 0xc8ea
-.(fcn 0xc8ef 0xc8fa rom.rc32k_xtal_cal)
+.(fcn 0xc8ef 0xc8fa rom.xo_get_divider_for_r2r3)
+f rom.xo_get_divider_for_r0r1r2r3 1 @ 0xc8f1
 .(fcn 0xc8fa 0xc909 rom.dsp_set_reg_get_dptr_to_val_cache)
 f rom.get_dptr_to_dsp_cache_at_r7_2 1 @ 0xc8fe
 CCu 0x0798 holds copy of data written to dsp registers @ 0xc8fe
@@ -1918,6 +1938,8 @@ CCu clr bits 4,5 @ 0xca5d
 .(fcn 0xca6d 0xca78 rom.set_imem919293_to_ff)
 .(fcn 0xca78 0xca82 rom.rc32k_config)
 CCu CLK_32K_SEL 0=disabled, 1=internal 2=external @ 0xca7c
+.(fcn 0xca82 0xca8d rom.rc32k_get_xtal_cal_in_r2r3)
+axd 0x0742 @ 0xca87
 .(fcn 0xcabf 0xcac9 rom.fifo_rx_get_count)
 CCu return bytes stored in rx fifo @ 0xcac7
 .(fcn 0xcac9 0xcad3 rom.fifo_rx_pos_plus_r7)

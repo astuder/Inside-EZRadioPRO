@@ -325,8 +325,8 @@ f var.cmd_0xf2_arg4 1 @ 0x073e
 f var.IRCAL_AMP_VAL 1 @ 0x073f
 f var.IRCAL_PH_VAL 1 @ 0x0740
 
-f var.rc32k_xtal_cal_msb 1 @ 0x0741
-f var.rc32k_xtal_cal_lsb 1 @ 0x0742
+f var.rc32k_xtal_divider_msb 1 @ 0x0741
+f var.rc32k_xtal_divider_lsb 1 @ 0x0742
 
 CCu tx delay in usec @ 0x0743
 f var.tx_delay_msb 1 @ 0x0743
@@ -337,6 +337,7 @@ f var.pti_speed_lsb 1 @ 0x0746
 
 f var.CMD_ERR_CMD_ID 1 @ 0x0747
 f var.flags_26_backup 1 @ 0x0748
+f const.xo_div_250000 @ 0x0749
 
 f const.unk_0x74b 1 @ 0x074b
 f var.wut_cal_counter 1 @ 0x074c

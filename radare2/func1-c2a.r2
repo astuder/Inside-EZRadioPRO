@@ -199,6 +199,7 @@ f map.cmd_undoc_0xd0 1 @ 0x006f
 f map.psm_eint1_callback 1 @ 0x0075
 f map.rx_preamble_timeout 1 @ 0x0078
 f map.config_bufclk 1 @ 0x007b
+f map.rc32k_cal_unk0xb2bf @ 0x007e
 f map.main_loop_rxtx_event_part2 1 @ 0x0081
 f map.eint1_disable 1 @ 0x0084
 f map.main_loop_bit6_event 1 @ 0x0087
@@ -235,6 +236,7 @@ f map.exit_cmd_with_err 1 @ 0x00ed
 f map.main_loop_parse_cmds 1 @ 0x00f6
 f map.adc_calculate_result 1 @ 0x00f0
 f map.config_modem 1 @ 0x00f3
+f map.rc32k_cal_unk0xb1cd @ 0x00f9
 f map.irq0x07_rssi_jump 1 @ 0x00ff
 
 f map.gpio_state_clr_r7 1 @ 0x0102
@@ -308,6 +310,7 @@ f map.rx_ph_init 1 @ 0x01e6
 f map.clear_int_modem_rssi 1 @0x01e9
 f map.pa_dig_pwr_sequencing 1 @ 0x01ef
 f map.modem_start_tx 1 @ 0x01f2
+f map.rc32k_cal_unk0xb230 1 @ 0x01f5
 f map.rx_start 1 @ 0x01f8
 f map.ircal_set_cal_val_r7 1 @ 0x01fb
 f map.modem_start_unk0x9897 1 @ 0x01fe
@@ -316,6 +319,7 @@ f map.tx_process_byte 1 @ 0x201
 f map.xreg0xe5_write_r7_xreg0xe6_write_0 1 @ 0x0207
 f map.dsp_config_reg_0x06 1 @ 0x020a
 f map.irq0x07_bit7 1 @ 0x020d
+f map.rc32k_cal_unk0xb2d2 @ 0x0210
 f map.main_loop_unknown_cmd 1 @ 0x0213
 f map.cmd_set_property 1 @ 0x0216
 f map.pkt_tx_unk_0xd512 1 @ 0x0219
