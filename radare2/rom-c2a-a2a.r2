@@ -424,7 +424,8 @@ CCu CCIT-16 @ 0x8cf0
 CCu CRC-16-DNP @ 0x8cf1
 f rom.lookup_bitno_to_bit 8 @ 0x8cf2
 Cd 1 8 @ 0x8cf2
-f rom.lookup_unk 8 @ 0x8cfa
+f rom.lookup_dsp_rx 8 @ 0x8cfa
+CCu 4x2 bytes, 1:written to dsp 0x2b, 2: dsp reg @ 0x8cfa
 Cd 1 8 @ 0x8cfa
 .(fcn 0x8d02 0x8d47 rom.main_loop)
 CCu parse commands @ 0x8d21
@@ -682,7 +683,7 @@ CCu wait until timer done @ 0x9622
 CCu clear ph irq flags @ 0x96c6
 CCu FIFO_SRC_SEL @ 0x96e0
 CCu src is packet handler @ 0x96e3
-.(fcn 0x96e9 0x96f4 rom.write_dsp_reg_r7_from_cache)
+.(fcn 0x96e9 0x96f4 rom.dsp_set_reg_r7_from_cache)
 .(fcn 0x96f4 0x9736 rom.rc32k_set_source)
 CCu done if value didn't change @ 0x96f9
 CCu CLK_32K_SEL = 1? @ 0x96fe
@@ -1420,18 +1421,22 @@ CCu use internal clk @ 0xb151
 .(fcn 0xb1cd 0xb1e2 rom.rc32k_read_xreg_0xe7_0xe8)
 axd xreg_base+0xe7 @ 0xb1dc
 .(fcn 0xb1e2 0xb230 rom.rc32k_do_cal)
+CCu max positive trim value? @ 0xb1ed
+CCu max negative trim value? @ 0xb1f3
+CCu reset RC trimming @ 0xb1f7
+CCu compare to rc32k_xtal_divider @ 0xb216
 axd dsp_base+0x4f @ 0xb22b
 .(fcn 0xb230 0xb2b2 rom.rc32k_cal_unk0xb230)
 axd 0x076d @ 0xb25e
 .(fcn 0xb2b2 0xb2bf rom.rc32k_cal_unk0xb2b2)
 .(fcn 0xb2bf 0xb2d2 rom.rc32k_cal_unk0xb2bf)
 .(fcn 0xb2d2 0xb35c rom.rc32k_cal_unk0xb2d2)
-CCu rc32k_xtal_cal_msb @ 0xb2d2
-CCu rc32k_xtal_cal_lsb @ 0xb2d4
+CCu rc32k_xtal_divider_msb @ 0xb2d2
+CCu rc32k_xtal_divider_lsb @ 0xb2d4
 CCu select lo (0) or hi (1) nibble of cal_data_0x0e @ 0xb2d6
 CCu r5 is 0x4e or 0x4f @ 0xb2e7
-CCu compare to rc32k_xtal_cal @ 0xb303
-CCu compare to rc32k_xtal_cal @ 0xb311
+CCu compare to rc32k_xtal_divider @ 0xb303
+CCu compare to rc32k_xtal_divider+1 @ 0xb311
 .(fcn 0xb35c 0xb371 rom.xreg0xdf_wiggle_bit1_ret_bit3)
 CCu 0xb364 busy wait 10 loops @ 0xb362
 .(fcn 0xb371 0xb3de rom.dsp_reg_r7_unk0xb371)
@@ -1741,6 +1746,8 @@ CCu STEP_SIZE @ 0xc0c7
 CCu DIG_PWR_SEQ_DELAY @ 0xc0ca
 CCu wait for SEQ_DELAY .1us @ 0xc0e6
 .(fcn 0xc0f5 0xc182 rom.rx_start_dsp_unk_0xc0f5)
+axd 0x0798 @ 0xc0f7
+CCu 0x0798 = dsp cache @ 0xc0f7
 .(fcn 0xc182 0xc1db rom.rx_start_dsp_unk_0xc182)
 .(fcn 0xc1db 0xc23a rom.rx_start_dsp_unk_0xc1db)
 .(fcn 0xc23a 0xc271 rom.rx_start_dsp_unk_0xc23a)
@@ -1961,7 +1968,7 @@ CCu clr bits 4,5 @ 0xca5d
 .(fcn 0xca6d 0xca78 rom.set_imem919293_to_ff)
 .(fcn 0xca78 0xca82 rom.rc32k_config)
 CCu CLK_32K_SEL 0=disabled, 1=internal 2=external @ 0xca7c
-.(fcn 0xca82 0xca8d rom.rc32k_get_xtal_cal_in_r2r3)
+.(fcn 0xca82 0xca8d rom.rc32k_get_xtal_divider_in_r2r3)
 axd 0x0742 @ 0xca87
 .(fcn 0xcabf 0xcac9 rom.fifo_rx_get_count)
 CCu return bytes stored in rx fifo @ 0xcac7

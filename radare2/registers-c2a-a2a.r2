@@ -340,9 +340,9 @@ f xreg.periph_ctrl2 1 @ xreg_base+0xe1
 CCu 1:NVRAM @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2
 CCu modified in NVRAM enable and disable @ xreg_base+0xe2
-f xreg.rc32k_unk0xe5 1 @ xreg_base+0xe5
-CCu set to XO freq/25K @ xreg_base+0xe5
-f xreg.rc32k_unk0xe6 1 @ xreg_base+0xe6
+f xreg.rc32k_unk0xe5_lsb 1 @ xreg_base+0xe5
+CCu set to XO freq/250K @ xreg_base+0xe5
+f xreg.rc32k_unk0xe6_msb 1 @ xreg_base+0xe6
 CCu set to 0 when 0xe5 is written @ xreg_base+0xe6
 f xreg.rc32k_unk0xe7_lsb 1 @ xreg_base+0xe7
 CCu read after 0xe9 is 0 @ xreg_base+0xe7
@@ -433,6 +433,12 @@ CCu 7:EN_HRMNIC_GEN 6:IRCLKDIV 5-4:RF_SOURCE_PWR 2:? @ dsp_base+0x22
 f dsp.pga_gain 1 @ dsp_base+0x25
 CCu 0-3:PGA_GAIN 7:set with PGA_GAIN @ dsp_base+0x25
 CCu 4:ADC_HIGH_GAIN 0:? @ dsp_base+0x28
+f dsp.rx_unk0x2b 1 @ dsp_base+0x2b
+CCu 0x2b-0x2f are set in rx_start_dsp_unk0xc182 @ dsp_base+0x2b
+f dsp.rx_unk0x2c 1 @ dsp_base+0x2c
+f dsp.rx_unk0x2d 1 @ dsp_base+0x2d
+f dsp.rx_unk0x2e 1 @ dsp_base+0x2e
+f dsp.rx_unk0x2f 1 @ dsp_base+0x2f
 
 f dsp.modem_ifpkd_thresholds @ dsp_base+0x32
 f dsp.pa_ramp_ex 1 @ dsp_base+0x33
@@ -447,6 +453,6 @@ CCu 0-4:TC timing of PA ramp up and down @ dsp_base+0x46
 f dsp.prot0_ctrl @ dsp_base+0x48
 CCu 0-2: NVM_BLOWN (1 factory, 3 user, 7 run) @ dsp_base+0x48
 f dsp.rc32k_internal_unk0x4e @ dsp_base+0x4e
-f dsp.rc32k_internal_unk0x4f @ dsp_base+0x4f
+f dsp.rc32k_rctrim @ dsp_base+0x4f
 
 f dsp.rc32k_internal_unk0x50 @ dsp_base+0x50

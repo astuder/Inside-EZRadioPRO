@@ -426,13 +426,14 @@ f var.dsp_reg_cache_0x03 1 @var.dsp_reg_cache+0x03
 f var.dsp_reg_cache_0x06 1 @var.dsp_reg_cache+0x06
 f var.dsp_reg_cache_0x08 1 @var.dsp_reg_cache+0x08
 f var.dsp_reg_cache_0x13 1 @var.dsp_reg_cache+0x13
+f var.dsp_reg_cache_0x21 1 @var.dsp_reg_cache+0x21
 f var.dsp_reg_cache_0x23 1 @var.dsp_reg_cache+0x23
 f var.dsp_reg_cache_0x27 1 @var.dsp_reg_cache+0x27
 f var.dsp_reg_cache_0x28 1 @var.dsp_reg_cache+0x28
 f var.dsp_reg_cache_0x39 1 @var.dsp_reg_cache+0x39
 f var.dsp_reg_cache_0x3b 1 @var.dsp_reg_cache+0x3b
 f var.dsp_reg_cache_0x41 1 @var.dsp_reg_cache+0x41
-f var.dsp_reg_cache_0x4f 1 @var.dsp_reg_cache+0x4f
+f var.dsp_reg_cache_rctrim 1 @var.dsp_reg_cache+0x4f
 f var.dsp_reg_cache_0x53 1 @var.dsp_reg_cache+0x53
 f var.dsp_reg_cache_0x54 1 @var.dsp_reg_cache+0x54
 f var.dsp_reg_cache_0x55 1 @var.dsp_reg_cache+0x55
