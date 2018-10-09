@@ -1335,6 +1335,16 @@ CCu WHT_BIT_NUM @ 0xad45
 CCu PN_DIRECTION @ 0xad50
 CCu SW_WHT_CTRL (enable sw whitening) @ 0xad64
 .(fcn 0xad67 0xade2 rom.config_sync)
+axd xreg_base+0xd7 @ 0xad6b
+CCu SKIP_TX @ 0xad95
+CCu SYNC_ERROR_ONLY_BEGIN @ 0xada5
+CCu RX_ERRORS, 4FSK, MANCH @ 0xada9
+CCu DUAL_SYNC_EN @ 0xadb0
+CCu dual sync word supported? @ 0xadb7
+CCu 2-bit sync length resolution supported? @ 0xadc5
+CCu LENGTH * 4 @ 0xadc8
+CCu LENGTH_SUB @ 0xadd0
+CCu LENGTH * 4 @ 0xadd8
 .(fcn 0xade2 0xaeba rom.config_pa)
 CCu PA_SEL @ 0xadea
 CCu if PA_SEL=HP_COARSE @ 0xadf3
@@ -2002,6 +2012,7 @@ axd xreg_base+0xf0 @ 0xcba4
 .(fcn 0xcbae 0xcbb6 rom.inc_at_dptr_wiggle_xreg0xdf_bit1_ret_bit3)
 .(fcn 0xcbb6 0xcbbe rom.get_modem_rssi_ctl_latch)
 CCu LATCH @ 0xcbba
+.(fcn 0xcbbe 0xcbc6 rom.dptr_and_3_shl_2)
 .(fcn 0xcbc6 0xcbcd rom.dsp_set_reg_0x1f_val_dptr)
 .(fcn 0xcbcd 0xcbd4 rom.dsp_set_reg_0x1e_val_dptr)
 .(fcn 0xcbd4 0xcbdc rom.main_loop_raise_parse_cmd)

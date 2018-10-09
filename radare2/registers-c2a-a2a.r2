@@ -33,7 +33,7 @@ CCu read in rx, written in tx @ _sfr+0xa7
 CCu 4:eint1 (bit timer) @ _sfr+0xa8
 CCu set to #0x01 end of tx, #0x10 end of rx packet @ _sfr+0xa9
 f sfr.preamble_ctrl 1 @ _sfr+0xaa
-CCu 0:? 3:no tx preamble 4:no rx preamble 5:BIT_ORDER 6:MANCH_POL @ _sfr+0xaa
+CCu 0:? 2:no tx preamble 3:no tx sync word 4:no rx preamble 5:BIT_ORDER 6:MANCH_POL @ _sfr+0xaa
 f sfr.wht_ctrl 1 @ _sfr+0xab
 CCu 3:PN_DIRECTION 7:CRC_PADDING @ _sfr+0xab
 f sfr.crc_ctrl 1 @ _sfr+0xac
@@ -327,7 +327,13 @@ f xreg.preamble_pattern_7_0 1 @ xreg_base+0xcf
 
 f xreg.preamble_pattern_15_8 1 @ xreg_base+0xd0
 f xreg.preamble_pattern_23_16 1 @ xreg_base+0xd1
-f xreg.preamble_pattern_24_31 1 @ xreg_base+0xd2
+f xreg.preamble_pattern_31_24 1 @ xreg_base+0xd2
+f xreg.sync_config 1 @ xreg_base+0xd3
+CCu 1:DUAL_SYNC_EN 2:MANCH 3:4FSK 4-6:RX_ERRORS 7:SYNC_ERROR_ONLY_BEGIN @ xreg_base+0xd3
+f xreg.sync_bits_7_0 1 @ xreg_base+0xd4
+f xreg.sync_bits_15_8 1 @ xreg_base+0xd5
+f xreg.sync_bits_23_16 1 @ xreg_base+0xd6
+f xreg.sync_bits_24_31 1 @ xreg_base+0xd7
 f xreg.tx_hop_related 1 @ xreg_base+0xd9
 CCu set to #0x15 before writing freq_w_size @ xreg_base+0xda
 f xreg.pa_ramp 1 @ xreg_base+0xdb
@@ -396,7 +402,12 @@ f xreg2.dma_dest_msb 1 @ 0x5105
 f xreg2.dma_len_lsb 1 @ 0x5108
 f xreg2.dma.len_msb 1 @ 0x5109
 f xreg2.unk_0x0a 1 @ 0x510a
+f xreg2.sync_bits2_7_0 1 @ 0x510d
+f xreg2.sync_bits2_15_8 1 @ 0x510e
+f xreg2.sync_bits2_23_16 1 @ 0x510f
 
+f xreg2.sync_bits2_24_31 1 @ 0x5110
+f xreg2.sync_length 1 @ 0x5111
 f xreg2.modem_dsa_rssi @ 0x5112
 CCu 0-6:DSA_RSSI_THRESHOLD 7:SQUELCH_EN @ 0x5112
 f xreg2.modem_rssi_ctrl 1 @ 0x5113
