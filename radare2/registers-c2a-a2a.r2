@@ -137,6 +137,8 @@ CCu 1:? 6:BUFCLK_EN 7:XTAL_READY? @ xreg_base+0x00
 CCu 2:? 3:? 7:? @ xreg_base+0x01
 CCu 0:? 1:? 2:? @ xreg_base+0x02
 CCu 5:related to NVRAM en 6:clr by cmd_undoc35 7:related to adc en @ xreg_base+0x05
+f xreg.sleep 1 @ xreg_base+0x07
+CCu 2:set to enter SLEEP, clr on wakeup @ xreg_base+0x07
 f xreg.rc32k_internal_unk0x08 @ xreg_base+0x08
 CCu set to 0x02 at start of calibration @ xreg_base+0x08
 f xreg.div_clk_output_ctrl 1 @ xreg_base+0x09

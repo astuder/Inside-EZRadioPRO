@@ -100,7 +100,8 @@ CCu process next byte @ 0x82a1
 .(fcn 0x82a5 0x82ce boot.failed)
 CCu set bit 2 @ 0x82aa
 CCu wait for bit 2 clr @ 0x82b0
-f boot.init_xregs 1 @ 0x82b3
+f boot.setup_clocks 1 @ 0x82b3
+axd xreg_base+0xab @ 0x82bc
 axd dsp_base+0x54 @ 0x82ca
 .(fcn 0x82ce 0x82ed boot.prepare_exit)
 .(fcn 0x82ed 0x8301 boot.cmd_read_nvram_74c0)
