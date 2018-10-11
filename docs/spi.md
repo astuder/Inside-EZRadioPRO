@@ -82,7 +82,7 @@ The SPI peripheral processes the commands `READ_RX_FIFO` and `WRITE_TX_FIFO` wit
 
 Location and size of the FIFOs in RAM is configured through the XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size).
 
-If a read of write SPI command causes a FIFO underflow or overlow condition, the 8051 will receive an interrupt on `vector.spi_fifo_err` (0x2b).
+If a read or write SPI command causes a FIFO underflow or overlow condition, the 8051 will receive an interrupt on `vector.spi_fifo_err` (0x2b).
 
 ### Registers
 
