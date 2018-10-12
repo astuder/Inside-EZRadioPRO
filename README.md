@@ -4,6 +4,9 @@ Reverse engineering the SiLabs EZRadioPRO family of RF ICs with the goal of writ
 
 To avoid copyright violations, this repository does not contain firmware images. Use the provided tools to extract and analyze your own images.
 
+The recording of my talk about this project at the 2018 radare2 conference is now available on YouTube:
+https://www.youtube.com/watch?v=iu_TeS0ahi8
+
 Pull requests are welcome.
 
 ## Progress
