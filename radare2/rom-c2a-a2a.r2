@@ -761,9 +761,11 @@ CCu r7 = bytes added to fifo @ 0x98fc
 CCu write pos = (write pos + bytes) mod size @ 0x9900
 CCu PH filter match @ 0x9904
 .(fcn 0x990d 0x99b8 rom.rx_process_byte)
+CCu no rx byte available @ 0x9918
+CCu no more rx bytes available @ 0x9922
 CCu read byte received @ 0x9924
 CCu SW_WHT_CTRL @ 0x992b
-CCu address of byte read @ 0x992e
+CCu address of byte whiten @ 0x992e
 CCu POSTAMBLE_SIZE (8-32 bits) @ 0x995f
 CCu shift in postamble byte @ 0x9944
 CCu postamble_en @ 0x994a
@@ -772,6 +774,7 @@ CCu postamble match? @ 0x9958
 CCu expect_len_field @ 0x9975
 CCu don't write byte if bit set @ 0x9989
 CCu r7 = bytes written to fifo @ 0x9991
+CCu process next rx byte @ 0x99a9
 .(fcn 0x99b8 0x99e3 rom.crc16_byte)
 CCu r7 = new byte @ 0x99b8
 CCu loop over 8 bits @ 0x99ba
@@ -1998,7 +2001,8 @@ CCu RX @ 0xcad6
 .(fcn 0xcb33 0xcb3c rom.chip_has_pa)
 .(fcn 0xcb44 0xcb4d rom.xreg_set_0xdc_to_0xbe_clr_0xdb)
 axd xreg_base+0xdb @ 0xcb4a
-.(fcn 0xcb55 0xcb5e rom.is_sfr0xbb_bit4_set)
+.(fcn 0xcb55 0xcb5e rom.rx_byte_ready)
+CCu returns 0 if rx byte is available for processing @ 0xcb55
 .(fcn 0xcb5e 0xcb67 rom.a_andc0_orr7_to_r7_dptr_and1f_orr7_to_a)
 .(fcn 0xcb67 0xcb70 rom.read_dptr_shl2_and20_to_r7)
 .(fcn 0xcb70 0xcb78 rom.pti_get_fifo_len_clr_ie)

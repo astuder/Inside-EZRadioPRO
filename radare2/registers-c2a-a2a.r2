@@ -38,6 +38,8 @@ f sfr.wht_ctrl 1 @ _sfr+0xab
 CCu 3:PN_DIRECTION 7:CRC_PADDING @ _sfr+0xab
 f sfr.crc_ctrl 1 @ _sfr+0xac
 CCu 0:ALT_CRC_START 1:CRC_START 2:PN_START 3:PKT_CFG1.4 4:4FSK_EN 5:CRC_INVERT 6:CRC_ENDIAN 7:CRC_BIT_ENDIAN @ _sfr+0xac
+f sfr.rxtx_ctrl 1 @ _sfr+0xad
+CCu 0:clr during tx_process_byte 1:clr during rx_process_byte 3:set on rx_start @ _sfr+0xad
 
 f sfr.int_ph_status 1 @ _sfr+0xb1
 f sfr.int_modem_status 1 @ _sfr+0xb2
@@ -48,7 +50,7 @@ f sfr.int_chip_mask 1 @ _sfr+0xb6
 f sfr.ph_irq_flags 1 @ _sfr+0xba
 CCu 3:preamble detected 4:sync detected 5:? 7:pkt end @ _sfr+0xba
 f sfr.ph_status 1 @ _sfr+0xbb
-CCu 0:crc error 1:alt crc error 2:? 3:? 4:? 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
+CCu 0:crc error 1:alt crc error 2:? 3:? 4:clr=rx byte avail 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
 
 f sfr.pti_ctl 1 @ _sfr+0xc0
 CCu 7:pti_en 6:rx_en 5:tx_en 4:BIT_ORDER(inv) @ _sfr+0xc0
