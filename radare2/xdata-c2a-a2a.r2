@@ -415,7 +415,7 @@ f prop.cal_data_0x30 1 @ prop.cal_data+0x30
 f prop.cal_data_0x31 1 @ prop.cal_data+0x31
 f prop.cal_offline_cal_flags_28 1 @ prop.cal_data+0x32
 f prop.cal_offline_cal_flags_27 1 @ prop.cal_data+0x33
-f prop.cal_data_0x34 1 @ prop.cal_data+0x34
+f prop.cal_nvram_unk0x0a 1 @ prop.cal_data+0x34
 f prop.cal_data_0x35 1 @ prop.cal_data+0x35
 f prop.cal_data_0x36 1 @ prop.cal_data+0x36
 
@@ -428,11 +428,17 @@ f var.dsp_reg_cache_0x08 1 @var.dsp_reg_cache+0x08
 f var.dsp_reg_cache_0x13 1 @var.dsp_reg_cache+0x13
 f var.dsp_reg_cache_0x21 1 @var.dsp_reg_cache+0x21
 f var.dsp_reg_cache_0x23 1 @var.dsp_reg_cache+0x23
+f var.dsp_reg_cache_0x25 1 @var.dsp_reg_cache+0x25
 f var.dsp_reg_cache_0x27 1 @var.dsp_reg_cache+0x27
 f var.dsp_reg_cache_0x28 1 @var.dsp_reg_cache+0x28
+f var.dsp_reg_cache_0x2b 1 @var.dsp_reg_cache+0x2b
+f var.dsp_reg_cache_0x30 1 @var.dsp_reg_cache+0x30
+f var.dsp_reg_cache_0x31 1 @var.dsp_reg_cache+0x31
 f var.dsp_reg_cache_0x39 1 @var.dsp_reg_cache+0x39
 f var.dsp_reg_cache_0x3b 1 @var.dsp_reg_cache+0x3b
 f var.dsp_reg_cache_0x41 1 @var.dsp_reg_cache+0x41
+f var.dsp_reg_cache_prot0_ctrl 1 @ var.dsp_reg_cache+0x48
+CCu 7=run (NVRAM locked) @ var.dsp_reg_cache+0x48
 f var.dsp_reg_cache_rctrim 1 @var.dsp_reg_cache+0x4f
 f var.dsp_reg_cache_0x53 1 @var.dsp_reg_cache+0x53
 f var.dsp_reg_cache_0x54 1 @var.dsp_reg_cache+0x54

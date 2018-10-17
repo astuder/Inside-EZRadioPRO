@@ -770,6 +770,7 @@ CCu POSTAMBLE_SIZE (8-32 bits) @ 0x995f
 CCu shift in postamble byte @ 0x9944
 CCu postamble_en @ 0x994a
 CCu prop POSTAMBLE_PATTERN 1 @ 0x994d
+axd 0x06c6 @ 0x994d
 CCu postamble match? @ 0x9958
 CCu expect_len_field @ 0x9975
 CCu don't write byte if bit set @ 0x9989
@@ -1759,7 +1760,7 @@ CCu read current power level @ 0xc0ba
 CCu STEP_SIZE @ 0xc0c7
 CCu DIG_PWR_SEQ_DELAY @ 0xc0ca
 CCu wait for SEQ_DELAY .1us @ 0xc0e6
-.(fcn 0xc0f5 0xc182 rom.rx_start_dsp_unk_0xc0f5)
+.(fcn 0xc0f5 0xc182 rom.rx_start_dsp_reg_r7_unk_0xc0f5)
 axd 0x0798 @ 0xc0f7
 CCu 0x0798 = dsp cache @ 0xc0f7
 .(fcn 0xc182 0xc1db rom.rx_start_dsp_unk_0xc182)
@@ -1933,6 +1934,7 @@ f rom.xo_get_divider_for_r0r1r2r3 1 @ 0xc8f1
 .(fcn 0xc8fa 0xc909 rom.dsp_set_reg_get_dptr_to_val_cache)
 f rom.get_dptr_to_dsp_cache_at_r7_2 1 @ 0xc8fe
 CCu 0x0798 holds copy of data written to dsp registers @ 0xc8fe
+axd 0x0798 @ 0xc8fe
 .(fcn 0xc909 0xc91e rom.xreg_init_0x01_thru_0x04)
 axd xreg_base+0x04 @ 0xc914
 axd xreg_base+0x03 @ 0xc918
@@ -2298,6 +2300,7 @@ CCu check if end of table reached @ 0xd3df
 CCu reset table pos to 0 @ 0xd3e4
 CCu HOP_TABLE_WRAP @ 0xd3e6
 CCu get ptr into hop table (0x0535) @ 0xd3ef
+axd 0x0535 @ 0xd3ef
 CCu read hop table entry @ 0xd3f8
 CCu check if entry is 0xff (skip entry) @ 0xd3fa
 CCu rx hop @ 0xd3fd
@@ -2455,6 +2458,7 @@ CCu indicate RX/TX event @ 0xe43e
 .(fcn 0xe443 0xe498 rom.int0x0f_cb_unk0xe443)
 CCu int 0x0f impl at 0xe435 @ 0xe4a4
 CCu clr expect_len_field @ 0xe5a3
+axd 0x059d @ 0xe6c0
 CCu POSTAMBLE_DETECT @ 0xe7d9
 CCu RX_FIFO_FULL @ 0xe7de
 CCu POSTAMBLE_DETECT @ 0xe7e3
@@ -2495,6 +2499,9 @@ f func2.map_cmd_0x8c 1 @ 0xf64a-0x57+0x324
 f func2.map_cmd_0x8d 1 @ 0xf64a-0x57+0x2c4
 f func2.map_cmd_0x8a 1 @ 0xf64a-0x57+0x312
 f func2.map_do_cmd_0x8c_0x8d 1 @ 0xf64a-0x57+0x2b8
+
+Cd 1 0x6d5 @ 0xf929
+f rom.end_of_code @ 0xf929
 
 Cd 1 2 @ 0xfffe
 f rom.ROMID_REVEXT 1 @ 0xfffe

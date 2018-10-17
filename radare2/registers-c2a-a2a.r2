@@ -347,7 +347,7 @@ CCu 4:set in adc enable @ xreg_base+0xdf
 f xreg.periph_ctrl 1 @ xreg_base+0xe0
 CCu 1:ADC 5:BATT 6:1=low batt @ xreg_base+0xe0
 f xreg.periph_ctrl2 1 @ xreg_base+0xe1
-CCu 1:NVRAM @ xreg_base+0xe1
+CCu 0-3: NVRAM or DMA related, modified in enable/disable of NVRAM 4:? @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2
 CCu modified in NVRAM enable and disable @ xreg_base+0xe2
 f xreg.rc32k_unk0xe5_lsb 1 @ xreg_base+0xe5
@@ -405,7 +405,8 @@ f xreg2.dma_dest_lsb 1 @ 0x5104
 f xreg2.dma_dest_msb 1 @ 0x5105
 f xreg2.dma_len_lsb 1 @ 0x5108
 f xreg2.dma.len_msb 1 @ 0x5109
-f xreg2.unk_0x0a 1 @ 0x510a
+f xreg2.nvram_unk0x0a 1 @ 0x510a
+CCu boot: set 0x0a, then from NVRAM (also 0x0a) run: set from cal on NVRAM enable (0x0b) @ 0x510a
 f xreg2.sync_bits2_7_0 1 @ 0x510d
 f xreg2.sync_bits2_15_8 1 @ 0x510e
 f xreg2.sync_bits2_23_16 1 @ 0x510f

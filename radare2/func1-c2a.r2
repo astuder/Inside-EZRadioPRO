@@ -271,7 +271,7 @@ f map.config_clk 1 @ 0x0156
 f map.rx_unk_0xd5dc 1 @ 0x0159
 f map.wut_check_low_batt 1 @ 0x015c
 f map.fifo_rx_write_phase_sample @ 0x015f
-f map.rx_start_dsp_unk_0xc0f5 1 @ 0x0162
+f map.rx_start_dsp_reg_r7_unk_0xc0f5 1 @ 0x0162
 f map.cmd_ircal 1 @ 0x0165
 f map.cmd_get_property 1 @ 0x0168
 f map.fifo_rx_reset_hw 1 @ 0x016b
