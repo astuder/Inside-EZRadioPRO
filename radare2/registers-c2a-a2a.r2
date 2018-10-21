@@ -405,8 +405,8 @@ f xreg2.dma_dest_lsb 1 @ 0x5104
 f xreg2.dma_dest_msb 1 @ 0x5105
 f xreg2.dma_len_lsb 1 @ 0x5108
 f xreg2.dma.len_msb 1 @ 0x5109
-f xreg2.nvram_unk0x0a 1 @ 0x510a
-CCu boot: set 0x0a, then from NVRAM (also 0x0a) rom: set from cal on NVRAM enable (0x0b) @ 0x510a
+f xreg2.dma_unk0x0a 1 @ 0x510a
+CCu this value is returned by DMA reading 0x4000-0x48ff @ 0x510a
 f xreg2.sync_bits2_7_0 1 @ 0x510d
 f xreg2.sync_bits2_15_8 1 @ 0x510e
 f xreg2.sync_bits2_23_16 1 @ 0x510f

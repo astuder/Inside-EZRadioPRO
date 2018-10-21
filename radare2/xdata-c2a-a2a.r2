@@ -415,7 +415,7 @@ f prop.cal_data_0x30 1 @ prop.cal_data+0x30
 f prop.cal_data_0x31 1 @ prop.cal_data+0x31
 f prop.cal_offline_cal_flags_28 1 @ prop.cal_data+0x32
 f prop.cal_offline_cal_flags_27 1 @ prop.cal_data+0x33
-f prop.cal_nvram_unk0x0a 1 @ prop.cal_data+0x34
+f prop.cal_dma_unk0x0a 1 @ prop.cal_data+0x34
 f prop.cal_data_0x35 1 @ prop.cal_data+0x35
 f prop.cal_data_0x36 1 @ prop.cal_data+0x36
 
