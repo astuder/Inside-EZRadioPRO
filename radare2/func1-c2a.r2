@@ -218,7 +218,7 @@ f map.tx_start 1 @ 0x00ab
 f map.fifo_rx_raise_almost_full 1 @ 0x00ae
 f map.synth_recal_check 1 @ 0x00b1
 f map.rx_start_dsp_unk_0xc1db 1 @ 0x00b4
-f map.nvram_read 1 @ 0x00b7
+f map.dma_copy 1 @ 0x00b7
 f map.rx_hop_unk_0xd60f 1 @ 0x00ba
 f map.config_unk_0x8dab 1 @ 0x00c0
 f map.irq0x07_phase_sample 1 @ 0x00c6
@@ -227,7 +227,7 @@ f map.change_from_ready_to_11 1 @ 0x00cc
 f map.wut_expired 1 @ 0x00cf
 f map.gpio_read_pin_cfg 1 @ 0x00d2
 f map.tx_pwr_seq_start 1 @ 0x00d5
-f map.nvram_disable 1 @ 0x00d8
+f map.dma_disable 1 @ 0x00d8
 f map.pkt_end_unk_0xafcb 1 @ 0x00db
 f map.enter_sleep_state 1 @ 0x00de
 f map.change_from_tx 1 @ 0x00e1

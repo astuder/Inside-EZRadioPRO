@@ -78,8 +78,8 @@ f sfr.ph_crc_ctl @ _sfr+0xd5
 CCu 0:ALT_CRC_EN 1:CRC_EN 2:CHECK_ALT_CRC 3:CHECK_CRC 4:SEND_ALT_CRC 5:SEND_CRC @ _sfr+0xd5
 f sfr.ircal_amp 1 @ _sfr+0xd6
 f sfr.ircal_ph 1 @ _sfr+0xd7
-CCu set to 1 and 0 during boot @ _sfr+0xdc
-CCu set to 2 at boot @ _sfr+0xdd
+CCu 0:related to DMA @ _sfr+0xdc
+CCu 1:related to DMA @ _sfr+0xdd
 CCu set to 2 at boot @ _sfr+0xdf
 
 f sfr.modem_data_rate_mmsb 1 @ _sfr+0xe1
@@ -138,7 +138,7 @@ f xreg.bufclk_ctrl 1 @ xreg_base+0x00
 CCu 1:? 6:BUFCLK_EN 7:XTAL_READY? @ xreg_base+0x00
 CCu 2:? 3:? 7:? @ xreg_base+0x01
 CCu 0:? 1:? 2:? @ xreg_base+0x02
-CCu 5:related to NVRAM en 6:clr by cmd_undoc35 7:related to adc en @ xreg_base+0x05
+CCu 5:related to DMA en 6:clr by cmd_undoc35 7:related to adc en @ xreg_base+0x05
 f xreg.sleep 1 @ xreg_base+0x07
 CCu 2:set to enter SLEEP, clr on wakeup @ xreg_base+0x07
 f xreg.rc32k_internal_unk0x08 @ xreg_base+0x08
@@ -345,11 +345,11 @@ CCu set to #0x17 if EXT_PA_RAMP, 7 if not @ xreg_base+0xdb
 CCu 4:set in adc enable @ xreg_base+0xdf
 
 f xreg.periph_ctrl 1 @ xreg_base+0xe0
-CCu 1:ADC 5:BATT 6:1=low batt @ xreg_base+0xe0
+CCu 0:DMA en 1:ADC 5:BATT 6:1=low batt @ xreg_base+0xe0
 f xreg.periph_ctrl2 1 @ xreg_base+0xe1
-CCu 0-3: NVRAM or DMA related, modified in enable/disable of NVRAM 4:? @ xreg_base+0xe1
+CCu 0-1:NVRAM enable/disable 2:? 4:? @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2
-CCu modified in NVRAM enable and disable @ xreg_base+0xe2
+CCu 2-3:clr in DMA enable and disable, set to 9 in DMA enable @ xreg_base+0xe2
 f xreg.rc32k_unk0xe5_lsb 1 @ xreg_base+0xe5
 CCu set to XO freq/250K @ xreg_base+0xe5
 f xreg.rc32k_unk0xe6_msb 1 @ xreg_base+0xe6
@@ -396,9 +396,9 @@ echo ..xreg2
 
 Cd 1 0x10 @ 0x5100
 f xreg2.dma_status 1 @ 0x5100
-CCu bit 0 set when dma cmd in progress @ 0x5100
+CCu 0:set while dma cmd in progress @ 0x5100
 f xreg2.dma_cmd 1 @ 0x5101
-CCu bit 0-6 cmd, bit 7 set CPU enters idle @ 0x5101
+CCu 0-6:cmd (0=off? 1=off? 2=zero? 3=copy) 7:1=wakeup CPU after dma @ 0x5101
 f xreg2.dma_src_lsb 1 @ 0x5102
 f xreg2.dma_src_msb 1 @ 0x5103
 f xreg2.dma_dest_lsb 1 @ 0x5104
@@ -406,7 +406,7 @@ f xreg2.dma_dest_msb 1 @ 0x5105
 f xreg2.dma_len_lsb 1 @ 0x5108
 f xreg2.dma.len_msb 1 @ 0x5109
 f xreg2.nvram_unk0x0a 1 @ 0x510a
-CCu boot: set 0x0a, then from NVRAM (also 0x0a) run: set from cal on NVRAM enable (0x0b) @ 0x510a
+CCu boot: set 0x0a, then from NVRAM (also 0x0a) rom: set from cal on NVRAM enable (0x0b) @ 0x510a
 f xreg2.sync_bits2_7_0 1 @ 0x510d
 f xreg2.sync_bits2_15_8 1 @ 0x510e
 f xreg2.sync_bits2_23_16 1 @ 0x510f

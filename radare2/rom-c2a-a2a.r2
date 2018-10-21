@@ -9,9 +9,9 @@ Cd 1 4 @ 0x800c
 .(fcn 0x8018 0x801d boot.store_r6_r7_in_0x27_0x28)
 .(fcn 0x801d 0x801e boot.reti)
 .(fcn 0x801f 0x8022 boot.vect_spi)
-.(fcn 0x8022 0x803a boot.nvram_count_r2r3_cmd_copy)
+.(fcn 0x8022 0x803a boot.dma_count_r2r3_cmd_copy)
 CCu cmd: READ @ 0x802c
-f boot.nvram_cmd_r7_execute 1 @ 0x802e
+f boot.dma_cmd_r7_execute 1 @ 0x802e
 .(fcn 0x803a 0x8042 boot.read_xdata_at_src_addr_to_a)
 .(fcn 0x8043 0x8046 boot.vect_0x43)
 .(fcn 0x8046 0x8072 boot.init_0x07xx_from_nvram)
@@ -24,20 +24,25 @@ CCu nvram src: 0x5578 @ 0x805e
 CCu dest: 0x0798 dsp defaults? @ 0x8064
 CCu len: 0x58 @ 0x8068
 CCu nvram src: 0x5520 @ 0x806c
-.(fcn 0x8072 0x80ea boot.dma_copy_srcr4r5_dstimemr7_lenr3)
+.(fcn 0x8072 0x80ea boot.copy_srcr4r5_dstimemr7_lenr3)
 CCu XDATA 0x5400 is mirror of IMEM @ 0x8072
-f boot.dma_copy_srcr4r5_dstr6r7_lenr2r3 1 @ 0x8077
+f boot.copy_srcr4r5_dstr6r7_lenr2r3 1 @ 0x8077
 CCu dest addr msb @ 0x8077
 CCu dest addr lsb @ 0x8079
 CCu src addr msb @ 0x807b
 CCu src addr lsb @ 0x807d
 CCu compare src msb to #0x55 @ 0x807f
+CCu branch if less @ 0x8084
 CCu compare src to 0x7500 @ 0x8086
+CCu branch if less @ 0x808f
+CCu src below 0x5500 or above 0x7500 @ 0x8091
 CCu increment src addr @ 0x8096
+axd 0x5103 @ 0x80a2
 CCu decrement len msb if necessary @ 0x80af
 CCu check if dst is IMEM mirror @ 0x80b5
 CCu store in IMEM:dst @ 0x80bd
 CCu store in XMEM:dst @ 0x80c3
+CCu src within NVRAM (0x5500-0x74ff) @ 0x80cb
 CCu a = src addr lsb @ 0x80cd
 CCu clr dma src addr @ 0x80d9
 .(fcn 0x80ea 0x8118 boot.run_cmds_from_nvram)
@@ -139,6 +144,7 @@ f boot.exit_cmd_with_error_r7 1 @ 0x83b7
 CCu set NIRQ pin low? @ 0x83c0
 .(fcn 0x83c5 0x8415 boot.cmd_patch_image)
 CCu set patch number to 0 @ 0x83c8
+axd 0x4760 @ 0x83cc
 CCu bit 4: if set, don't load func image @ 0x83dc
 CCu load func image @ 0x83df
 CCu CMD_ERROR_BAD_IMAGE @ 0x83ed
@@ -189,8 +195,10 @@ CCu done @ 0x84c8
 CCu CMD_ERROR_BAD_PATCH @ 0x8512
 CCu CMD_ERROR_BAD_ARG @ 0x851c
 .(fcn 0x8523 0x8532 boot.verify_cmd_bit)
-.(fcn 0x8532 0x8549 boot.copy_xdata_from_nvram)
+.(fcn 0x8532 0x8549 boot.dma_xdata_unk0x8532)
 CCu dest: 0x4000 (XMEM mirror) @ 0x8532
+axd 0x5105 @ 0x8537
+axd 0x5109 @ 0x8541
 CCu count: 0x0760 @ 0x853e
 CCu cmd: 2 @ 0x8545
 .(fcn 0x8549 0x8568 boot.cmd_get_chip_status)
@@ -198,7 +206,7 @@ CCu CMD_ERR_STATUS @ 0x854b
 CCu CMD_ERR_CMD_ID @ 0x854e
 CCu if cmd err, set pend/status flags @ 0x8555
 CCu set NIRQ pin high? @ 0x855d
-.(fcn 0x8568 0x8587 boot.copy_nvram_srcr6r7_dst2728_lenr4r5_dst_plus_len)
+.(fcn 0x8568 0x8587 boot.copy_srcr6r7_dst2728_lenr4r5_dst_plus_len)
 CCu src: r6 r7 @ 0x856c
 CCu count: r4 r5 @ 0x8570
 CCu dest: 0x27 0x28 @ 0x8574
@@ -227,6 +235,7 @@ CCu copy IMEM 0x2b-3a to SPI buffer @ 0x863d
 .(fcn 0x8663 0x866d boot.spi_ready)
 .(fcn 0x866d 0x867a boot.verify_args_checksum)
 .(fcn 0x867a 0x8691 boot.nvram_enable)
+CCu already enabled? @ 0x867a
 CCu busy wait #0x14 loops @ 0x8684
 .(fcn 0x8691 0x86a9 boot.wipe_xdata)
 CCu fill xdata with r7 and xored r7 @ 0x86a0
@@ -239,9 +248,9 @@ CCu prepare next bit in r5 @ 0x86da
 CCu r6r7 = [ba] * 8 @ 0x8701
 CCu a = [ba+1] @ 0x8717
 .(fcn 0x871b 0x8723 boot.load_0x2c_0x2d_from_dptr)
-.(fcn 0x8723 0x872c boot.set_nvram_src_lo_a_src_hi_0x58)
+.(fcn 0x8723 0x872c boot.dma_set_src_lo_a_src_hi_0x58)
 CCu nvram src hi @ 0x8727
-.(fcn 0x872c 0x8736 boot.set_nvram_dst_a_to_len_dec_len)
+.(fcn 0x872c 0x8736 boot.dma_set_dst_a_to_len_dec_len)
 CCu dest lo @ 0x872c
 CCu dest hi @ 0x872f
 .(fcn 0x8736 0x8740 boot.init_spi_buffer_vars)
@@ -352,7 +361,11 @@ CCu r4r5r6r7 xor 0xcc4c4ece @ 0x8af3
 CCu repeat r0 times @ 0x8b03
 .(fcn 0x8b06 0x8b31 rom.isr_entry2)
 .(fcn 0x8b31 0x8b50 rom.isr_exit2)
-.(fcn 0x8b50 0x8b6e rom.nvram_read_src_r4r5_dst_r6r7_len_r2r3)
+.(fcn 0x8b50 0x8b6e rom.dma_copy_src_r4r5_dst_r6r7_len_r2r3)
+axd 0x5103 @ 0x8b55
+axd 0x5104 @ 0x8b59
+axd 0x5105 @ 0x8b5c
+axd 0x5109 @ 0x8b68
 .(fcn 0x8b6e 0x8b8b rom.update_frr_data)
 CCu frr a-d at xreg 0x80-83 @ 0x8b75
 axd xreg_base+0x81 @ 0x8b7c
@@ -844,12 +857,20 @@ CCu apply phase cal value passed in cmd @ 0x9c18
 CCu store for later reference @ 0x9c22
 CCu return calibration data @ 0x9c26
 .(fcn 0x9c32 0x9c33 rom.0x43_isr)
-.(fcn 0x9c33 0x9c73 rom.nvram_enable)
-.(fcn 0x9c73 0x9c8f rom.nvram_read)
-CCu cmd: READ @ 0x9c75
+.(fcn 0x9c33 0x9c73 rom.dma_enable)
+CCu 0x07 in C2A/A2A dumps @ 0x9c35
+CCu 0x0b in C2A/A2A dumps @ 0x9c38
+CCu dance to enable NVRAM @ 0x9c57
+CCu end of NVRAM enable sequence @ 0x9c71
+.(fcn 0x9c73 0x9c8f rom.dma_copy)
+CCu cmd: COPY @ 0x9c75
+axd 0x5103 @ 0x9c7e
 CCu cmd: 1 @ 0x9c83
-.(fcn 0x9c8f 0x9cb5 rom.nvram_run_cmd_r7)
-.(fcn 0x9cb5 0x9cd1 rom.nvram_disable)
+.(fcn 0x9c8f 0x9cb5 rom.dma_run_cmd_r7)
+CCu wakeup CPU when DMA complete @ 0x9ca0
+CCu put CPU into idle mode @ 0x9ca8
+.(fcn 0x9cb5 0x9cd1 rom.dma_disable)
+CCu disable NVRAM @ 0x9cbe
 .(fcn 0x9cd1 0x9cfc rom.cmd_func_info)
 .(fcn 0x9cfc 0x9d2a rom.cmd_part_info)
 .(fcn 0x9d2a 0x9dfe rom.cmd_peek)
@@ -864,7 +885,7 @@ CCu arg in buf idx += 2 @ 0x9d47
 CCu if addr == 0 @ 0x9d4f
 CCu output 0 @ 0x9d51
 CCu if addr 0x0001-x00ff @ 0x9d5f
-CCu read sfr @ 0x9d61
+CCu read sfr (repeats after 0x80) @ 0x9d61
 CCu if addr 0x0100-0x51ff @ 0x9d6c
 CCu read xmem @ 0x9d6e
 CCu if addr 0x5200-0x54ff @ 0x9d7f
@@ -872,7 +893,8 @@ CCu read imem (ignores addr msb) @ 0x9d81
 CCu if addr 0x5500-0x74ff @ 0x9d90
 CCu read nvram @ 0x9d92
 CCu if addr 0x7500-0xdfff @ 0x9da4
-CCu read rom @ 0x9da6
+CCu read with DMA at addr+0x9500 @ 0x9da6
+CCu translates to 0x0a00-0x74ff @ 0x9da9
 CCu offset addr by 0x9500 @ 0x9daf
 CCu if addr 0xe000-0xf0ff @ 0x9dc8
 CCu read dsp reg cache (ignore addr msb) @ 0x9dca

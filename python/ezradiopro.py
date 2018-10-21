@@ -243,7 +243,7 @@ class EZRadioPRO:
         self.remove_patch()
         return mem_dump
 
-    def dump_nvram(self, start=0, end=65535):
+    def dump_dma(self, start=0, end=65535):
         # install patch
         patch = [0x79, 0x71, 0xe3, 0xfc, 0x79, 0x72, 0xe3,
                  0xfd, 0x7a, 0x00, 0x7b, 0x01, 0x7e, 0x50,
@@ -253,7 +253,7 @@ class EZRadioPRO:
                      0xfd, 0x7a, 0x00, 0x7b, 0x01, 0x7e, 0x50,
                      0x7f, 0x70, 0x12, 0x8b, 0x50, 0x22]
         patch_cmd = self.install_patch(patch)
-        #dump NVRAM via ROM function call
+        #dump memory via DMA using ROM function call
         if end is None:
             end = 0xffff
         addr = start
@@ -356,8 +356,8 @@ def command_dump(args):
         dump = radio.dump_pdata(args.start, args.end)
     elif args.sfr == True:
         dump = radio.dump_sfr(args.start, args.end)
-    elif args.nvram == True:
-        dump = radio.dump_nvram(args.start, args.end)
+    elif args.dma == True:
+        dump = radio.dump_dma(args.start, args.end)
     else:
         dump = radio.dump(args.start, args.end)
 
@@ -399,8 +399,8 @@ if __name__ == '__main__':
                         help='dump PDATA address space')
     parser.add_argument('--sfr', action='store_true',
                         help='dump SFR address space')
-    parser.add_argument('--nvram', action='store_true',
-                        help='dump NVRAM memory')
+    parser.add_argument('--dma', action='store_true',
+                        help='dump DMA address space')
     parser.add_argument('-o', '--out', type=argparse.FileType('wb', 0),
                         help='output file for dump command')
     parser.add_argument('-p', '--peek', type=arg_address,
