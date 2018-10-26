@@ -342,7 +342,7 @@ f xreg.tx_hop_related 1 @ xreg_base+0xd9
 CCu set to #0x15 before writing freq_w_size @ xreg_base+0xda
 f xreg.pa_ramp 1 @ xreg_base+0xdb
 CCu set to #0x17 if EXT_PA_RAMP, 7 if not @ xreg_base+0xdb
-CCu 4:set in adc enable @ xreg_base+0xdf
+CCu 0:? 1:? 2:? 3:? 4:set in adc enable @ xreg_base+0xdf
 
 f xreg.periph_ctrl 1 @ xreg_base+0xe0
 CCu 0:DMA en 1:ADC 5:BATT 6:1=low batt @ xreg_base+0xe0

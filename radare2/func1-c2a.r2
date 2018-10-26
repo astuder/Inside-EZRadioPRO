@@ -192,8 +192,10 @@ echo ..jump map
 
 f map.packet_sent 1 @ 0x0057
 f map.invalid_prop_group_get 1 @ 0x005a
+f map.adc_unk0xc75a 1 @ 0x005d
 f map.fifo_config 1 @ 0x0060
 f map.xreg0xdf_wiggle_bit1_ret_bit3 1 @ 0x0063
+f map.nop_0xd252 1 @ 0x0066
 f map.clk_unk0xb97f 1 @ 0x0069
 f map.pti_send_tx_info 1 @ 0x006c
 f map.cmd_undoc_0xd0 1 @ 0x006f
@@ -220,6 +222,7 @@ f map.synth_recal_check 1 @ 0x00b1
 f map.rx_start_dsp_unk_0xc1db 1 @ 0x00b4
 f map.dma_copy 1 @ 0x00b7
 f map.rx_hop_unk_0xd60f 1 @ 0x00ba
+f map.nop_0xcf8c 1 @ 0x00bd
 f map.config_unk_0x8dab 1 @ 0x00c0
 f map.irq0x07_phase_sample 1 @ 0x00c6
 f map.usec_delay_unk_0xbda1 1 @ 0x0x00c9
@@ -238,6 +241,7 @@ f map.main_loop_parse_cmds 1 @ 0x00f6
 f map.adc_calculate_result 1 @ 0x00f0
 f map.config_modem 1 @ 0x00f3
 f map.rc32k_read_xreg_0xe7_0xe8 @ 0x00f9
+f map.nop_0xd254 1 @ 0x00fc
 f map.irq0x07_rssi_jump 1 @ 0x00ff
 
 f map.gpio_state_clr_r7 1 @ 0x0102
@@ -278,11 +282,13 @@ f map.fifo_rx_reset_hw 1 @ 0x016b
 f map.change_state_from_rx_idle 1 @ 0x016e
 f map.fifo_rx_write_byte 1 @ 0x0171
 f map.override_pa_sel 1 @ 0x0174
+f map.nop_0xd253 1 @ 0x017a
 f map.cmd_part_info 1 @ 0x017d
 f map.dsp_set_0x03_0x58_from_cache_set_0x87_to_0x02 1 @ 0x0180
 f map.modem_start_unk0xba40 1 @ 0x183
 f map.rx_process_byte_b 1 @ 0x0186
 f map.raise_sync_detect 1 @ 0x0189
+f map.config_from_nvram 1 @ 0x018c
 f map.tx_ph_start 1 @ 0x018f
 f map.raise_preamble_detect 1 @ 0x0192
 f map.spi_parse_more_cmds 1 @ 0x0195
@@ -290,6 +296,7 @@ f map.config_dsa_ctrl2 1 @ 0x19b
 f map.cmd_ircal_manual 1 @ 0x019e
 f map.ircal_calibration_step 1 @ 0x01a1
 f map.power_up_entry 1 @ 0x01a4
+f map.config_from_ezconfig 1 @ 0x01a7
 f map.gpio_state_clr_r7_set_r5_toggle_r3 1 @ 0x01aa
 f map.cmd_func_info 1 @ 0x01ad
 f map.change_from_tx_tune 1 @ 0x01b0
@@ -304,6 +311,7 @@ f map.rx_ph_isr_sync_detected 1 @ 0x01c8
 f map.modem_start_unk0xb560 1 @ 0x01cb
 f map.change_state_from_spi_active 1 @ 0x01ce
 f map.group_id_to_index 1 @ 0x01d1
+f map.adc_unk0xc7c3 1 @ 0x01d7
 f map.save_flags_26 1 @ 0x01da
 f map.flag0x28_processing 1 @ 0x01dd
 f map.clear_int_pending_flags 1 @ 0x01e0
@@ -373,6 +381,7 @@ f map.cmd_start_rx 1 @ 0x02be
 f map.cmd_start_tx 1 @ 0x02c1
 f map.rx_nextstate_remain 1 @ 0x02c4
 f map.cmd_rx_hop 1 @ 0x02c7
+f map.nop_0xd251 1 @ 0x02ca
 f map.ezconfig_decrypt_byte 1 @ 0x02cd
 f map.spi_parse_cmds 1 @ 0x02d0
 f map.cmd_ezconfig_check 1 @ 0x02d3

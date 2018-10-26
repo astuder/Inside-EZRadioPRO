@@ -969,6 +969,7 @@ CCu clear pending as per PH_CLR_PEND @ 0x9fde
 .(fcn 0x9fea 0x9ff9 rom.cmd_request_device_state)
 .(fcn 0x9ff9 0x9ffc rom.fifo_rx_get_count_entry)
 .(fcn 0x9ffc 0x9fff rom.ph_reset_entry)
+.(fcn 0x9fff 0xa000 rom.nop_0x9fff)
 echo   ..0xa000
 
 .(fcn 0xa000 0xa020 rom.get_modem_status_flags)
@@ -1032,9 +1033,9 @@ f rom.raise_int_chip @ 0xa1ff
 .(fcn 0xa236 0xa2ae rom.main_loop_bit7_cmd1_2)
 CCu CAL @ 0xa278
 CCu CAL @ 0xa2a5
-.(fcn 0xa2ae 0xa2c7 rom.pti_send_0x8e)
-.(fcn 0xa2c7 0xa2e0 rom.pti_send_0x8d)
-.(fcn 0xa2e0 0xa2f9 rom.pti_send_0x90)
+.(fcn 0xa2ae 0xa2c7 rom.pti_send_imem_0x8e)
+.(fcn 0xa2c7 0xa2e0 rom.pti_send_imem_0x8d)
+.(fcn 0xa2e0 0xa2f9 rom.pti_send_imem_0x90)
 .(fcn 0xa2f9 0xa313 rom.exit_cmd_with_err)
 CCu CMD @ 0xa2fe
 CCu CMD_ERROR @ 0xa30b
@@ -1149,6 +1150,7 @@ CCu HIGH_TEMP @ 0xa668
 CCu OFFLINE_CAL type @ 0xa66d
 CCu cal type OFFLINE2_CAL @ 0xa670
 CCu cal type OFFLINE_CAL @ 0xa694
+.(fcn 0xa6bd 0xa6c2 rom.config_int_ctl_entry)
 .(fcn 0xa6c2 0xa6cd rom.clr_eint1_int0x1f_callbacks)
 .(fcn 0xa6cd 0xa6de rom.set_const_xo_div_250000)
 CCu 0x03d090 = 250000 decimal @ 0xa6cd
@@ -1806,6 +1808,7 @@ CCu store result in response buffer @ 0xc33e
 .(fcn 0xc349 0xc361 rom.restore_from_cmd_undoc35)
 CCu restore sfr.modem_misc3 @ 0xc34e
 CCu READY @ 0xc359
+.(fcn 0xc361 0xc3f3 rom.config_from_nvram)
 CCu later compared to 3rd byte read from NVRAM @ 0xc361
 CCu multiply r7 by 3 @ 0xc364
 CCu add src base addr (0x74b1) @ 0xc368
@@ -1912,7 +1915,10 @@ CCu iterate over imem @ 0xc6d9
 CCu iterate over xmem 0-0x0800 (mirrored at 0x4000) @ 0xc6e9
 CCu start hw multiplier @ 0xc73a
 CCu wait until hw mul done @ 0xc73d
+.(fcn 0xc75a 0xc7c3 rom.adc_unk0xc75a)
+CCu ADC enable @ 0xc762
 axd xreg_base+0xdf @ 0xc765
+.(fcn 0xc7c3 0xc7ef rom.adc_unk0xc7c3)
 CCu save xreg 0x00 @ 0xc7c6
 CCu save xreg 0x01 @ 0xc7cf
 CCu restore xreg 0x00 @ 0xc7e4
@@ -1937,6 +1943,7 @@ CCu group info addr hi @ 0xc867
 CCu field count (spi cmd) @ 0xc86c
 CCu start field (spi cmd) @ 0xc870
 f rom.read_dptr_to_r4_r6 1 @ 0xc875
+axd 0x07f7 @ 0xc877
 .(fcn 0xc87d 0xc887 rom.pti_check_fifo_space_clr_ie)
 f rom.compare_pti_check_fifo_space 1 @ 0xc87f
 .(fcn 0xc887 0xc893 rom.wut_get_ldc_en)
@@ -2008,6 +2015,7 @@ CCu clr bits 4,5 @ 0xca5d
 CCu CLK_32K_SEL 0=disabled, 1=internal 2=external @ 0xca7c
 .(fcn 0xca82 0xca8d rom.rc32k_get_xtal_divider_in_r2r3)
 axd 0x0742 @ 0xca87
+CCu return min wait cycles @ 0xcabc
 .(fcn 0xcabf 0xcac9 rom.fifo_rx_get_count)
 CCu return bytes stored in rx fifo @ 0xcac7
 .(fcn 0xcac9 0xcad3 rom.fifo_rx_pos_plus_r7)
@@ -2168,6 +2176,7 @@ CCu WUT expired @ 0xcf78
 axd _idata+0x92 @ 0xcf80
 axd _idata+0x93 @ 0xcf84
 .(fcn 0xcf89 0xcf8c rom.config_modem_entry)
+.(fcn 0xcf8c 0xcf8d rom.nop_0xcf8c)
 .(fcn 0xcf8d 0xcfae rom.spi_cmd_isr)
 CCu WUT expired (??) @ 0xcf90
 CCu was previous cmd undoc_0x35? @ 0xcf95
@@ -2277,6 +2286,10 @@ CCu enter EZConfig state @ 0xd22a
 CCu set FIFO_MODE half duplex @ 0xd23a
 .(fcn 0xd249 0xd251 rom.change_from_spi_active_to_ezconfig)
 CCu EZCONFIG @ 0xd24b
+.(fcn 0xd251 0xd252 rom.nop_0xd251)
+.(fcn 0xd252 0xd253 rom.nop_0xd252)
+.(fcn 0xd253 0xd254 rom.nop_0xd253)
+.(fcn 0xd254 0xd255 rom.nop_0xd254)
 .(fcn 0xd255 0xd270 rom.rx_ph_filter)
 CCu 1=match, 0=miss @ 0xd25a
 CCu FILTER_MATCH @ 0xd25d
@@ -2310,6 +2323,8 @@ CCu TX @ 0xd387
 CCu var.rx_nextstate_error @ 0xd38b
 CCu TX @ 0xd38d
 CCu next state is TX @ 0xd390
+.(fcn 0xd396 0xd3a0 rom.rx_ph_reset_pktlen)
+axd 0x0605 @ 0xd39d
 .(fcn 0xd3a0 0xd3af rom.main_loop_rxtx_event_part2)
 CCu manual RX hop @ 0xd3a0
 .(fcn 0xd3af 0xd3ba rom.main_loop_rx_hop_manual)
@@ -2393,6 +2408,7 @@ CCu in EZConfig state? @ 0xd73c
 CCu EZCONFIG @ 0xd73f
 CCu EZCONFIG @ 0xd742
 CCu SPI_ACTIVE @ 0xd748
+.(fcn 0xd74c 0xd78f rom.config_from_ezconfig)
 CCu EZConfig supported? @ 0xd757
 .(fcn 0xd78f 0xd7a9 rom.ezconfig_array_read)
 .(fcn 0xd7a9 0xd7bf rom.fifo_tx_increment)
