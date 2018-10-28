@@ -82,7 +82,13 @@ The SPI peripheral processes the commands `READ_RX_FIFO` and `WRITE_TX_FIFO` wit
 
 Location and size of the FIFOs in RAM is configured through the XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size).
 
-If a read or write SPI command causes a FIFO underflow or overlow condition, the 8051 will receive an interrupt on `vector.spi_fifo_err` (0x2b).
+To indicate that a new byte was added to the RX FIFO, the 8051 increments `SPI_RX_FIFO_WRITE_POS`. The SPI peripheral will increment `SPI_RX_FIFO_READ_POS` as bytes are read with the `READ_RX_FIFO` command.
+
+The 8051 has to ensure that `SPI_RX_FIFO_WRITE_POS` to stays within the configured FIFO size. If `SPI_RX_FIFO_WRITE_POS` is greater than FIFO size, `READ_RX_FIFO` will never signal a FIFO underflow. As `SPI_RX_FIFO_READ_POS` is confined to FIFO size, `READ_RX_FIFO` will endlessly repeat the content of the RX FIFO.
+
+The TX FIFO works similary, with `SPI_TX_FIFO_READ_POS` controlled by the 8051, and `SPI_TX_FIFO_WRITE_POS` controlled by the SPI peripheral.
+
+If `READ_RX_FIFO` or `WRITE_TX_FIFO` cause a FIFO underflow or overlow condition, the 8051 will receive an interrupt on `vector.spi_fifo_err` (0x2b).
 
 ### Registers
 
@@ -94,7 +100,7 @@ If a read or write SPI command causes a FIFO underflow or overlow condition, the
 <tr><td>0x88</td><td>spi_fifo_rx_size</td><td align="center" colspan="8">SPI_RX_FIFO_SIZE</td></tr>
 <tr><td>0x8a</td><td>spi_fifo_tx_loc_lsb</td><td align="center" colspan="8">SPI_TX_FIFO_LOC[7:0]</td></tr>
 <tr><td>0x8b</td><td>spi_fifo_rx_loc_lsb</td><td align="center" colspan="8">SPI_RX_FIFO_LOC[7:0]</td></tr>
-<tr><td>0x8c</td><td>spi_fifo_loc_msb</td><td align="center" colspan="4">SPI_TX_FIFO_LOC[11:8]</td><td align="center" colspan="4">SPI_RX_FIFO_LOC[11:8]</td></tr>
+<tr><td>0x8c</td><td>spi_fifo_loc_msb</td><td align="center" colspan="4">SPI_TX_FIFO_LOC[11:8]</td><td align="center" colspan="4">SPI_RX_FIFO_LOC[7:0]</td></tr>
 <tr><td>0x8d</td><td>spi_fifo_tx_pos_rd</td><td align="center" colspan="8">SPI_TX_FIFO_READ_POS</td></tr>
-<tr><td>0x8e</td><td>spi_fifo_rx_pos_rd</td><td align="center" colspan="8">SPI_RX_FIFO_WRITE_POS</td></tr>
+<tr><td>0x8e</td><td>spi_fifo_rx_pos_wr</td><td align="center" colspan="8">SPI_RX_FIFO_WRITE_POS</td></tr>
 </table>
