@@ -5,16 +5,16 @@ The SPI peripheral of the EZRadioPRO handles the SPI communication:
 * Controlling CTS status and pin
 * Sending the reply stream via the command `READ_CMD_BUFF`
 
-The SPI peripheral handles the following commands autonomously without invoking the 8051 core:
+The SPI peripheral handles the following commands autonomously without invoking the firmware:
 * `FRR_x_READ` to read fast response registers (FRR) A-D
 * `WRITE_TX_FIFO` to write bytes into the transmit FIFO
 * `READ_RX_FIFO` to read bytes from the receive FIFO
 
 ## SPI communication
 
-After receiving a SPI command that is not handled by the SPI peripheral itself, the 8051 will receive an interrupt on `vector.spi_cmd` (0x1f).
+After receiving a SPI command that is not handled by the SPI peripheral itself, the firmware will receive an interrupt on `vector.spi_cmd` (0x1f).
 
-The SPI argument stream is accessible to the EZRadioPRO firmware in `xreg.spi_buffer` (XREG 0x70-0x7f, IDATA 0x5070-0x507f), starting with CMD at `xreg.spi_buffer + 0`. 
+The SPI argument stream is accessible to the firmware in `xreg.spi_buffer` (XREG 0x70-0x7f, IDATA 0x5070-0x507f), starting with CMD at `xreg.spi_buffer + 0`. 
 
 The length of the argument buffer is available in `xreg.spi_status[0:4]` (XREG 0x91, IDATA 0x5091, bits 0-4). The maximum length is 0x10 bytes.
 
@@ -78,29 +78,37 @@ The SPI commands `FRR_A_READ` through `FRR_D_READ` provide fast access to config
 
 ## RX and TX FIFOs
 
-The SPI peripheral processes the commands `READ_RX_FIFO` and `WRITE_TX_FIFO` without invoking the 8051. The FIFOs are located in XDATA RAM and accessed by the SPI peripheral with DMA.
+The SPI peripheral processes the commands `READ_RX_FIFO` and `WRITE_TX_FIFO` without invoking the firmware. The FIFOs are located in XDATA RAM and accessed by the SPI peripheral with DMA.
 
-Location and size of the FIFOs in RAM is configured through the XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size).
+Location and size of the FIFOs in RAM is configured through the XREG registers 0x8a-0x8c (location) and 0x87-0x88 (size). 
 
-To indicate that a new byte was added to the RX FIFO, the 8051 increments `SPI_RX_FIFO_WRITE_POS`. The SPI peripheral will increment `SPI_RX_FIFO_READ_POS` as bytes are read with the `READ_RX_FIFO` command.
+To indicate that a new byte was added to the RX FIFO, the firmware increments `SPI_RX_FIFO_WRITE_POS`. The SPI peripheral will increment `SPI_RX_FIFO_READ_POS` as bytes are read with the `READ_RX_FIFO` command.
 
-The 8051 has to ensure that `SPI_RX_FIFO_WRITE_POS` to stays within the configured FIFO size. If `SPI_RX_FIFO_WRITE_POS` is greater than FIFO size, `READ_RX_FIFO` will never signal a FIFO underflow. As `SPI_RX_FIFO_READ_POS` is confined to FIFO size, `READ_RX_FIFO` will endlessly repeat the content of the RX FIFO.
+The firmware must ensure that `SPI_RX_FIFO_WRITE_POS` stays within the configured FIFO size. If `SPI_RX_FIFO_WRITE_POS` is greater than FIFO size, `READ_RX_FIFO` will never signal a FIFO underflow. As `SPI_RX_FIFO_READ_POS` is confined to FIFO size, `READ_RX_FIFO` will endlessly repeat the content of the RX FIFO.
 
-The TX FIFO works similary, with `SPI_TX_FIFO_READ_POS` controlled by the 8051, and `SPI_TX_FIFO_WRITE_POS` controlled by the SPI peripheral.
+The TX FIFO works similary, with `SPI_TX_FIFO_READ_POS` controlled by the firmware, and `SPI_TX_FIFO_WRITE_POS` controlled by the SPI peripheral.
 
-If `READ_RX_FIFO` or `WRITE_TX_FIFO` cause a FIFO underflow or overlow condition, the 8051 will receive an interrupt on `vector.spi_fifo_err` (0x2b).
+If `READ_RX_FIFO` or `WRITE_TX_FIFO` cause a FIFO underflow or overlow condition, the firmware will receive an interrupt on `vector.spi_fifo_err` (0x2b).
+
+A few registers of unknown function are written during reset of the FIFO hardware. `spi_fifo_unk0x69` is written to, followed by a loop that waits until the register is 0. Certain bits in `spi_fifo_unk0x89` are cleared. `spi_fifo_rx_unk0x8f` and `spi_fifo_tx_unk0x92` are set to 0 during reset of the RX and TX FIFOs respectively. None of these registers is accessed outside of the FIFO reset routines.
+
+When dumping the memory range addressable by the FIFO, 0x000 to 0x0ff returns data that changes between dumps and is not found in other dumps. 0x100 to 0x7ff is accessing XDATA. 0x800 to 0xfff is a mirror of 0x000 to 0x7ff. Reading past 0x1000 by setting FIFO start address to 0xfff also wraps around to 0x000.
 
 ### Registers
 
 <table>
 <tr><th>Index</th><th>Name</th><th>7</th><th>6</th><th>5</th><th>4</th><th>3</th><th>2</th><th>1</th><th>0</th></tr>
+<tr><td>0x69</td><td>spi_fifo_unk0x69</td><td align="center" colspan="8">unknown</td></tr>
 <tr><td>0x6a</td><td>spi_fifo_tx_pos_wr</td><td align="center" colspan="8">SPI_TX_FIFO_WRITE_POS</td></tr>
 <tr><td>0x6b</td><td>spi_fifo_rx_pos_rd</td><td align="center" colspan="8">SPI_RX_FIFO_READ_POS</td></tr>
 <tr><td>0x87</td><td>spi_fifo_tx_size</td><td align="center" colspan="8">SPI_TX_FIFO_SIZE</td></tr>
 <tr><td>0x88</td><td>spi_fifo_rx_size</td><td align="center" colspan="8">SPI_RX_FIFO_SIZE</td></tr>
+<tr><td>0x89</td><td>spi_fifo_unk0x89</td><td></td><td align="center" colspan="3">unknown TX</td><td></td><td align="center" colspan="3">unknown RX</td></tr>
 <tr><td>0x8a</td><td>spi_fifo_tx_loc_lsb</td><td align="center" colspan="8">SPI_TX_FIFO_LOC[7:0]</td></tr>
 <tr><td>0x8b</td><td>spi_fifo_rx_loc_lsb</td><td align="center" colspan="8">SPI_RX_FIFO_LOC[7:0]</td></tr>
-<tr><td>0x8c</td><td>spi_fifo_loc_msb</td><td align="center" colspan="4">SPI_TX_FIFO_LOC[11:8]</td><td align="center" colspan="4">SPI_RX_FIFO_LOC[7:0]</td></tr>
+<tr><td>0x8c</td><td>spi_fifo_loc_msb</td><td align="center" colspan="4">SPI_TX_FIFO_LOC[11:8]</td><td align="center" colspan="4">SPI_RX_FIFO_LOC[11:8]</td></tr>
 <tr><td>0x8d</td><td>spi_fifo_tx_pos_rd</td><td align="center" colspan="8">SPI_TX_FIFO_READ_POS</td></tr>
 <tr><td>0x8e</td><td>spi_fifo_rx_pos_wr</td><td align="center" colspan="8">SPI_RX_FIFO_WRITE_POS</td></tr>
+<tr><td>0x8f</td><td>spi_fifo_rx_unk0x8f</td><td align="center" colspan="8">unknown</td></tr>
+<tr><td>0x92</td><td>spi_fifo_tx_unk0x92</td><td align="center" colspan="8">unknown</td></tr>
 </table>
