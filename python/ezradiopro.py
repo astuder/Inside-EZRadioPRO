@@ -116,6 +116,19 @@ class EZRadioPRO:
         out.info_flags = data[4]
         return out
 
+    def fifo_info(self, reset_mask=0):
+        data = self.command(0x15, [reset_mask], 2)
+        out = collections.namedtuple('FifoInfo', ['rx_fifo_count', 'tx_fifo_space'])
+        out.rx_fifo_count = data[0]
+        out.tx_fifo_space = data[1]
+        return out
+
+    def read_rx_fifo(self, count=1):
+        cmd_out = [0x77]
+        cmd_out.extend([0] * count)
+        cmd_out = self._spi.xfer2(cmd_out)
+        return cmd_out[1:]
+
     def peek(self, addr):
         out = self.command(0xf0, [int(addr / 256), int(addr % 256)], 1)
         return out[0]
@@ -155,7 +168,7 @@ class EZRadioPRO:
         self._patch_jmp = self.dump(patch_jmp + 1, patch_jmp + 2)
         self.poke(patch_jmp + 1, int(patch_addr / 256))
         self.poke(patch_jmp + 2, int(patch_addr % 256))
-        
+
         return patch_cmd
 
     def remove_patch(self):
@@ -185,7 +198,7 @@ class EZRadioPRO:
         # remove patch
         self.remove_patch()
         return mem_dump
-        
+
     def dump_xdata(self, start=0, end=65535):
         # TODO: if range includes 0x200-0x500, read with before patch
         # install patch
@@ -223,7 +236,7 @@ class EZRadioPRO:
         # remove patch
         self.remove_patch()
         return mem_dump
-        
+
     def dump_sfr(self, start=128, end=255):
         # install patch
         patch = [0x79, 0x71, 0xe3, 0x90, 0x04, 0x92, 0xf0,
@@ -264,6 +277,33 @@ class EZRadioPRO:
             addr += 1
         # remove patch
         self.remove_patch()
+        return mem_dump
+
+    def dump_fifo(self, start=0, end=0x0fff):
+        # install patch
+        patch = [0x78, 0x72, 0xe2, 0x78, 0x8b, 0xf2, 0x78, 0x71,
+                 0xe2, 0x54, 0x0f, 0xff, 0x78, 0x8c, 0x54, 0x0f,
+                 0x4f, 0xf2, 0x78, 0x88, 0x74, 0x7f, 0xf2, 0x78,
+                 0x8e, 0x74, 0xff, 0xf2, 0x22]
+        patch_cmd = self.install_patch(patch)
+        # dump address space accessible to SPI peripheral via RX FIFO
+        if end is None:
+            end = 0x0fff
+        addr = start
+        mem_dump = []
+        while addr < end:
+            # reset and configure RX FIFO
+            self.fifo_info(0x02)
+            self.command(patch_cmd, [int(addr / 256), int(addr % 256)])
+            # read memory via RX FIFO
+            count = 0
+            while addr < end and count < 0x80:
+                mem_dump.extend(self.read_rx_fifo(16))
+                count += 16
+                addr += 16
+        # remove patch and reset fifo
+        self.remove_patch()
+	self.fifo_info(0x02)
         return mem_dump
 
 def dump_to_hex(dump, base):
@@ -358,6 +398,8 @@ def command_dump(args):
         dump = radio.dump_sfr(args.start, args.end)
     elif args.dma == True:
         dump = radio.dump_dma(args.start, args.end)
+    elif args.fifo == True:
+        dump = radio.dump_fifo(args.start, args.end)
     else:
         dump = radio.dump(args.start, args.end)
 
@@ -401,6 +443,8 @@ if __name__ == '__main__':
                         help='dump SFR address space')
     parser.add_argument('--dma', action='store_true',
                         help='dump DMA address space')
+    parser.add_argument('--fifo', action='store_true',
+                        help='dump FIFO address space')
     parser.add_argument('-o', '--out', type=argparse.FileType('wb', 0),
                         help='output file for dump command')
     parser.add_argument('-p', '--peek', type=arg_address,
