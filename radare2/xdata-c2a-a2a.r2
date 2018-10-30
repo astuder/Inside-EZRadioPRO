@@ -457,7 +457,7 @@ CCu 0:PEEK 1:POKE 2:EZConfig? @ 0x07f9
 f const.chip_features2 1 @ 0x07fa
 CCu 0:HP PA 1:LP PA 2:MP PA 3:ETSI 4:PWR SEQ 6:BUFCLK @ 0x07fa
 f const.chip_features3 1 @ 0x07fb
-CCu 2:IRCAL 3:DSA 4:LOW PWR B 5:related to xreg0x53 6:LOW PWR A @ 0x07fb
+CCu 2:IRCAL 3:DSA 4:LOW PWR B 5:related to xreg0x53 6:LOW PWR A 7:Fast RSSI latching @ 0x07fb
 f const.chip_features4 1 @ 0x07fc
 CCu 0:4FSK? 1:ADV SYNC LEN 2:DUAL SYNC 5:IFPKD 7:TX NUM REPEAT @ 0x07fc
 f const.chip_fvco_div_override 1 @ 0x07fd

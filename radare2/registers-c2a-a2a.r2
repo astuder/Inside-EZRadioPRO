@@ -62,10 +62,10 @@ CCu 0-3: bytes in pti output buffer? @ _sfr+0xc4
 f sfr.int_ph_pend 1 @ _sfr+0xc5
 f sfr.int_modem_pend 1 @ _sfr+0xc6
 f sfr.int_chip_pend 1 @ _sfr+0xc7
-f sfr.rx_ph_ctrl 1 @ _sfr+0xc9
-CCu 0:? 1:? 2:clr when rx hop triggers in eint1 4:clr after preamble detect, clr when rx hop triggers in eint1 5:set after preamble detect, clr after sync detect 6:set on preamble detect 7:clr on preamble detect @ _sfr+0xc9
-f sfr.irq_0x07_flags 1 @ _sfr+0xca
-CCu 0:phase sample 1:packet sent 4:preamble timeout 5:sync timout 6:RSSI jump @ _idata+0x2f
+f sfr.irq0x07_ctl 1 @ _sfr+0xc9
+CCu 0:PHASE_SAMPLE 1:PKT_SENT 2:RSSI_THRESH 3:? 4:PREAMBLE_TIMEOUT 5:SYNC_TIMEOUT 6:RSSI_JUMP 7:? clr on preamble detect @ _sfr+0xc9
+f sfr.irq0x07_flags 1 @ _sfr+0xca
+CCu 0:PHASE_SAMPLE 1:PKT_SENT 2:RSSI_THRESH 3:? 4:PREAMBLE_TIMEOUT 5:SYNC_TIMEOUT 6:RSSI_JUMP 7:? clr on preamble detect @ _sfr+0xca
 
 f sfr.ph_cfg_ctl @ _sfr+0xd1
 CCu 0-4:field to cfg (bitfield) 5:1=RX,0=TX @ _sfr+0xd1
@@ -416,7 +416,7 @@ f xreg2.sync_length 1 @ 0x5111
 f xreg2.modem_dsa_rssi @ 0x5112
 CCu 0-6:DSA_RSSI_THRESHOLD 7:SQUELCH_EN @ 0x5112
 f xreg2.modem_rssi_ctrl 1 @ 0x5113
-CCu 0-2:RSSI_DELAY_CNT 3:RSSI_DELAY 4-5:? 6-7:AVERAGE @ 0x5113
+CCu 0-2:RSSI_DELAY_CNT 3:RSSI_DELAY 4:THRESH_DWN 5:THRESH_UP 6-7:AVERAGE @ 0x5113
 f xreg2.modem_rssi_thres_hyst 1 @ 0x5114
 CCu RSSI_THRES-RSSI_HYSTERISIS, 0=no hysterisis @ 0x5114
 f xreg2.modem_bcr_misc 1 @ 0x5115

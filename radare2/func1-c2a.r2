@@ -207,7 +207,7 @@ f map.main_loop_rxtx_event_part2 1 @ 0x0081
 f map.eint1_disable 1 @ 0x0084
 f map.main_loop_bit6_event 1 @ 0x0087
 f map.fifo_tx_check_almost_empty 1 @ 0x008a
-f map.irq0x07_bit2 1 @ 0x008d
+f map.irq0x07_rssi_thresh 1 @ 0x008d
 f map.psm_enable 1 @ 0x0090
 f map.cmd_protocol_cfg 1 @ 0x0093
 f map.rx_process_byte 1 @ 0x0096
@@ -221,7 +221,7 @@ f map.fifo_rx_raise_almost_full 1 @ 0x00ae
 f map.synth_recal_check 1 @ 0x00b1
 f map.rx_start_dsp_unk_0xc1db 1 @ 0x00b4
 f map.dma_copy 1 @ 0x00b7
-f map.rx_hop_unk_0xd60f 1 @ 0x00ba
+f map.rx_hop_config 1 @ 0x00ba
 f map.nop_0xcf8c 1 @ 0x00bd
 f map.config_unk_0x8dab 1 @ 0x00c0
 f map.irq0x07_phase_sample 1 @ 0x00c6
@@ -258,6 +258,7 @@ f map.rx_start_dsp_unk_0xc182 1 @ 0x0120
 f map.rx_packet_received 1 @ 0x0123
 f map.set_pcon 1 @ 0x0126
 f map.change_state_from_ezconfig 1 @ 0x0129
+f map.rssi_above_thresh 1 @ 0x012c
 f map.int0x0f_config_callback 1 @ 0x012f
 f map.spi_unknown_cmd @ 0x0132
 f map.fifo_raise_underflow_overflow_err 1 @ 0x0135
@@ -318,6 +319,7 @@ f map.clear_int_pending_flags 1 @ 0x01e0
 f map.change_from_rx_tune 1 @ 0x01e3
 f map.rx_ph_init 1 @ 0x01e6
 f map.clear_int_modem_rssi 1 @0x01e9
+f map.rssi_timer_config 1 @ 0x01ec
 f map.pa_dig_pwr_sequencing 1 @ 0x01ef
 f map.modem_start_tx 1 @ 0x01f2
 f map.rc32k_cal_unk0xb230 1 @ 0x01f5

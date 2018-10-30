@@ -499,6 +499,7 @@ CCu raise rx/tx main loop event @ 0x8fe7
 .(fcn 0x8fed 0x8ff3 rom.main_loop_raise_tx_event)
 CCu raise rx/tx main loop event @ 0x8fef
 .(fcn 0x8ff3 0x8ff8 rom.tx_event_isr)
+.(fcn 0x8ff8 0x8ffe rom.rssi_crosses_below_thresh)
 
 echo   ..0x9000
 
@@ -651,6 +652,7 @@ CCu FIFO_SRC_SEL (doc Si4467) @ 0x945d
 CCu FIFO contents are phase samples taken on the oversampled bit clock @ 0x9460
 f rom.config_modem_ifpkd 1 @ 0x946b
 CCu FIFO contents come from packet handler @ 0x946b
+CCu PHASE_SAMPLE int enable @ 0x9477
 CCu set to default @ 0x9483
 .(fcn 0x948a 0x94c9 rom.config_modem_chflt)
 CCu count = 36 @ 0x948a
@@ -687,14 +689,22 @@ CCu high perf, low temp @ 0x95ca
 CCu temp range @ 0x95de
 CCu high temp @ 0x95e1
 CCu low temp @ 0x95e6
+.(fcn 0x95f6 0x9600 rom.rssi_config_irq_thresh_up)
 CCu set xreg2 modem_rssi_ctrl bit 5 @ 0x95f9
+CCu RSSI_THRESH int enable @ 0x95fc
+.(fcn 0x9600 0x960a rom.rssi_config_irq_thresh_dwn)
 CCu set xreg2 modem_rssi_ctrl bit 4 @ 0x9603
-.(fcn 0x960f 0x961b rom.irq0x07_bit2)
+CCu RSSI_THRESH int enable @ 0x9606
+.(fcn 0x960a 0x960f rom.rssi_crosses_above_thresh)
+.(fcn 0x960f 0x961b rom.irq0x07_rssi_thresh)
+CCu irq on thresh up or down? @ 0x9616
 .(fcn 0x9620 0x9635 rom.timer_wait_until_done)
 CCu wait until timer done @ 0x9622
 .(fcn 0x9635 0x9647 rom.timer_wait_r6r7_minus_1_x_30)
+CCu RSSI_THRESH int enable @ 0x9663
 .(fcn 0x966c 0x96e9 rom.rx_start)
 CCu clear ph irq flags @ 0x96c6
+CCu RSSI_THRESH int enable @ 0x96d1
 CCu FIFO_SRC_SEL @ 0x96e0
 CCu src is packet handler @ 0x96e3
 .(fcn 0x96e9 0x96f4 rom.dsp_set_reg_r7_from_cache)
@@ -757,6 +767,7 @@ CCu calc avg RSSI @ 0x9873
 CCu return avg RSSI in r7 @ 0x987f
 .(fcn 0x9882 0x988d rom.irq0x07_sync_timout)
 CCu clr preamble detected flag @ 0x9885
+CCu SYNC_TIMEOUT int disable @ 0x9887
 .(fcn 0x988d 0x9897 rom.latch_rssi)
 CCu store LATCHED_RSSI for FRR access @ 0x988f
 .(fcn 0x9897 0x98e9 rom.modem_start_unk0x9897)
@@ -1121,6 +1132,7 @@ CCu var.INT_MODEM_STATUS @ 0xa500
 CCu var.INT_CHIP_STATUS @ 0xa508
 .(fcn 0xa510 0xa530 rom.adc_enable)
 .(fcn 0xa530 0xa550 rom.ph_reset)
+CCu RSSI_THRESH int enable, others disabled @ 0xa545
 .(fcn 0xa550 0xa57a rom.config_radio_after_reset)
 CCu SPI_ACTIVE @ 0xa550
 CCu SLEEP @ 0xa554
@@ -1303,6 +1315,7 @@ axd xreg_base+0x4d @ 0xab3a
 axd 0x073a @ 0xab3c
 .(fcn 0xab43 0xab77 rom.rx_ph_isr_sync_detected)
 CCu sync detected @ 0xab43
+CCu SYNC_TIMEOUT int disable @ 0xab45
 CCu latch on sync @ 0xab4e
 CCu CCA_LATCH @ 0xab56
 axd 0x0736 @ 0xab63
@@ -1310,6 +1323,9 @@ axd _idata+0x87 @ 0xab74
 .(fcn 0xab77 0xaba1 rom.config_preamble_timeout)
 CCu RX_PREAMBLE_TIMEOUT @ 0xab7c
 CCu RX_PREAMBLE_TIMEOUT_EXTEND @ 0xab80
+CCu PREAMBLE_TIMEOUT int disable @ 0xab87
+axd xreg_base+0x57 @ 0xab98
+CCu PREAMBLE_TIMEOUT int enable @ 0xab9d
 .(fcn 0xaba1 0xac64 rom.config_preamble)
 CCu PREMABLE_CONFIG_NSTD @ 0xabb0
 CCu STANDARD_PREAM @ 0xabc5
@@ -1432,7 +1448,10 @@ CCu clr crc errors @ 0xb02a
 CCu report PH filter match @ 0xb079
 .(fcn 0xb07e 0xb09b rom.rx_ph_isr_preamble_detected)
 CCu preamble detected @ 0xb07e
+CCu PREAMBLE_TIMEOUT int disable @ 0xb083
+CCu RSSI_JUMP int enable @ 0xb086
 CCu latch RSSI on preamble detect @ 0xb08f
+CCu SYNC_TIMEOUT int enable @ 0xb097
 .(fcn 0xb09b 0xb0a5 rom.xreg0x02_bit0_set_and_clr)
 .(fcn 0xb0a5 0xb0be rom.movx_0x0737_to_xreg0x46)
 CCu copy 0x0737-0x073a to xreg.0x46-0x49 @ 0xb0ac
@@ -1559,6 +1578,8 @@ CCu RX_IDLE_TIMEOUT @ 0xb8e0
 .(fcn 0xb8e8 0xb92e rom.tx_start)
 axd xreg_base+0x01 @ 0xb904
 CCu EXT_PA_RAMP @ 0xb918
+CCu PKT_SENT int enable @ 0xb928
+CCu PKT_SENT int disable @ 0xb952
 CCu if TCXO jmp @ 0xb964
 CCu if XO not ready jmp @ 0xb96a
 .(fcn 0xb971 0xb97f rom.clk_wait_for_xo_ready)
@@ -2007,9 +2028,9 @@ CCu addr=0x727+pin @ 0xca35
 axd 0x0727 @ 0xca35
 .(fcn 0xca41 0xca4a rom.dptr_to_r6_dptr_ror7_to_acc)
 f rom.rotate_acc_right_7_and_1 @ 0xca43
-.(fcn 0xca56 0xca62 rom.clr_sfr0xc9_2_xreg2_modem_rssi_ctrl_45)
-CCu clr bit 2 @ 0xca56
-CCu clr bits 4,5 @ 0xca5d
+.(fcn 0xca56 0xca62 rom.rssi_thresh_int_disable)
+CCu RSSI_THRES int disable @ 0xca56
+CCu clr up/down mode @ 0xca5d
 .(fcn 0xca6d 0xca78 rom.set_imem919293_to_ff)
 .(fcn 0xca78 0xca82 rom.rc32k_config)
 CCu CLK_32K_SEL 0=disabled, 1=internal 2=external @ 0xca7c
@@ -2085,11 +2106,14 @@ Cd 1 4 @ 0xcd14
 .(fcn 0xcd1b 0xcd3c rom.raise_preamble_timeout)
 CCu hop on invalid preamble @ 0xcd21
 CCu next state is RX_IDLE @ 0xcd27
+CCu RSSI_THRES int enable @ 0xcd38
 .(fcn 0xcd3c 0xcd41 rom.rx_preamble_detected)
 CCu PREAMBLE_DETECT @ 0xcd3c
 .(fcn 0xcd41 0xcd58 rom.rx_sync_timeout)
 CCu INVALID_SYNC @ 0xcd41
 CCu INVALID_SYNC @ 0xcd46
+CCu hop on invalid sync? @ 0xcd4b
+CCu RSSI_THRES int enable @ 0xcd54
 .(fcn 0xcd58 0xcd62 rom.raise_sync_detect)
 CCu PREAMBLE_DETECT @ 0xcd58
 CCu SYNC_DETECT @ 0xcd5d
@@ -2106,7 +2130,9 @@ CCu SYNC_DETECT @ 0xcd8e
 CCu RSSI_JUMP @ 0xcda6
 CCu RSSI_JUMP @ 0xcdab
 .(fcn 0xcdb0 0xcdb3 rom.rx_process_byte_b)
+.(fcn 0xcdb3 0xcdc6 rom.rssi_above_thresh)
 CCu hop on RSSI timeout @ 0xcdb3
+CCu reset RSSI hop timer @ 0xcdb6
 CCu RSSI @ 0xcdbc
 CCu CCA_LATCH @ 0xcdc1
 .(fcn 0xcdc6 0xcdcb rom.clear_int_modem_rssi)
@@ -2143,14 +2169,16 @@ CCu PKT_VALID_ON_POSTAMBLE @ 0xce5b
 CCu packet reception will stop @ 0xce5e
 .(fcn 0xce65 0xcea2 rom.eint1_cb_rssi_latch)
 CCu LATCH @ 0xce7c
-CCu hop on rssi enabled @ 0xcea5
+.(fcn 0xcea2 0xcf5b rom.rssi_timer_config)
+CCu hop on rssi timeout enabled @ 0xcea5
 CCu RSSI_TIMEOUT * 4 - 3 @ 0xceac
 CCu timeout in Ts @ 0xceb4
-CCu 0xd65a=rom.eint1_cb_rssi_hop @ 0xceba
+CCu 0xd65a=rom.eint1_cb_rssi_timeout_hop @ 0xceba
 axc 0xd65a @ 0xceba
 CCu no hopping? @ 0xcec7
 CCu AVERAGE @ 0xcece
-CCu if AVERAGE=SAMPLE1 @ 0xced2
+CCu if AVERAGE=SAMPLE1 (fast RSSI latching) @ 0xced2
+CCu fast RSSI latching supported? @ 0xceda
 CCu LATCH @ 0xcefe
 CCu if latch on RX_STATE @ 0xcf04
 CCu AVERAGE @ 0xcf11
@@ -2344,6 +2372,7 @@ CCu rx hop @ 0xd3fd
 CCu update current channel @ 0xd401
 CCu RX @ 0xd402
 CCu skip entry @ 0xd409
+CCu SYNC_TIMEOUT int disable @ 0xd40d
 .(fcn 0xd414 0xd45a rom.ph_process_len_field)
 CCu protocol IEEE802.15.4g @ 0xd417
 CCu branch and clr if 2nd byte of len field @ 0xd41f
@@ -2379,9 +2408,10 @@ CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xd5c9
 .(fcn 0xd5f4 0xd5f5 rom.rx_nextstate_remain)
 .(fcn 0xd5f5 0xd5ff rom.0x17_isr_finish)
 .(fcn 0xd5ff 0xd60f rom.rx_hop_trigger)
+CCu PREAMBLE_TIMEOUT int disable @ 0xd5ff
 CCu RX hop @ 0xd608
 CCu indicate RX/TX event @ 0xd60a
-.(fcn 0xd60f 0xd65a rom.rx_hop_unk_0xd60f)
+.(fcn 0xd60f 0xd65a rom.rx_hop_config)
 CCu mask HOP_EN @ 0xd61a
 CCu 2: HOP_RSSI_PM_TO @ 0xd61f
 CCu 3: HOP_PM_SYNC_TO @ 0xd623
@@ -2390,8 +2420,9 @@ CCu 1: HOP_PM_TO @ 0xd629
 CCu more than 1 entry? @ 0xd644
 CCu disable hop condition @ 0xd648
 CCu limit max size to 64 entries @ 0xd64e
-.(fcn 0xd65a 0xd66b rom.eint1_cb_rssi_hop)
+.(fcn 0xd65a 0xd66b rom.eint1_cb_rssi_timeout_hop)
 CCu MODEM_RSSI_THRESH @ 0xd65a
+CCu RSSI_THRESH, PREAMBLE_TIMEOUT int disable @ 0xd664
 .(fcn 0xd66b 0xd691 rom.fifo_config)
 CCu check if full/half duplex mode @ 0xd66e
 CCu config fifo for half duplex @ 0xd672
@@ -2466,6 +2497,7 @@ CCu INVALID_PREAMBLE @ 0xde0d
 CCu TX @ 0xde23
 CCu FILTER_MATCH @ 0xde7d
 .(fcn 0xdeef 0xdf10 func2.cmd_0x81)
+CCu RSSI_THRESH int enable @ 0xdff7
 
 echo   ..0xe000
 
