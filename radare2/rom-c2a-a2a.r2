@@ -5,6 +5,7 @@ echo ..boot rom
 f boot.vect_eint0 1 @ 0x8003
 CCu launch EZRadioPRO firmware @ 0x8009
 Cd 1 4 @ 0x800c
+f boot.rom_magic 2 @ 0x800d
 .(fcn 0x8010 0x8018 boot.write_dsp_reg_r7_val_r5)
 .(fcn 0x8018 0x801d boot.store_r6_r7_in_0x27_0x28)
 .(fcn 0x801d 0x801e boot.reti)
@@ -52,7 +53,7 @@ CCu imem dest: 0x2b (cmd buffer) @ 0x80f1
 CCu nrvam src: start + 16*counter @ 0x80f7
 CCu len: 0x10 @ 0x8109
 CCu repeat until empty response buffer @ 0x8113
-.(fcn 0x8118 0x8155 boot.read_nvram_magic1)
+.(fcn 0x8118 0x8155 boot.read_nvram_magic)
 CCu Set NVRAM protection to User? @ 0x8118
 axd dsp_base+0x48 @ 0x811a
 CCu imem dest: 0x3d @ 0x812e
@@ -211,7 +212,7 @@ CCu src: r6 r7 @ 0x856c
 CCu count: r4 r5 @ 0x8570
 CCu dest: 0x27 0x28 @ 0x8574
 CCu add count to destination address @ 0x857a
-.(fcn 0x8587 0x85a9 boot.read_nvram_magic2)
+.(fcn 0x8587 0x85a9 boot.read_rom_magic)
 CCu imem dest: 0x5c @ 0x858e
 CCu rom src: 0x800d @ 0x8596
 axd 0x800d @ 0x8596
@@ -257,7 +258,9 @@ CCu dest hi @ 0x872f
 .(fcn 0x8740 0x874f boot.decrypt_arg_buffer_get_cmd_bit3)
 CCu decrypt all bytes except command @ 0x8740
 CCu extract bit 3 of command @ 0x8744
-.(fcn 0x874f 0x8759 boot.xreg0xe0_write_a_xreg0xe2_and_0xf3)
+.(fcn 0x874f 0x8759 boot.dma_enable_disable)
+CCu enable a=3, disable a=4 @ 0x8751
+CCu clr bits 2-3 @ 0x8755
 .(fcn 0x8759 0x8765 boot.load_r6_r7_with_542b)
 .(fcn 0x8765 0x8771 boot.load_0x2e_to_0x30_from_dptr)
 
@@ -797,6 +800,9 @@ CCu prop POSTAMBLE_PATTERN 1 @ 0x994d
 axd 0x06c6 @ 0x994d
 CCu postamble match? @ 0x9958
 CCu expect_len_field @ 0x9975
+CCu send packet byte @ 0x9a70
+CCu last byte sent? @ 0x9a7f
+CCu send postamble byte (01010101) @ 0x9a82
 CCu don't write byte if bit set @ 0x9989
 CCu r7 = bytes written to fifo @ 0x9991
 CCu process next rx byte @ 0x99a9
@@ -806,7 +812,7 @@ CCu loop over 8 bits @ 0x99ba
 CCu polynom = 0x8005 (CRC-16, Mod-bus, ANSI..) @ 0x99da
 .(fcn 0x99e3 0x9a19 rom.whiten_byte)
 CCu r7 = address of byte to process @ 0x99e3
-.(fcn 0x9a19 0x9a89 rom.tx_process_byte)
+.(fcn 0x9a19 0x9a89 rom.tx_ph_send_frame)
 CCu decrement pktlen @ 0x9a44
 CCu SW_WHT_CTRL @ 0x9a4a
 CCu SW_CRC_CTRL @ 0x9a4d
@@ -871,6 +877,8 @@ CCu return calibration data @ 0x9c26
 .(fcn 0x9c33 0x9c73 rom.dma_enable)
 CCu 0x07 in C2A/A2A dumps @ 0x9c35
 CCu 0x0b in C2A/A2A dumps @ 0x9c38
+CCu set bits 0-1 @ 0x9c4b
+CCu clr bits 2-3 @ 0x9c51
 CCu dance to enable NVRAM @ 0x9c57
 CCu end of NVRAM enable sequence @ 0x9c71
 .(fcn 0x9c73 0x9c8f rom.dma_copy)
@@ -882,6 +890,8 @@ CCu wakeup CPU when DMA complete @ 0x9ca0
 CCu put CPU into idle mode @ 0x9ca8
 .(fcn 0x9cb5 0x9cd1 rom.dma_disable)
 CCu disable NVRAM @ 0x9cbe
+CCu clr bit 0 @ 0x9cc7
+CCu clr bit 5 @ 0x9ccd
 .(fcn 0x9cd1 0x9cfc rom.cmd_func_info)
 .(fcn 0x9cfc 0x9d2a rom.cmd_part_info)
 .(fcn 0x9d2a 0x9dfe rom.cmd_peek)
@@ -1065,7 +1075,9 @@ CCu prev gpio adc sel value @ 0xa33f
 CCu create pin mask @ 0xa34b
 CCu ADC_CFG @ 0xa357
 CCu GPIO_ATT @ 0xa35b
+CCu clr bit 2 @ 0xa36d
 CCu restore gpio cfg1 @ 0xa37c
+CCu set bit 2 @ 0xa37f
 CCu restore gpoio adc sel @ 0xa382
 .(fcn 0xa38c 0xa3a5 rom.main_loop_change_state)
 CCu STATE_CHANGE @ 0xa38e
@@ -1131,6 +1143,8 @@ CCu SLEEP @ 0xa48f
 CCu var.INT_MODEM_STATUS @ 0xa500
 CCu var.INT_CHIP_STATUS @ 0xa508
 .(fcn 0xa510 0xa530 rom.adc_enable)
+CCu set bit 1 @ 0xa513
+CCu set bit 7 @ 0xa519
 .(fcn 0xa530 0xa550 rom.ph_reset)
 CCu RSSI_THRESH int enable, others disabled @ 0xa545
 .(fcn 0xa550 0xa57a rom.config_radio_after_reset)
@@ -1433,8 +1447,10 @@ axd 0x06f1 @ 0xafbc
 CCu rx and tx share pkt field cfg @ 0xafc2
 axd 0x06dd @ 0xafc2
 .(fcn 0xafcb 0xafde rom.pkt_end_unk_0xafcb)
+CCu # of bytes below 8 to send to DSP at a time (set to 2) @ 0xafe1
+CCu tx in chunks, based on DSP buffer size? @ 0xafe2
 CCu clr ph irq flags @ 0xafd5
-.(fcn 0xafde 0xafed rom.tx_byte_isr)
+.(fcn 0xafde 0xafed rom.tx_frame_isr)
 .(fcn 0xafed 0xaff0 rom.rx_byte_isr)
 .(fcn 0xaff0 0xaffd rom.0x3b_isr)
 CCu usec delay expired @ 0xaff0
@@ -1445,6 +1461,16 @@ echo   ..0xb000
 CCu not implemented @ 0xb01b
 .(fcn 0xb027 0xb03e rom.0x2f_isr)
 CCu clr crc errors @ 0xb02a
+.(fcn 0xb03e 0xb070 rom.tx_raw_send_frame)
+CCu TX 0x0e byte frames from buffer r6r7 @ 0xb03e
+CCu buffer length [0x0a:0x0b] less then frame size [0x0e]? @ 0xb045
+CCu if so, TX [0x0b] bytes @ 0xb047
+CCu clr bit 0 (TX) @ 0xb04e
+CCu decrement buffer length @ 0xb056
+CCu decrement frame count @ 0xb05d
+CCu set bit 0 (TX) @ 0xb060
+CCu send postamble byte? (01010101) @ 0xb068
+CCu return current buffer position @ 0xb06b
 CCu report PH filter match @ 0xb079
 .(fcn 0xb07e 0xb09b rom.rx_ph_isr_preamble_detected)
 CCu preamble detected @ 0xb07e
@@ -1501,10 +1527,16 @@ CCu 0xb364 busy wait 10 loops @ 0xb362
 CCu r7 = dsp reg addr @ 0xb371
 CCu r5 = value written to dsp reg 0x47 @ 0xb373
 CCu exit if r5 is 0x7f @ 0xb376
+CCu enable ADC @ 0xb37b
+axd xreg_base+0xdf @ 0xb37f
 CCu 0x0798: dsp_reg_cache @ 0xb38c
 axd 0x0798 @ 0xb38c
 CCu 0x0798: dsp_reg_cache @ 0xb3c8
 axd 0x0798 @ 0xb3c8
+CCu set bit 1 @ 0xb3d2
+axd xreg_base+0xdf @ 0xb3d5
+CCu disable ADC @ 0xb3da
+axd xreg_base+0xe0 @ 0xb3dc
 .(fcn 0xb3de 0xb3f2 rom.flag0x28_4_handler)
 .(fcn 0xb3f2 0xb426 rom.flag0x28_processing)
 .(fcn 0xb426 0xb434 rom.flag0x28_5_handler)
@@ -1939,6 +1971,7 @@ CCu wait until hw mul done @ 0xc73d
 .(fcn 0xc75a 0xc7c3 rom.adc_unk0xc75a)
 CCu ADC enable @ 0xc762
 axd xreg_base+0xdf @ 0xc765
+CCu set bit 1 @ 0xc7b2
 .(fcn 0xc7c3 0xc7ef rom.adc_unk0xc7c3)
 CCu save xreg 0x00 @ 0xc7c6
 CCu save xreg 0x01 @ 0xc7cf
@@ -1996,6 +2029,7 @@ CCu TX @ 0xc928
 CCu TX @ 0xc92b
 .(fcn 0xc92f 0xc93d rom.rc32k_enable)
 axd xreg_base+0xab @ 0xc935
+f xreg_r0_and_0xfe_inc_r0_mov_xreg_r0_to_acc)
 axd xreg_base+0xac @ 0xc93a
 .(fcn 0xc950 0xc95a rom.set_eint1_callback_r4r5)
 f rom.store_r4r5_at_scratch_r0_ret_r4_or_r5 1 @ 0xc952
@@ -2036,6 +2070,8 @@ CCu clr up/down mode @ 0xca5d
 CCu CLK_32K_SEL 0=disabled, 1=internal 2=external @ 0xca7c
 .(fcn 0xca82 0xca8d rom.rc32k_get_xtal_divider_in_r2r3)
 axd 0x0742 @ 0xca87
+.(fcn 0xcab5 0xcabf rom.xreg_r0_or_1_sfr0x96_and_fd_ret_r7_0a)
+CCu clr bit 1 @ 0xcab9
 CCu return min wait cycles @ 0xcabc
 .(fcn 0xcabf 0xcac9 rom.fifo_rx_get_count)
 CCu return bytes stored in rx fifo @ 0xcac7
@@ -2060,6 +2096,7 @@ CCu returns 0 if rx byte is available for processing @ 0xcb55
 .(fcn 0xcb67 0xcb70 rom.read_dptr_shl2_and20_to_r7)
 .(fcn 0xcb70 0xcb78 rom.pti_get_fifo_len_clr_ie)
 .(fcn 0xcb78 0xcb80 rom.adc_disable)
+CCu disable ADC peripheral @ 0xcb7c
 .(fcn 0xcb80 0xcb88 rom.sub_r7_r5_and_strange_math)
 .(fcn 0xcb88 0xcb8f rom.dsp_set_reg_r7_val_dptr_and_1f)
 .(fcn 0xcb8f 0xcb97 rom.and_r4r6_and_ar5_or)
@@ -2089,7 +2126,7 @@ CCu bit 0: parse commands @ 0xcbd4
 .(fcn 0xcc79 0xcc82 rom.tx_event_handler)
 .(fcn 0xcc82 0xcc8b rom.rx_event_handler)
 .(fcn 0xcc8b 0xcc94 rom.0x43_handler)
-.(fcn 0xcc94 0xcc9d rom.tx_byte_handler)
+.(fcn 0xcc94 0xcc9d rom.tx_frame_handler)
 .(fcn 0xcc9d 0xcca6 rom.rx_byte_handler)
 .(fcn 0xcca6 0xccaf rom.0x3b_handler)
 .(fcn 0xccaf 0xccb8 rom.wut_handler)
@@ -2151,7 +2188,8 @@ CCu tx fifo contains EZConfig array @ 0xcdf2
 CCu TX_FIFO_EMPTY @ 0xce05
 CCu TX_FIFO_EMPTY @ 0xce0d
 CCu TX_FIFO_ALMOST_EMPTY @ 0xcdfe
-.(fcn 0xce12 0xce17 rom.tx_process_byte_entry)
+.(fcn 0xce12 0xce17 rom.tx_send_frame_size_r7)
+CCu r7: max bytes to send to DSP @ 0xce12
 .(fcn 0xce17 0xce1c rom.fifo_raise_underflow_overflow_err)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xce17
 .(fcn 0xce1c 0xce26 rom.fifo_rx_raise_almost_full)

@@ -24,7 +24,7 @@ CCu related to RSSI_READ_DELAY, FAST_RSSI_DELAY and eint1 @ _sfr+0x92
 CCu set to 0x43 end of boot, set to 0x40 on reset @ _sfr+0x93
 f sfr.dsp_reg_addr 1 @ _sfr+0x94
 f sfr.dsp_reg_value 1 @ _sfr+0x95
-CCu 2:clr before GPIO adc read @ _sfr+0x96
+CCu 1:clr for unk ADC op 2:clr for GPIO ADC read @ _sfr+0x96
 
 f sfr.indirect_sfr 1 @ _sfr+0xa6
 CCu write addr, then read or write value @ _sfr+0xa6
@@ -345,7 +345,7 @@ CCu set to #0x17 if EXT_PA_RAMP, 7 if not @ xreg_base+0xdb
 CCu 0:? 1:? 2:? 3:? 4:set in adc enable @ xreg_base+0xdf
 
 f xreg.periph_ctrl 1 @ xreg_base+0xe0
-CCu 0:DMA en 1:ADC 5:BATT 6:1=low batt @ xreg_base+0xe0
+CCu 0:DMA en 1:ADC 2:? 5:BATT 6:1=low batt @ xreg_base+0xe0
 f xreg.periph_ctrl2 1 @ xreg_base+0xe1
 CCu 0-1:NVRAM enable/disable 2:? 4:? @ xreg_base+0xe1
 f xreg.periph_ctrl3 1 @ xreg_base+0xe2

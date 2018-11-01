@@ -22,7 +22,7 @@ echo annotating imem
 f var.ph_lenfield_pos @ _idata+0x09
 f var.ph_pktlen_msb @ _idata+0x0a
 f var.ph_pktlen_lsb @ _idata+0x0b
-
+f var.ph_dsp_frame_size @ _idata+0x0e
 f var.ph_tx_byte @ _idata+0x10
 f var.ph_peramble_timeout 1 @ _idata+0x11
 f var.ph_tx_bytes_sent @ _iadata+0x12
@@ -178,7 +178,7 @@ f vect.tx_event 1 @ 0x0023
 f vect.rx_event 1 @ 0x0027
 f vect.spi_fifo_err 1 @ 0x002b
 f vect.unk_0x2f 1 @ 0x002f
-f vect.tx_byte 1 @ 0x0033
+f vect.tx_frame 1 @ 0x0033
 f vect.rx_byte 1 @ 0x0037
 f vect.unk_0x3b 1 @ 0x003b
 f vect.wut 1 @ 0x003f
@@ -327,7 +327,8 @@ f map.rx_start 1 @ 0x01f8
 f map.ircal_set_cal_val_r7 1 @ 0x01fb
 f map.modem_start_unk0x9897 1 @ 0x01fe
 
-f map.tx_process_byte 1 @ 0x201
+f map.tx_ph_send_frame 1 @ 0x0201
+f map.tx_raw_send_frame 1 @ 0x0204
 f map.rc32k_xreg0xe5_write_r7_xreg0xe6_write_0 1 @ 0x0207
 f map.dsp_config_reg_0x06 1 @ 0x020a
 f map.irq0x07_bit7 1 @ 0x020d
@@ -337,7 +338,7 @@ f map.cmd_set_property 1 @ 0x0216
 f map.pkt_tx_unk_0xd512 1 @ 0x0219
 f map.clk_wait_for_xo_ready 1 @ 0x021c
 f map.fifo_rx_clear_almost_full 1 @ 0x021f
-f map.tx_process_byte_entry 1 @ 0x0222
+f map.tx_send_frame_size_r7 1 @ 0x0222
 f map.cmd_fifo_info 1 @ 0x0225
 f map.fifo_tx_update 1 @ 0x0228
 f map.set_frr_var_r7_to_r5 1 @ 0x022b
