@@ -7,15 +7,16 @@ CCu launch EZRadioPRO firmware @ 0x8009
 Cd 1 4 @ 0x800c
 f boot.rom_magic 2 @ 0x800d
 .(fcn 0x8010 0x8018 boot.write_dsp_reg_r7_val_r5)
-.(fcn 0x8018 0x801d boot.store_r6_r7_in_0x27_0x28)
+.(fcn 0x8018 0x801d boot.set_patch_dest_addr_r6r7)
 .(fcn 0x801d 0x801e boot.reti)
 .(fcn 0x801f 0x8022 boot.vect_spi)
 .(fcn 0x8022 0x803a boot.dma_count_r2r3_cmd_copy)
+axd 0x5109 @ 0x8029
 CCu cmd: READ @ 0x802c
 f boot.dma_cmd_r7_execute 1 @ 0x802e
 .(fcn 0x803a 0x8042 boot.read_xdata_at_src_addr_to_a)
 .(fcn 0x8043 0x8046 boot.vect_0x43)
-.(fcn 0x8046 0x8072 boot.init_0x07xx_from_nvram)
+.(fcn 0x8046 0x8072 boot.copy_factory_part_cfg)
 CCu dest: 0x07f0 part data @ 0x8048
 CCu len: 0x10 @ 0x804c
 CCu nvram src: 0x5510 @ 0x8050
@@ -28,10 +29,6 @@ CCu nvram src: 0x5520 @ 0x806c
 .(fcn 0x8072 0x80ea boot.copy_srcr4r5_dstimemr7_lenr3)
 CCu XDATA 0x5400 is mirror of IMEM @ 0x8072
 f boot.copy_srcr4r5_dstr6r7_lenr2r3 1 @ 0x8077
-CCu dest addr msb @ 0x8077
-CCu dest addr lsb @ 0x8079
-CCu src addr msb @ 0x807b
-CCu src addr lsb @ 0x807d
 CCu compare src msb to #0x55 @ 0x807f
 CCu branch if less @ 0x8084
 CCu compare src to 0x7500 @ 0x8086
@@ -46,17 +43,20 @@ CCu store in XMEM:dst @ 0x80c3
 CCu src within NVRAM (0x5500-0x74ff) @ 0x80cb
 CCu a = src addr lsb @ 0x80cd
 CCu clr dma src addr @ 0x80d9
+CCu don't disable NVRAM if set @ 0x80e4
 .(fcn 0x80ea 0x8118 boot.run_cmds_from_nvram)
-CCu nvram src start @ 0x80ea
+CCu run cmds at r6r7 @ 0x80ea
 CCu counter = 0 @ 0x80ee
-CCu imem dest: 0x2b (cmd buffer) @ 0x80f1
+CCu imem dest: 0x2b (spi cmd buffer) @ 0x80f1
 CCu nrvam src: start + 16*counter @ 0x80f7
 CCu len: 0x10 @ 0x8109
-CCu repeat until empty response buffer @ 0x8113
-.(fcn 0x8118 0x8155 boot.read_nvram_magic)
+CCu repeat until cmd response is 0 @ 0x8113
+.(fcn 0x8118 0x8155 boot.protect_nvram)
 CCu Set NVRAM protection to User? @ 0x8118
 axd dsp_base+0x48 @ 0x811a
+axd xreg_base+0xe2 @ 0x812a
 CCu imem dest: 0x3d @ 0x812e
+axd _idata+0x3d @ 0x812e
 CCu length: 5 (0x3d-0x41) @ 0x8131
 CCu nvram src: 0x5500 (is ff03030a0a) @ 0x8133
 CCu evaluate copied data (is 0a) @ 0x8139
@@ -89,6 +89,8 @@ CCu process next script step @ 0x81bd
 CCu return value 0 (will cause CMD ERR 32) @ 0x81bf
 .(fcn 0x81c7 0x823b boot.bootloader)
 CCu enable interrupts @ 0x81df
+CCu only run once on power-up?? @ 0x81e9
+CCu indicate multiple NRAM reads @ 0x81f0
 CCu nvram src: 0x5600 @ 0x81f4
 CCu disable interrupts @ 0x8220
 .(fcn 0x823b 0x8245 boot.nvram_disable)
@@ -132,7 +134,7 @@ CCu cmd 0xe0-0xef: PATCH_DATA @ 0x8349
 CCu CMD_ERROR_BAD_CMD @ 0x8356
 .(fcn 0x835b 0x837b boot.cmd_patch_copy)
 CCu CMD_ERROR_BAD_PATCH @ 0x8367
-.(fcn 0x837b 0x8388 boot.clear_response_buffer)
+.(fcn 0x837b 0x8388 boot.clr_cmd_buffer)
 .(fcn 0x8388 0x83c5 boot.cmd_patch_clean)
 CCu fill flag set in arg[1]? @ 0x8391
 CCu fill byte = arg[6] @ 0x8396
@@ -201,7 +203,7 @@ CCu dest: 0x4000 (XMEM mirror) @ 0x8532
 axd 0x5105 @ 0x8537
 axd 0x5109 @ 0x8541
 CCu count: 0x0760 @ 0x853e
-CCu cmd: 2 @ 0x8545
+CCu cmd: 2 (clear memory?) @ 0x8545
 .(fcn 0x8549 0x8568 boot.cmd_get_chip_status)
 CCu CMD_ERR_STATUS @ 0x854b
 CCu CMD_ERR_CMD_ID @ 0x854e
@@ -250,10 +252,8 @@ CCu r6r7 = [ba] * 8 @ 0x8701
 CCu a = [ba+1] @ 0x8717
 .(fcn 0x871b 0x8723 boot.load_0x2c_0x2d_from_dptr)
 .(fcn 0x8723 0x872c boot.dma_set_src_lo_a_src_hi_0x58)
-CCu nvram src hi @ 0x8727
+axd 0x5103 @ 0x8729
 .(fcn 0x872c 0x8736 boot.dma_set_dst_a_to_len_dec_len)
-CCu dest lo @ 0x872c
-CCu dest hi @ 0x872f
 .(fcn 0x8736 0x8740 boot.init_spi_buffer_vars)
 .(fcn 0x8740 0x874f boot.decrypt_arg_buffer_get_cmd_bit3)
 CCu decrypt all bytes except command @ 0x8740
@@ -261,7 +261,8 @@ CCu extract bit 3 of command @ 0x8744
 .(fcn 0x874f 0x8759 boot.dma_enable_disable)
 CCu enable a=3, disable a=4 @ 0x8751
 CCu clr bits 2-3 @ 0x8755
-.(fcn 0x8759 0x8765 boot.load_r6_r7_with_542b)
+.(fcn 0x8759 0x8765 boot.get_cmd_buffer_ptr)
+CCu returns ptr to var.cmd_buffer in r6r7 @ 0x8759
 .(fcn 0x8765 0x8771 boot.load_0x2e_to_0x30_from_dptr)
 
 echo ..firmware rom
@@ -2029,7 +2030,7 @@ CCu TX @ 0xc928
 CCu TX @ 0xc92b
 .(fcn 0xc92f 0xc93d rom.rc32k_enable)
 axd xreg_base+0xab @ 0xc935
-f xreg_r0_and_0xfe_inc_r0_mov_xreg_r0_to_acc)
+f xreg_r0_and_0xfe_inc_r0_mov_xreg_r0_to_acc 1 @0xc936
 axd xreg_base+0xac @ 0xc93a
 .(fcn 0xc950 0xc95a rom.set_eint1_callback_r4r5)
 f rom.store_r4r5_at_scratch_r0_ret_r4_or_r5 1 @ 0xc952

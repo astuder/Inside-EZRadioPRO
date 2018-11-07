@@ -7,10 +7,10 @@ echo .
 # includes for analysis shared by boot and all func images
 
 . radare2/common.r2
-. radare2/rom-c2a-a2a.r2
 . radare2/registers-c2a-a2a.r2
 . radare2/registers-c2a-a2a-xrefs.r2
 . radare2/xdata-c2a-a2a.r2
+. radare2/rom-c2a-a2a.r2
 
 # specific to bootloader
 
@@ -18,57 +18,64 @@ echo .
 
 echo annotating imem
 
-f var.frr_a_addr_hi 1 @_idata+0x11
-f var.frr_a_addr_lo 1 @_idata+0x12
-f var.frr_b_addr_hi 1 @_idata+0x13
-f var.frr_b_addr_lo 1 @_idata+0x14
-f var.frr_c_addr_hi 1 @_idata+0x15
-f var.frr_c_addr_lo 1 @_idata+0x16
-f var.frr_d_addr_hi 1 @_idata+0x17
-f var.frr_d_addr_lo 1 @_idata+0x18
-f var.device_curr_state 1 @_idata+0x1d
-f var.device_next_state 1 @_idata+0x1e
-f var.main_loop_related 1 @_idata+0x1f
-f var.flags_25 @_idata+0x25
-CCu 1:low power @_idata+0x25
-/c 0x25.1 > /dev/null
-CCu low power flag @@hit*
-f-hit*
+f var.flags_21 1 @ _idata+0x21
+CCu 0:valid image 1:spi cmd done 2:? 3:patch error 4:clr if rom magic is 2 5:? 6:NVRAM multi reads 7:? @ _idata+0x21
 
-f var.main_loop_ctl 1 @_idata+0x2c
-CCu 0:parse cmds 1:? 2:? 3:ctl ex 5:? 6:? 7:?@_idata+0x2c
-f var.main_loop_ctl_ex 1 @_idata+0x2d
-CCu 0:? 3:? @_idata+0x2d
+f var.cmd_err_status 1 @ _idata+0x22
+f var.patch_ptr_msb 1 @ _iadata+0x23
+f var.patch_ptr_lsb 1 @ _iadata+0x24
+f var.patch_crc_msb 1 @ _idata+0x25
+f var.patch_crc_lsb 1 @ _idata+0x26
+f var.patch_dest_msb 1 @ _idata+0x27
+f var.patch_dest_lsb 1 @ _idata+0x28
+
+f var.cmd_buffer 16 @ _idata+0x2b
+
+f var.nvm_cfg0 1 @ _idata+0x3d
+f var.nvm_cfg1 1 @ _idata+0x3e
+f var.nvm_cfg2 1 @ _idata+0x3f
+
+f var.nvm_cfg3 1 @ _idata+0x40
+f var.nvm_cfg4 1 @ _idata+0x41
+f var.patch_len_msb @ _idata+0x42
+f var.patch_len_lsb @ _idata+0x43
+f var.patch_src_msb @ _idata+0x44
+f var.patch_src_lsb @ _idata+0x45
+f var.cmd_err_cmd_id 1 @ _idata+0x46
+f var.crypto_a_msb 1 @ _idata+0x47
+f var.crypto_a_lsb 1 @ _idata+0x48
+f var.crypto_b_msb 1 @ _idata+0x49
+f var.crypto_b_lsb 1 @ _idata+0x4a
+f var.crypto_c_msb 1 @ _idata+0x4b
+f var.crypto_c_lsb 1 @ _idata+0x4c
+f var.crypto_d_msb 1 @ _idata+0x4d
+f var.crypto_d_lsb 1 @ _idata+0x4e
+f var.checksum_msb 1 @ _idata+0x4f
+
+f var.checksum_lsb 1 @ _idata+0x50
+f var.crypto_e 1 @ _idata+0x51
+f var.checksum_src_msb 1 @ _idata+0x52
+f var.checksum_src_lsb 1 @ _idata+0x53
+f var.checksum_len_msb 1 @ _idata+0x54
+f var.checksum_len_lsb 1 @ _idata+0x55
+
+f var.dma_dest_msb 1 @ _idata+0x56
+f var.dma_dest_lsb 1 @ _idata+0x57
+f var.dma_src_msb 1 @ _idata+0x58
+f var.dma_src_lsb 1 @ _idata+0x59
+f var.crypto_arg_mask 1 @ _idata+0x5a
+f var.crypto_arg_ptr 1 @ _iadata+0x5b
+f var.boot_magic0 1 @ _idata+0x5c
+f var.boot_magic1 1 @ _idata+0x5d
+f var.nvm_cmd_msb 1 @ _idata+0x5e
+f var.nvm_cmd_lsb 1 @ _idata+0x5f
+
+f var.nvm_cmd_idx 1 @ _idata+0x60
+
 
 # CODE
 
 echo annotating code
-
-echo ..vectors
-
-f vect.reset 1 @ 0x0000
-f vect.eint0 1 @ 0x0003
-f vect.unk_0x07 1 @ 0x0007
-f vect.timer0 1 @ 0x000b
-f vect.unk_0x0f 1 @ 0x000f
-f vect.eint1 1 @ 0x0013
-f vect.unk_0x16 1 @ 0x0016
-f vect.unk_0x17 1 @ 0x0017
-f vect.timer1 1 @ 0x001b
-f vect.spi 1 @ 0x001f
-f vect.serial 1 @ 0x0023
-f vect.unk_0x27 1 @ 0x0027
-f vect.timer2 1 @ 0x002b
-f vect.unk_0x2f 1 @ 0x002f
-f vect.unk_0x33 1 @ 0x0033
-f vect.unk_0x37 1 @ 0x0037
-f vect.unk_0x3b 1 @ 0x003b
-f vect.unk_0x3f 1 @ 0x003f
-f vect.unk_0x43 1 @ 0x0043
-f vect.unk_0x46 1 @ 0x0046
-CCu TX @ 0x0046
-f vect.unk_0x4f 1 @ 0x004f
-CCu RX @ 0x004f
 
 # run r2 analysis
 
@@ -77,4 +84,7 @@ echo analyzing references
 aar 0x560 @0
 aar 0x8000 @ 0x8000
 
-echo .
+echo looking for rogue functions
+afl~-\>
+
+s 0x8000
