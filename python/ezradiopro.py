@@ -65,8 +65,8 @@ class EZRadioPRO:
             cmd_out = self._spi.xfer2(cmd_out)
             return cmd_out[2:]
 
-    def power_up(self):
-        self.command(0x02, [0x01, 0x00, 0x01, 0xc9, 0xc3, 0x80])
+    def power_up(self, func=1):
+        self.command(0x02, [func, 0x00, 0x01, 0xc9, 0xc3, 0x80])
 
     def part_info(self):
         data = self.command(0x01, output_bytes=8)
@@ -339,7 +339,7 @@ def dump_to_hex(dump, base):
         str_out += '\n'
     return str_out
 
-def command_info():
+def command_info(func):
     radio = EZRadioPRO()
     radio.open()
     radio.reset()
@@ -360,7 +360,7 @@ def command_info():
                             chip_status.chip_status, chip_status.info_flags)
 
     print 'Power up radio...'
-    radio.power_up()
+    radio.power_up(func)
 
     func_info = radio.func_info()
     print 'Func: ext %d branch %d int %d patch %d func %s' % (
@@ -373,11 +373,11 @@ def command_info():
 
     radio.close()
 
-def command_peek(addr):
+def command_peek(addr, func):
     radio = EZRadioPRO()
     radio.open()
     radio.reset()
-    radio.power_up()
+    radio.power_up(func)
     print '0x%02x' % radio.peek(addr)
     radio.close()
 
@@ -385,7 +385,7 @@ def command_dump(args):
     radio = EZRadioPRO()
     radio.open()
     radio.reset()
-    radio.power_up()
+    radio.power_up(args.func)
 
     dump = []
     if args.code == True:
@@ -449,14 +449,16 @@ if __name__ == '__main__':
                         help='output file for dump command')
     parser.add_argument('-p', '--peek', type=arg_address,
                         help='peek memory at address')
+    parser.add_argument('-f', '--func', type=int, default=1,
+                        help='select func image for power-up')
     parser.add_argument('-i', '--info', action='store_true',
                         help='return information about radio IC')
     args = parser.parse_args()
     print args
 
     if args.info == True:
-        command_info()
+        command_info(args.func)
     elif args.peek is not None:
-        command_peek(args.peek)
+        command_peek(args.peek, args.func)
     elif args.dump is not None:
         command_dump(args)
