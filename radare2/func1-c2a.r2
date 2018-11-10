@@ -266,13 +266,14 @@ f map.override_pa_sel 1 @ 0x0174
 f map.nop_0xd253 1 @ 0x017a
 f map.cmd_part_info 1 @ 0x017d
 f map.dsp_set_0x03_0x58_from_cache_set_0x87_to_0x02 1 @ 0x0180
-f map.modem_start_unk0xba40 1 @ 0x183
+f map.vco_calibration 1 @ 0x183
 f map.rx_process_byte_b 1 @ 0x0186
 f map.raise_sync_detect 1 @ 0x0189
 f map.config_from_nvram 1 @ 0x018c
 f map.tx_ph_start 1 @ 0x018f
 f map.raise_preamble_detect 1 @ 0x0192
 f map.spi_parse_more_cmds 1 @ 0x0195
+f map.radio_spi_active_to_ready 1 @ 0x0198
 f map.config_dsa_ctrl2 1 @ 0x19b
 f map.cmd_ircal_manual 1 @ 0x019e
 f map.ircal_calibration_step 1 @ 0x01a1
@@ -305,7 +306,7 @@ f map.modem_start_tx 1 @ 0x01f2
 f map.rc32k_cal_unk0xb230 1 @ 0x01f5
 f map.rx_start 1 @ 0x01f8
 f map.ircal_set_cal_val_r7 1 @ 0x01fb
-f map.modem_start_unk0x9897 1 @ 0x01fe
+f map.modem_set_frequency 1 @ 0x01fe
 
 f map.tx_ph_send_frame 1 @ 0x0201
 f map.tx_raw_send_frame 1 @ 0x0204
@@ -353,6 +354,7 @@ f map.tx_sequencer_mode_delay 1 @ 0x0297
 f map.change_state_from_ready 1 @ 0x029a
 f map.change_from_spi_active_to_ezconfig 1 @ 0x029d
 f map.config_modem_clkgen_band 1 @ 0x02a0
+f map.set_config_steps_0xf850 1 @ 0x02a3
 f map.pti_send_rx_info 1 @ 0x02a6
 f map.main_loop_bit7_cmd1_2 @ 0x02a9
 f map.change_device_state 1 @ 0x02ac

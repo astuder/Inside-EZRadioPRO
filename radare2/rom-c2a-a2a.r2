@@ -774,11 +774,12 @@ CCu clr preamble detected flag @ 0x9885
 CCu SYNC_TIMEOUT int disable @ 0x9887
 .(fcn 0x988d 0x9897 rom.latch_rssi)
 CCu store LATCHED_RSSI for FRR access @ 0x988f
-.(fcn 0x9897 0x98e9 rom.modem_start_unk0x9897)
+.(fcn 0x9897 0x98e9 rom.modem_set_frequency)
 CCu VCO count RX adjust @ 0x9897
 CCu SY_SEL @ 0x98a8
 CCu high performance mode @ 0x98ab
 CCu low-power mode @ 0x98b4
+CCu W_SIZE * 2 @ 0x98b5
 CCu start hw multiplier @ 0x98bd
 CCu wait until hw mul done @ 0x98c0
 axd xreg_base+0x94 @ 0x98e6
@@ -1298,6 +1299,7 @@ CCu set int 0x0f callback @ 0xaa48
 CCu if callback is not 0 @ 0xaa4d
 .(fcn 0xaa63 0xaa7d rom.int0x0f_config_callback)
 CCu set int 0x0f callback @ 0xaa66
+axd _idata+0x89 @ 0xaa66
 CCu if callback is not 0 @ 0xaa6b
 .(fcn 0xaa7d 0xaaa3 rom.eint1_config_callback2)
 CCu r6=delay msb? @ 0xaa7d
@@ -1561,7 +1563,14 @@ CCu raise another bit7 event @ 0xb5e5
 CCu next bit7 cmd @ 0xb5ea
 .(fcn 0xb5f1 0xb5f9 rom.main_loop_bit7_cmd10)
 .(fcn 0xb5f9 0xb617 rom.main_loop_bit7_cmd0)
+.(fcn 0xb617 0xb6ad rom.radio_spi_active_to_ready)
 axd dsp_base+0x00 @ 0xb635
+axd xreg_base+0xda @ 0xb64b
+axd xreg_base+0xdb @ 0xb64f
+axd xreg_base+0xdc @ 0xb653
+axd xreg_base+0xdc @ 0xb65f
+axd xreg_base+0xda @ 0xb686
+axd 0x0740 @ 0xb69f
 .(fcn 0xb6ad 0xb6c5 rom.wut_check_low_batt)
 CCu en ADC, BATT @ 0xb6b0
 CCu low batt bit @ 0xb6bd
@@ -1632,7 +1641,9 @@ CCu set enable bit as configured @ 0xba07
 .(fcn 0xba0d 0xba27 rom.clk_bufclk_unk0xba0d)
 CCu BUFCLK @ 0xba18
 .(fcn 0xba27 0xba40 rom.modem_start_unk0xba27)
-.(fcn 0xba40 0xba63 rom.modem_start_unk0xba40)
+.(fcn 0xba40 0xba63 rom.vco_calibration)
+axd xreg_base+0x96 @ 0xba4f
+axd xreg_base+0x95 @ 0xba57
 axd xreg_base+0xd9 @ 0xba68
 .(fcn 0xba78 0xbb11 rom.cmd_gpio_pin_config)
 CCu GPIO0 (pin 9) @ 0xba78
@@ -1842,6 +1853,9 @@ CCu wait for SEQ_DELAY .1us @ 0xc0e6
 axd 0x0798 @ 0xc0f7
 CCu 0x0798 = dsp cache @ 0xc0f7
 .(fcn 0xc182 0xc1db rom.rx_start_dsp_unk_0xc182)
+CCu r7 is 0 or 1 @ 0xc182
+CCu close LNA shunt @ 0xc18d
+CCu restore LNA shunt state @ 0xc1c0
 .(fcn 0xc1db 0xc23a rom.rx_start_dsp_unk_0xc1db)
 .(fcn 0xc23a 0xc271 rom.rx_start_dsp_unk_0xc23a)
 .(fcn 0xc271 0xc2b6 rom.cmd_undoc_0xd0)
@@ -2240,6 +2254,7 @@ CCu clr start condition @ 0xcf70
 CCu TX @ 0xcf73
 CCu WUT expired @ 0xcf78
 .(fcn 0xcf7b 0xcf7c rom.main_loop_bit6_event)
+.(fcn 0xcf7c 0xcf89 rom.set_config_steps_0xf850)
 axd _idata+0x92 @ 0xcf80
 axd _idata+0x93 @ 0xcf84
 .(fcn 0xcf89 0xcf8c rom.config_modem_entry)
@@ -2337,6 +2352,9 @@ CCu indicate RX/TX event @ 0xd1b4
 .(fcn 0xd1ba 0xd1ee rom.cmd_tx_hop)
 CCu TX @ 0xd1bc
 CCu exit with error if not in TX state @ 0xd1be
+CCu TX hopping supported? @ 0xd1c4
+axd xreg_base+0x78 @ 0xd1d7
+CCu CMD_ERROR_BAD_COMMAND @ 0xd1e9
 .(fcn 0xd1ee 0xd21c rom.cmd_ezconfig_check)
 CCu in EZConfig state? @ 0xd1ee
 CCu compare args with CRC @ 0xd1f1

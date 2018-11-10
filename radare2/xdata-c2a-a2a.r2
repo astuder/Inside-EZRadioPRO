@@ -455,7 +455,7 @@ f const.group_info_mask 2 @ 0x07f6
 f const.chip_features1 1 @ 0x07f9
 CCu 0:PEEK 1:POKE 2:EZConfig? @ 0x07f9
 f const.chip_features2 1 @ 0x07fa
-CCu 0:HP PA 1:LP PA 2:MP PA 3:ETSI 4:PWR SEQ 6:BUFCLK @ 0x07fa
+CCu 0:HP PA 1:LP PA 2:MP PA 3:ETSI 4:PWR SEQ 5:TX HOP 6:BUFCLK @ 0x07fa
 f const.chip_features3 1 @ 0x07fb
 CCu 2:IRCAL 3:DSA 4:LOW PWR B 5:related to xreg0x53 6:LOW PWR A 7:Fast RSSI latching @ 0x07fb
 f const.chip_features4 1 @ 0x07fc

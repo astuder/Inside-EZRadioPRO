@@ -92,7 +92,7 @@ f sfr.modem_freq_dev_lsb 1 @ _sfr+0xe6
 f sfr.modem_freq_offset_msb 1 @ _sfr+0xe7
 f sfr.modem_freq_offset_lsb 1 @ _sfr+0xe8
 f sfr.freq_pll_div_int 1 @ _sfr+0xe9
-CCu 0-6:pll divider inte[6:0] @ _sfr+0xe9
+CCu 0-6:pll divider inte[6:0] 7:vco cal? @ _sfr+0xe9
 f sfr.freq_pll_div_frac0 1 @ _sfr+0xea
 CCu 0-2:pll divider frac[18:16] 3:1 5-7:RAMP_DLY @ _sfr+0xea
 f sfr.freq_pll_div_frac1 1 @ _sfr+0xeb
@@ -268,8 +268,12 @@ f xreg.freq_vco_cnt_msb 1 @ xreg_base+0x93
 CCu set in RX/TX_HOP @ xreg_base+0x93
 f xreg.freq_vco_cnt_lsb 1 @ xreg_base+0x94
 f xreg.freq_w_size @ xreg_base+0x95
+f xreg.freq_unk96 @ xreg_base+0x96
 CCu set to #0x80 before writing w_size @ xreg_base+0x96
+f xreg.freq_unk97 @ xreg_base+0x97
 CCu set to #0x08 before writing w_size @ xreg_base+0x97
+f xreg.freq_unk98 @ xreg_base+0x98
+CCu 1:set in vco cal @ xreg_base+0x09
 f xreg.gpio_gpio0_cfg2 1 @ xreg_base+0x99
 f xreg.gpio_gpio1_cfg2 1 @ xreg_base+0x9a
 f xreg.gpio_gpio2_cfg2 1 @ xreg_base+0x9b
@@ -338,8 +342,9 @@ f xreg.sync_bits_7_0 1 @ xreg_base+0xd4
 f xreg.sync_bits_15_8 1 @ xreg_base+0xd5
 f xreg.sync_bits_23_16 1 @ xreg_base+0xd6
 f xreg.sync_bits_24_31 1 @ xreg_base+0xd7
-f xreg.tx_hop_related 1 @ xreg_base+0xd9
-CCu set to #0x15 before writing freq_w_size @ xreg_base+0xda
+f xreg.vco_unk0xd9 1 @ xreg_base+0xd9
+f xreg.vco_unk0xda 1 @ xreg_base+0xda
+CCu 0:? 1:? set to #0x15 before writing freq_w_size @ xreg_base+0xda
 f xreg.pa_ramp 1 @ xreg_base+0xdb
 CCu set to #0x17 if EXT_PA_RAMP, 7 if not @ xreg_base+0xdb
 CCu 0:? 1:? 2:? 3:? 4:set in adc enable @ xreg_base+0xdf
@@ -436,8 +441,9 @@ echo ..dsp
 
 f dsp_base 1 @ 0x7000
 f dsp.bufclk_ctrl 1 @ dsp_base+0x00
-CCu 5:BUFCLK_EN @ dsp_base+0x00
+CCu 0-4:? 5:BUFCLK_EN @ dsp_base+0x00
 CCu 0:clr after IRCAL @ dsp_base+0x01
+
 f dsp.clk_ctrl 1 @ dsp_base+0x1a
 CCu 0-2:BAND 3:SY_SEL 4-5:PA_CLKDUTY @ dsp_base+0x1a
 
