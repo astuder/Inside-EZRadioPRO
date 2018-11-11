@@ -86,12 +86,13 @@ class EZRadioPRO:
         out.revbranch = data[1]
         out.revint = data[2]
         out.patch = data[3] * 256 + data[4]
+        out.func = data[5]
         if data[5] == 0:
-            out.func = 'BOOT'
+            out.image = 'BOOT'
         elif data [5] == 1:
-            out.func = 'MAIN'
+            out.image = 'MAIN'
         else:
-            out.func = 'IMAGE%d' % data[5]
+            out.image = 'IMAGE%d' % data[5]
         return out
 
     def set_property(self, group, start_prop, prop_values):
@@ -155,10 +156,15 @@ class EZRadioPRO:
         # repurpose GET_PROPERTY command to read 16 bytes of CODE memory
         patch_cmd = 0x12
         patch_jmp = 0x0225
+        patch_addr = 0x0488
+
         # vector changed with A2A and C2A chip revision (romid 6)
         if self.part_info().romid == 6:
             patch_jmp = 0x0168
-        patch_addr = 0x0488
+
+        # free memory location different for func 2 and 3 (Si446x-A2A only)
+        if self.func_info().func > 1:
+            patch_addr = 0x0500
 
         p = patch_addr
         for b in patch:
@@ -351,9 +357,10 @@ def command_info(func):
                             part_info.customer, part_info.romid)
 
     func_info = radio.func_info()
-    print 'Func: ext %d branch %d int %d patch %d func %s' % (
+    print 'Func: ext %d branch %d int %d patch %d func %d (%s)' % (
                             func_info.revext, func_info.revbranch,
-                            func_info.revint, func_info.patch, func_info.func)
+                            func_info.revint, func_info.patch, func_info.func,
+                            func_info.image)
 
     chip_status = radio.get_chip_status()
     print 'Chip status: 0x%02x  Info flags: 0x%02x' % (
@@ -363,9 +370,10 @@ def command_info(func):
     radio.power_up(func)
 
     func_info = radio.func_info()
-    print 'Func: ext %d branch %d int %d patch %d func %s' % (
+    print 'Func: ext %d branch %d int %d patch %d func %d (%s)' % (
                             func_info.revext, func_info.revbranch,
-                            func_info.revint, func_info.patch, func_info.func)
+                            func_info.revint, func_info.patch, func_info.func,
+                            func_info.image)
 
     chip_status = radio.get_chip_status()
     print 'Chip status: 0x%02x  Info flags: 0x%02x' % (
