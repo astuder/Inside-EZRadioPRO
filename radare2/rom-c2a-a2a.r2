@@ -446,8 +446,10 @@ f rom.lookup_dsp_rx 8 @ 0x8cfa
 CCu 4x2 bytes, 1:written to dsp 0x2b, 2: dsp reg @ 0x8cfa
 Cd 1 8 @ 0x8cfa
 .(fcn 0x8d02 0x8d47 rom.main_loop)
+CCu change state @ 0x8d1b
 CCu parse commands @ 0x8d21
 CCu extended flags @ 0x8d29
+CCu WUT event @ 0x8d30
 f rom.main_loop_idle 1 @ 0x8d42
 .(fcn 0x8d47 0x8d5c rom.main_loop_rxtx_event)
 CCu rx flag? @ 0x8d47
@@ -463,7 +465,7 @@ CCu if scratch 0x91-93 is 0 @ 0x8d81
 CCu raise config event @ 0x8d90
 .(fcn 0x8d97 0x8dab rom.raise_config_event_0x8d97)
 CCu raise config event @ 0x8da4
-.(fcn 0x8dab 0x8e55 rom.config_unk_0x8dab)
+.(fcn 0x8dab 0x8e55 rom.config_cmd_unk0x01)
 axd dsp_base+0x02 @ 0x8e30
 CCu THRESHOLD @ 0x8e41
 .(fcn 0x8e55 0x8e6d rom.dsp_set_reg_56_mask_3f_val_c0)
@@ -1280,6 +1282,7 @@ CCu signal state change @ 0xa94d
 CCu READY @ 0xa968
 .(fcn 0xa974 0xa97b rom.init_sfr0x93_sfr0x86)
 .(fcn 0xa97b 0xa9a8 rom.reset_entry)
+f func2.reset_entry 1 @ 0xa97d
 CCu signal state change @ 0xa97d
 CCu SPI_ACTIVE @ 0xa99f
 .(fcn 0xa9a8 0xa9c4 rom.config_low_power_flag)
@@ -2258,7 +2261,7 @@ CCu WUT expired @ 0xcf78
 axd _idata+0x92 @ 0xcf80
 axd _idata+0x93 @ 0xcf84
 .(fcn 0xcf89 0xcf8c rom.config_modem_entry)
-.(fcn 0xcf8c 0xcf8d rom.nop_0xcf8c)
+.(fcn 0xcf8c 0xcf8d rom.config_cmd_unk0x0c)
 .(fcn 0xcf8d 0xcfae rom.spi_cmd_isr)
 CCu WUT expired (??) @ 0xcf90
 CCu was previous cmd undoc_0x35? @ 0xcf95
@@ -2372,9 +2375,9 @@ CCu set FIFO_MODE half duplex @ 0xd23a
 .(fcn 0xd249 0xd251 rom.change_from_spi_active_to_ezconfig)
 CCu EZCONFIG @ 0xd24b
 .(fcn 0xd251 0xd252 rom.nop_0xd251)
-.(fcn 0xd252 0xd253 rom.nop_0xd252)
-.(fcn 0xd253 0xd254 rom.nop_0xd253)
-.(fcn 0xd254 0xd255 rom.nop_0xd254)
+.(fcn 0xd252 0xd253 rom.config_cmd_unk0x10)
+.(fcn 0xd253 0xd254 rom.config_cmd_unk0x11)
+.(fcn 0xd254 0xd255 rom.config_cmd_unk0x12)
 .(fcn 0xd255 0xd270 rom.rx_ph_filter)
 CCu 1=match, 0=miss @ 0xd25a
 CCu FILTER_MATCH @ 0xd25d
@@ -2459,7 +2462,6 @@ CCu start hw multiplier @ 0xd565
 CCu wait until hw mul done @ 0xd56a
 CCu RETRANSMIT @ 0xd58e
 .(fcn 0xd5b1 0xd5c5 rom.pkt_tx_unk_0xd5b1)
-.(fcn 0xd5c5 0xd5dc rom.rx_unk_0xd5c5)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xd5c9
 .(fcn 0xd5dc 0xd5f4 rom.pkt_tx_unk_0xd5dc)
 .(fcn 0xd5f4 0xd5f5 rom.rx_nextstate_remain)
@@ -2526,15 +2528,17 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 .(fcn 0xd890 0xd899 func2.tx_event_handler)
 .(fcn 0xd899 0xd8a2 func2.rx_event_handler)
 .(fcn 0xd8a2 0xd8ab func2.0x43_handler)
-.(fcn 0xd8ab 0xd8b4 func2.0x33_handler)
+.(fcn 0xd8ab 0xd8b4 func2.tx_frame_handler)
 .(fcn 0xd8b4 0xd8bd func2.rx_byte_handler)
 .(fcn 0xd8bd 0xd8c6 func2.0x3b_handler)
-.(fcn 0xd8c6 0xd8cf func2.0x3f_handler)
+.(fcn 0xd8c6 0xd8cf func2.wut_handler)
 .(fcn 0xd8cf 0xd8d8 func2.spi_fifo_err_handler)
 .(fcn 0xd8d8 0xd8e1 func2.rx_ph_handler)
 .(fcn 0xd8e1 0xd8ea func2.0x2f_handler)
 CCu RSSI_LATCH @ 0xda98
 .(fcn 0xd9d8 0xd9f9 func2.do_cmd_0x8c_0x8d)
+.(fcn 0xda20 0xda64 func2.main_loop_bit6_event)
+.(fcn 0xdacb 0xdad3 func2.config_modem)
 .(fcn 0xdad3 0xdb15 func2.spi_parse_cmds)
 .(fcn 0xdb15 0xdb1d func2.cmd_0x8c)
 .(fcn 0xdb1d 0xdb22 func2.cmd_0x8d)
@@ -2546,35 +2550,63 @@ CCu RSSI_LATCH @ 0xda98
 .(fcn 0xdbba 0xdbcc func2.cmd_0x8a)
 .(fcn 0xdbcc 0xdbed func2.spi_cmd_isr)
 CCu WUT expired (???) @ 0xdbcf
+.(fcn 0xdbf3 0xdbf4 func2.wut_start_rx_tx)
 .(fcn 0xdbf5 0xdc4c func2.cmd_0x80)
+.(fcn 0xdc4c 0xdc5b func2.config_cmd_unk0x0c)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xdd44
+.(fcn 0xdd6f 0xdd82 func2.irq07_packet_sent)
 CCu CRC_ERROR @ 0xddb2
 CCu ALT_CRC_ERROR @ 0xddc3
+.(fcn 0xddd5 0xddea func2.rx_packet_received)
 CCu INVALID_PREAMBLE @ 0xde0d
 CCu TX @ 0xde23
+.(fcn 0xde49 0xde73 func2.rx_packet_invalid)
 CCu FILTER_MATCH @ 0xde7d
 .(fcn 0xdeef 0xdf10 func2.cmd_0x81)
+CCu CMD_ERR_BAD_COMMAND @ 0xdef6
+.(fcn 0xdf10 0xdf27 func2.config_cmd_unk0x0d)
+.(fcn 0xdff0 0xdff3 func2.tx_preamble_timeout)
+.(fcn 0xdff3 0xdff4 func2.raise_preamble_detect)
+.(fcn 0xdff4 0xdffb func2.rx_sync_timeout)
 CCu RSSI_THRESH int enable @ 0xdff7
+.(fcn 0xdffb 0xdffc func2.irq0x07_rssi_jump)
+.(fcn 0xdffd 0xdffe func2.raise_postamble_detect)
 
 echo   ..0xe000
 
 CCu PREAMBLE_DETECT @ 0xe1a9
+.(fcn 0xe1b1 0xe1eb func2.rx_ph_init)
 CCu expect_len_field @ 0xe1c8
+.(fcn 0xe1eb 0xe207 func2.raise_sync_detect)
 CCu SYNC_DETECT @ 0xe201
+.(fcn 0xe207 0xe20f func2.rssi_above_thresh)
+.(fcn 0xe20f 0xe24f func2.rssi_timer_config)
 CCu int 0x0f impl at 0xe443 @ 0xe27b
 axc 0xe443 @ 0xe27b
 CCu 0xe8ef=rom.eint_cb_unk @ 0xe238
 axc 0xe8ef @ 0xe238
 CCu delay @ 0xe23d
+.(fcn 0xe286 0xe289 func2.clear_in_modem_rssi)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xe290
+.(fcn 0xe296 0xe297 func2.rx_ph_isr_bit5)
+.(fcn 0xe297 0xe2b4 func2.fifo_tx_check_almost_empty)
 CCu FILTER_MISS @ 0xe2a0
 CCu TX_FIFO_EMPTY @ 0xe2a7
 CCu TX_FIFO_EMPTY @ 0xe2af
+.(fcn 0xe2d8 0xe2f2 func2.fifo_raise_underflow_overflow_err)
 CCu RSSI_LATCH @ 0xe2e2
+.(fcn 0xe2f4 0xe328 func2.0x17_isr_finish)
 CCu start hw multiplier @ 0xe33b
 CCu wait until hw mul done @ 0xe33e
 CCu start hw multiplier @ 0xe353
 CCu wait until hw mul done @ 0xe356
+.(fcn 0xe360 0xe37a func2.config_cmd_unk0x0e)
+CCu MOD_TYPE @ 0xe364
+CCu 4FSK @ 0xe367
+CCu 4GFSK @ 0xe36b
+.(fcn 0xe37a 0xe37b func2.config_cmd_unk0x10)
+.(fcn 0xe37b 0xe37c func2.config_cmd_unk0x11)
+.(fcn 0xe37c 0xe37d func2.config_cmd_unk0x12)
 .(fcn 0xe37d 0xe384 rom.int0x0f_cb_unk0xe37d)
 CCu indicate RX/TX event @ 0xe37f
 CCu int 0x0f impl at 0xe37d @ 0xe3e5
@@ -2584,13 +2616,21 @@ CCu store current RSSI for FRR (11 is undoc) @ 0xe437
 CCu indicate RX/TX event @ 0xe43e
 .(fcn 0xe443 0xe498 rom.int0x0f_cb_unk0xe443)
 CCu int 0x0f impl at 0xe435 @ 0xe4a4
+.(fcn 0xe512 0xe542 func2.main_loop_rxtx_event_part2)
+CCu manual RX hop @ 0xe512
+CCu RX hop @ 0xe519
+.(fcn 0xe551 0xe554 func2.rx_process_byte_b)
+.(fcn 0xe554 0xe5a8 func2.ph_process_len_field)
 CCu clr expect_len_field @ 0xe5a3
+CCu 4(G)FSK modulation? @ 0xe5ae
+CCu 4(G)FSK modulation? @ 0xe5c8
 axd 0x059d @ 0xe6c0
-CCu POSTAMBLE_DETECT @ 0xe7d9
-CCu RX_FIFO_FULL @ 0xe7de
-CCu POSTAMBLE_DETECT @ 0xe7e3
-CCu RX_FIFO_FULL @ 0xe7e8
-.(fcn 0xe8ef 0xe90d rom.eint1_cb_unk0xe8ef)
+.(fcn 0xe7d9 0xe7e3 func2.fifo_rx_raise_almost_full)
+CCu POSTAMBLE_DETECT? @ 0xe7d9
+CCu POSTAMBLE_DETECT? @ 0xe7e3
+.(fcn 0xe8b1 0xe8db func2.fifo_config)
+CCu fifo set to 0x4800-0x48fe ?!? @ 0xe8b8
+.(fcn 0xe8ef 0xe90d func2.eint1_cb_unk0xe8ef)
 CCu peak detect? @ 0xe8ef
 CCu var.CURRENT_RSSI @ 0xe900
 CCu update current rssi if higher than previous? @ 0xe904

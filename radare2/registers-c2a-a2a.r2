@@ -432,8 +432,16 @@ CCu 0-2:LOW_DUTY 3-5:FIFO_SRC_SEL 6-7:? @ 0x511d
 f xreg2.modem_decimation_cfg2 1 @ 0x511e
 f xreg2.modem_ook_misc 1 @ 0x511f
 CCu 0-1:OOK_DISCHG_DIV 2:OOK_SQUELCH_EN @ 0x511f
+
+CCu written by func2 after reset (bd8feeaaafe3f9e8) @ 0x5120
 f xreg2.unk_0x20 1 @ 0x5120
 f xreg2.unk_0x21 1 @ 0x5121
+f xreg2.unk_0x22 1 @ 0x5122
+f xreg2.unk_0x23 1 @ 0x5123
+f xreg2.unk_0x24 1 @ 0x5124
+f xreg2.unk_0x25 1 @ 0x5125
+f xreg2.unk_0x26 1 @ 0x5126
+f xreg2.unk_0x27 1 @ 0x5127
 
 echo ..dsp
 
