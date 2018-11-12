@@ -2673,7 +2673,43 @@ axd 0x0736 @ 0xeba8
 axd _idata+0x87 @ 0xebb0
 .(fcn 0xebba 0xebe7 func3.cmd_change_state)
 .(fcn 0xebe7 0xec4a func3.cmd_start_tx)
+CCu CONDITION @ 0xebe7
+CCu TXCOMPLETE_STATE @ 0xebea
+CCu check if state is valid @ 0xebf1
+CCu CMD_ERROR_BAD_ARG @ 0xebf6
+CCu if state is NOCHANGE @ 0xebfd
+CCu CONDITION @ 0xebff
+CCu retain previous setting @ 0xec07
+CCu copy tx start parameters @ 0xec0d
+axd 0x05f6 @ 0xec0d
+CCu set curr channel to tx channel @ 0xec16
+CCu if start immediatly @ 0xec26
+CCu TX @ 0xec28
+CCu if start on WUT exp @ 0xec31
+CCu enter SLEEP or READY as per WUT cfg @ 0xec37
+CCu SLEEP @ 0xec3b
+CCu READY @ 0xecf3
 .(fcn 0xec4a 0xecb8 func3.cmd_start_rx)
+CCu RXINVALID_STATE @ 0xec4a
+CCu state 0-8? @ 0xec50
+CCu RXVALID_STATE @ 0xec54
+CCu state 0-8? @ 0xec58
+CCu RXTIMEOUT_STATE @ 0xec5c
+CCu state 0-9? @ 0xec60
+CCu CMD_ERROR_BAD_ARG @ 0xec64
+axd 0x05ef @ 0xec69
+CCu copy rx params to vars @ 0xec69
+CCu CONDITION @ 0xec7a
+CCu UPDATE @ 0xec7d
+CCu update rx params but do not enter rx mode @ 0xec80
+CCu CONDITION @ 0xec89
+CCu START @ 0xec8c
+CCu 0 = start now @ 0xec90
+CCu RX @ 0xec92
+CCu 1 = start when WUT expires @ 0xec9b
+CCu WUT_SLEEP @ 0xeca2
+CCu SLEEP @ 0xeca5
+CCu READY @ 0xeca9
 .(fcn 0xecb8 0xecb9 func3.main_loop_rxtx_event_part2)
 .(fcn 0xecb9 0xecba func3.main_loop_bit6_event)
 .(fcn 0xecba 0xecf0 func3.config_radio_extra_steps)
