@@ -159,6 +159,50 @@ f var.cfg_steps 3 @ _idata+0x91
 f var.adc_cfg 1 @ _idata+0x94
 f var.ezconfig_pos @ _idata+0x97
 
+# XDATA
+
+f var.cmd8x_unk59a 1 @ 0x059a
+f var.cmd8x_unk59c 1 @ 0x059c
+
+f var.cmd8x_unk5a9 1 @ 0x05a9
+f var.cmd8x_rssi_thresh 1 @ 0x05aa
+
+f var.cmd8x_unk5b7 1 @ 0x05b7
+f var.cmd8x_unk5bb 1 @ 0x05bb
+f var.cmd8x_unk5bc 1 @ 0x05bc
+
+f var.cmd8x_unk5e1 1 @ 0x05e1
+f var.cmd8x_unk5e2 1 @ 0x05e2
+f var.cmd8x_unk5e4 1 @ 0x05e4
+
+f var.cmd8x_unk5e8 1 @ 0x05e8
+f var.cmd8x_unk5e9 1 @ 0x05e9
+
+f var.cmd8x_unk5dc 1 @ 0x05dc
+
+f var.cmd8x_unk5f3 1 @ 0x05f3
+
+CCu parameters of CMD_0x81 command @ 0x05f6
+f var.cmd81_arg1 1 @ 0x05f6
+f var.cmd81_arg2 1 @ 0x05f7
+
+f var.cmd8x_unk5f9 1 @ 0x05f9
+f var.cmd8x_unk5fa 1 @ 0x05fa
+
+CCu parameters of CMD_0x80 command @ 0x05fb
+f var.cmd80_arg1 1 @ 0x05fb
+f var.cmd80_arg2 1 @ 0x05fc
+f var.cmd80_arg3 1 @ 0x05fd
+
+f var.cmd8x_unk601 1 @ 0x0601
+f var.cmd8x_unk602 1 @ 0x0602
+f var.cmd8x_unk603 1 @ 0x0603
+f var.cmd8x_unk604 1 @ 0x0604
+f var.cmd8x_unk605 1 @ 0x0605
+f var.cmd8x_unk606 1 @ 0x0606
+f var.cmd8x_unk607 1 @ 0x0607
+f var.cmd8x_unk608 1 @ 0x0608
+
 # CODE
 
 echo annotating code
@@ -367,6 +411,7 @@ f map.cmd_0x81 1 @ 0x02e2
 f map.cmd_0x83 1 @ 0x02eb
 f map.cmd_0x8a 1 @ 0x0312
 f map.cmd_0x84 1 @ 0x0315
+f map.pti_send_func2_0x607 @ 0x0318
 f map.cmd_0x8c 1 @ 0x0324
 f map.cmd_0x85 1 @ 0x0327
 

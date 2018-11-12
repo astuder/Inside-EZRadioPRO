@@ -46,32 +46,6 @@ f prop.RX_HOP_CONTROL 1			 @ prop.grp_0x50_rx_hop+0x00
 f prop.RX_HOP_TABLE_SIZE 1		 @ prop.grp_0x50_rx_hop+0x01
 f prop.RX_HOP_TABLE_ENTRY 64	 @ prop.grp_0x50_rx_hop+0x02
 
-f var.fifo_buffer_low 0x40 @ 0x0575
-CCu RX fifo in full duplex mode @ 0x0575
-f var.fifo_buffer_high 0x40 @ 0x05b6
-CCu TX fifo in full duplex mode @ 0x05b6
-
-CCu parameters of START_RX command @ 0x05f7
-f var.rx_channel 1 @ 0x05f7
-f var.rx_condition 1 @ 0x05f8
-f var.rx_len_msb 1 @ 0x05f9
-f var.rx_len_lsb 1 @ 0x05fa
-f var.rx_nextstate_timeout 1 @ 0x05fb
-f var.rx_nextstate_valid 1 @ 0x05fc
-f var.rx_nextstate_invalid 1 @ 0x05fd
-
-CCu parameters of START_TX command @ 0x05fe
-f var.tx_channel 1 @ 0x05fe
-f var.tx_condition 1 @ 0x05ff
-f var.tx_len_msb 1 @ 0x0600
-f var.tx_len_lsb 1 @ 0x0601
-f var.tx_delay 1 @ 0x0602
-f var.tx_num_repeat 1 @ 0x0603
-f var.rx_curr_pktlen_msb 1 @ 0x0604
-f var.rx_curr_pktlen_lsb 1 @ 0x0605
-f var.global_config_saved @ 0x0606
-f var.rx_hop_table_pos 1 @ 0x0608
-
 f prop.grp_0x02_frr_ctl 4 @ 0x0609
 f prop.FRR_CTL_A_MODE 1	 @ prop.grp_0x02_frr_ctl+0x00
 f prop.FRR_CTL_B_MODE 1	 @ prop.grp_0x02_frr_ctl+0x01

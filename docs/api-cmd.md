@@ -35,8 +35,8 @@ This list applies only to A2A and C2A devices.
 |0x21|GET_PH_STATUS||&#x2713;||&#x2713;||&#x2713;|
 |0x22|GET_MODEM_STATUS||&#x2713;||&#x2713;||&#x2713;|
 |0x23|GET_CHIP_STATUS|&#x2713;|&#x2713;|&#x2713;|&#x2713;||&#x2713;|
-|0x31|START_TX||&#x2713;|&#x2713;|||&#x2713;|
-|0x32|START_RX||&#x2713;|&#x2713;|||&#x2713;|
+|0x31|START_TX||&#x2713;||&#x2713;||&#x2713;|
+|0x32|START_RX||&#x2713;||&#x2713;||&#x2713;|
 |0x33|REQUEST_DEVICE_STATE||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x34|CHANGE_STATE||&#x2713;||||&#x2713;|
 |0x35|CMD_35||&#x2713;|&#x2713;|&#x2713;|||

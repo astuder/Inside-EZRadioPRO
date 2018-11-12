@@ -273,6 +273,7 @@ echo ..firmware rom
 .(fcn 0x87de 0x87ea rom.movx_xreg_to_r4r5r6r7)
 .(fcn 0x87ea 0x87f6 rom.movx_r4r5r6r7_to_dptr)
 .(fcn 0x87f6 0x8802 rom.movx_r4r5r6r7_to_xreg)
+.(fcn 0x8802 0x880e rom.math_mul_ab_add_to_dptr)
 .(fcn 0x880e 0x8830 rom.math_div_ab_signed)
 CCu psw.5 = general purpose flag @ 0x880e
 .(fcn 0x8830 0x883e rom.math_div16)
@@ -2536,9 +2537,28 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 .(fcn 0xd8cf 0xd8d8 func2.spi_fifo_err_handler)
 .(fcn 0xd8d8 0xd8e1 func2.rx_ph_handler)
 .(fcn 0xd8e1 0xd8ea func2.0x2f_handler)
-CCu RSSI_LATCH @ 0xda98
+CCu raise bit6 event @ 0xd950
+CCu SLEEP @ 0xd960
+CCu TX @ 0xd9b9
+CCu READY @ 0xd9cc
 .(fcn 0xd9d8 0xd9f9 func2.do_cmd_0x8c_0x8d)
 .(fcn 0xda20 0xda64 func2.main_loop_bit6_event)
+CCu if 2 @ 0xda26
+CCu if 3 @ 0xda29
+CCu if 4 @ 0xda2c
+CCu if 5 @ 0xda2f
+CCu if 0x40 @ 0xda33
+CCu if 1 @ 0xda37
+CCu 0x0607 was 1 @ 0xda39
+CCu 0x0607 was 2 @ 0xda3d
+CCu 0x0607 was 3 @ 0xda42
+CCu 0x0607 was 4 @ 0xda47
+CCu 0x0607 was 0x40 @ 0xda4c
+CCu 0x0607 was 5 @ 0xda50
+CCu copy 606 to 607 @ 0xda52
+axd 0x0607 @ 0xda57
+CCu repeat event if not equal @ 0xda59
+CCu raise bit6 event @ 0xda5c
 .(fcn 0xdaaa 0xdacb func2.config_radio_extra_steps)
 .(fcn 0xdacb 0xdad3 func2.config_modem)
 .(fcn 0xdad3 0xdb15 func2.spi_parse_cmds)
@@ -2554,6 +2574,9 @@ CCu RSSI_LATCH @ 0xda98
 CCu WUT expired (???) @ 0xdbcf
 .(fcn 0xdbf3 0xdbf4 func2.wut_start_rx_tx)
 .(fcn 0xdbf5 0xdc4c func2.cmd_0x80)
+CCu CMD_ERR_BAD_COMMAND @ 0xdc08
+axd 0x05fb @ 0xdc0d
+CCu raise TX/RX event @ 0xdc36
 .(fcn 0xdc4c 0xdc5b func2.config_cmd_unk0x0c)
 .(fcn 0xdd11 0xdd44 func2.pkt_tx_unk_0xdd11)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xdd44
@@ -2562,11 +2585,14 @@ CCu CRC_ERROR @ 0xddb2
 CCu ALT_CRC_ERROR @ 0xddc3
 .(fcn 0xddd5 0xddea func2.rx_packet_received)
 CCu INVALID_PREAMBLE @ 0xde0d
+axd _idata+0x98 @ 0xde1b
 CCu TX @ 0xde23
+axd 0x05e9 @ 0xde2e
 .(fcn 0xde49 0xde73 func2.rx_packet_invalid)
 CCu FILTER_MATCH @ 0xde7d
 .(fcn 0xdeef 0xdf10 func2.cmd_0x81)
 CCu CMD_ERR_BAD_COMMAND @ 0xdef6
+axd 0x05f6 @ 0xdefb
 .(fcn 0xdf10 0xdf27 func2.config_cmd_unk0x0d)
 .(fcn 0xdff0 0xdff3 func2.tx_preamble_timeout)
 .(fcn 0xdff3 0xdff4 func2.raise_preamble_detect)
@@ -2577,6 +2603,8 @@ CCu RSSI_THRESH int enable @ 0xdff7
 
 echo   ..0xe000
 
+axd 0x05e2 @ 0xe0ae
+axd 0x05e2 @ 0xe0bf
 .(fcn 0xe139 0xe158 func2.rx_ph_filter)
 CCu PREAMBLE_DETECT @ 0xe1a9
 .(fcn 0xe1b1 0xe1eb func2.rx_ph_init)
@@ -2614,14 +2642,14 @@ CCu 4GFSK @ 0xe36b
 .(fcn 0xe37a 0xe37b func2.config_cmd_unk0x10)
 .(fcn 0xe37b 0xe37c func2.config_cmd_unk0x11)
 .(fcn 0xe37c 0xe37d func2.config_cmd_unk0x12)
-.(fcn 0xe37d 0xe384 rom.int0x0f_cb_unk0xe37d)
+.(fcn 0xe37d 0xe384 func2.int0x0f_cb_unk0xe37d)
 CCu indicate RX/TX event @ 0xe37f
 CCu int 0x0f impl at 0xe37d @ 0xe3e5
 axc 0xe37d @ 0xe3e5
-.(fcn 0xe435 0xe443 rom.int0x0f_cb_unk0xe435)
+.(fcn 0xe435 0xe443 func2.int0x0f_cb_unk0xe435)
 CCu store current RSSI for FRR (11 is undoc) @ 0xe437
 CCu indicate RX/TX event @ 0xe43e
-.(fcn 0xe443 0xe498 rom.int0x0f_cb_unk0xe443)
+.(fcn 0xe443 0xe498 func2.int0x0f_cb_unk0xe443)
 CCu int 0x0f impl at 0xe435 @ 0xe4a4
 .(fcn 0xe512 0xe542 func2.main_loop_rxtx_event_part2)
 CCu manual RX hop @ 0xe512
@@ -2632,6 +2660,7 @@ CCu clr expect_len_field @ 0xe5a3
 CCu 4(G)FSK modulation? @ 0xe5ae
 CCu 4(G)FSK modulation? @ 0xe5c8
 axd 0x059d @ 0xe6c0
+CCu RX @ 0xe7af
 .(fcn 0xe7d9 0xe7e3 func2.fifo_rx_raise_almost_full)
 CCu POSTAMBLE_DETECT? @ 0xe7d9
 .(fcn 0xe7e3 0xe7ed func2.fifo_rx_clear_almost_full)
@@ -2642,9 +2671,12 @@ CCu fifo set to 0x4800-0x48fe ?!? @ 0xe8b8
 CCu peak detect? @ 0xe8ef
 CCu var.CURRENT_RSSI @ 0xe900
 CCu update current rssi if higher than previous? @ 0xe904
+.(fcn 0xe90d 0xe92d func2.pti_send_func2_0x607)
 CCu store current RSSI for FRR (11 is undoc) @ 0xe94d
-.(fcn 0xe95d 0xe965 rom.pti_get_fifo_len_clr_ie_2)
+.(fcn 0xe95d 0xe965 func2.pti_get_fifo_len_clr_ie_2)
+.(fcn 0xe98d 0xe994 func2.change_state_to_r7_ret_dptr_0x607)
 f rom.clr_int_0x0f_callback 1 @ 0xe9ad
+CCu RX @ 0xea0d
 .(fcn 0xea2f 0xea5a func3.isr_entry)
 .(fcn 0xea5a 0xea79 func3.isr_exit)
 .(fcn 0xea79 0xea86 func3.0x17_handler)
@@ -2672,6 +2704,10 @@ f rom.clr_int_0x0f_callback 1 @ 0xe9ad
 axd 0x0736 @ 0xeba8
 axd _idata+0x87 @ 0xebb0
 .(fcn 0xebba 0xebe7 func3.cmd_change_state)
+CCu NEW_STATE @ 0xebba
+CCu if RX @ 0xebce
+CCu if TX @ 0xebd4
+CCu if SLEEP @ 0xebda
 .(fcn 0xebe7 0xec4a func3.cmd_start_tx)
 CCu CONDITION @ 0xebe7
 CCu TXCOMPLETE_STATE @ 0xebea
@@ -2688,7 +2724,7 @@ CCu TX @ 0xec28
 CCu if start on WUT exp @ 0xec31
 CCu enter SLEEP or READY as per WUT cfg @ 0xec37
 CCu SLEEP @ 0xec3b
-CCu READY @ 0xecf3
+CCu READY @ 0xec3f
 .(fcn 0xec4a 0xecb8 func3.cmd_start_rx)
 CCu RXINVALID_STATE @ 0xec4a
 CCu state 0-8? @ 0xec50
