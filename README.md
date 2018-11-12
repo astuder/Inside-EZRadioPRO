@@ -50,5 +50,6 @@ It is likely, that members of the EZRadio and EZRadioPRO product families share 
 ## Documentation
 
 - [Memory map](docs/memory-map.md)
+- [API commands](docs/api-cmd.md)
 - [SPI peripheral](docs/spi.md)
 - [Talks](talks)
