@@ -427,6 +427,7 @@ CCu RSSI_THRES-RSSI_HYSTERISIS, 0=no hysterisis @ 0x5114
 f xreg2.modem_bcr_misc 1 @ 0x5115
 CCu 0:MODEM_BCR_MISC0.0 (undoc) 3:OOK_LIMIT_DISCHG(inv) 4:MODEM_BCR_MISC0.3 (undoc) @ 0x5115
 f xreg2.unk_0x1a 1 @ 0x511a
+f xreg2.unk_0x1c 1 @ 0x511c
 f xreg2.modem_dsa_misc 1 @ 0x511d
 CCu 0-2:LOW_DUTY 3-5:FIFO_SRC_SEL 6-7:? @ 0x511d
 f xreg2.modem_decimation_cfg2 1 @ 0x511e

@@ -339,7 +339,7 @@ f map.main_loop_bit7_event 1 @ 0x0261
 f map.cmd_request_device_state 1 @ 0x0264
 f map.rx_ph_isr_pkt_end 1 @ 0x0267
 f map.fifo_tx_reset_hw 1 @ 0x0270
-f map.pkt_tx_unk_0xd5c5 1 @ 0x0273
+f map.pkt_tx_unk_0xe2c1 1 @ 0x0273
 f map.change_from_rx 1 @ 0x0276
 f map.main_loop_change_state 1 @ 0x0279
 f map.config_modem_chflt 1 @ 0x027c
@@ -352,16 +352,12 @@ f map.tx_sequencer_mode_delay 1 @ 0x0297
 f map.change_state_from_ready 1 @ 0x029a
 f map.change_from_spi_active_to_ezconfig 1 @ 0x029d
 f map.config_modem_clkgen_band 1 @ 0x02a0
-f map.set_config_steps_0xf850 1 @ 0x02a3
+f map.config_radio_extra_steps 1 @ 0x02a3
 f map.pti_send_rx_info 1 @ 0x02a6
 f map.main_loop_bit7_cmd1_2 @ 0x02a9
 f map.change_device_state 1 @ 0x02ac
-f map.cmd_tx_hop 1 @ 0x02b2
 f map.cmd_get_int_status 1 @ 0x02b5
 f map.do_cmd_0x8c_0x8d 1 @ 0x02b8
-f map.ph_pkt_len_adjust 1 @0x02bb
-f map.cmd_start_rx 1 @ 0x02be
-f map.cmd_start_tx 1 @ 0x02c1
 f map.cmd_0x8d 1 @ 0x02c4
 f map.cmd_0x87 1 @ 0x02c7
 f map.spi_parse_cmds 1 @ 0x02d6
@@ -413,6 +409,7 @@ axd 0x5127 @ 0x0455
 .(fcn 0x0476 0x048f patch.tx_ph_start)
 .(fcn 0x048f 0x0498 patch.cmd_0x84)
 .(fcn 0x04a3 0x04bf patch.rx_packet_received)
+
 .(fcn 0x0500 0x0514 hack.memory_dump)
 
 # run r2 analysis

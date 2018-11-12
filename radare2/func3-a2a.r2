@@ -1,8 +1,8 @@
-# Si4x6x rev C2A runtime firmware
-# Note: rev A2A has differences in map/patch code
+# Si446x rev A2A func3 runtime firmware
+# Note: this image is loaded when Si4467 or Si4468 is powered up with FUNC 3
 
 echo .
-echo EZRadioPRO Si4x6x-C2A in transceiver/receiver mode
+echo EZRadioPRO Si446x-A2A started with func image 3
 echo .
 
 # includes for analysis shared by boot and all func images
@@ -13,7 +13,7 @@ echo .
 . radare2/xdata-c2a-a2a.r2
 . radare2/rom-c2a-a2a.r2
 
-# specific to FUNC1 rev C2A
+# specific to FUNC3 rev A2A
 
 # IMEM
 
@@ -163,10 +163,9 @@ f var.ezconfig_pos @ _idata+0x97
 
 echo annotating code
 
-f patch.tx_ph_start 1 @ 0x0046
-CCu TX @ 0x0046
-f patch.rx_ph_start 1 @ 0x004f
-CCu RX @ 0x004f
+.(fcn 0x0046 0x0049 patch.check_thresh_at_latch)
+.(fcn 0x0049 0x004c patch.rx_preamble_timeout)
+.(fcn 0x004f 0x0057 patch.rx_ph_start)
 
 echo ..jump map
 
@@ -299,7 +298,7 @@ f map.clear_int_pending_flags 1 @ 0x01e0
 f map.change_from_rx_tune 1 @ 0x01e3
 f map.rx_ph_init 1 @ 0x01e6
 f map.clear_int_modem_rssi 1 @0x01e9
-f map.rssi_timer_config 1 @ 0x01ec
+f map.ph_enabled_check 1 @ 0x01ec
 f map.pa_dig_pwr_sequencing 1 @ 0x01ef
 f map.modem_start_tx 1 @ 0x01f2
 f map.rc32k_cal_unk0xb230 1 @ 0x01f5
@@ -315,7 +314,7 @@ f map.irq0x07_bit7 1 @ 0x020d
 f map.rc32k_cal_unk0xb2d2 @ 0x0210
 f map.main_loop_unknown_cmd 1 @ 0x0213
 f map.cmd_set_property 1 @ 0x0216
-f map.pkt_tx_unk_0xd512 1 @ 0x0219
+f map.pkt_tx_unk_0xf001 1 @ 0x0219
 f map.clk_wait_for_xo_ready 1 @ 0x021c
 f map.fifo_rx_clear_almost_full 1 @ 0x021f
 f map.tx_send_frame_size_r7 1 @ 0x0222
@@ -340,7 +339,7 @@ f map.main_loop_bit7_event 1 @ 0x0261
 f map.cmd_request_device_state 1 @ 0x0264
 f map.rx_ph_isr_pkt_end 1 @ 0x0267
 f map.fifo_tx_reset_hw 1 @ 0x0270
-f map.pkt_tx_unk_0xd5c5 1 @ 0x0273
+f map.pkt_tx_unk_0xed4c 1 @ 0x0273
 f map.change_from_rx 1 @ 0x0276
 f map.main_loop_change_state 1 @ 0x0279
 f map.config_modem_chflt 1 @ 0x027c
@@ -357,52 +356,44 @@ f map.config_radio_extra_steps 1 @ 0x02a3
 f map.pti_send_rx_info 1 @ 0x02a6
 f map.main_loop_bit7_cmd1_2 @ 0x02a9
 f map.change_device_state 1 @ 0x02ac
-f map.cmd_tx_hop 1 @ 0x02b2
-f map.cmd_get_int_status 1 @ 0x02b5
-f map.cmd_get_modem_status 1 @ 0x02b8
-f map.ph_pkt_len_adjust 1 @0x02bb
-f map.cmd_start_rx 1 @ 0x02be
-f map.cmd_start_tx 1 @ 0x02c1
-f map.rx_nextstate_remain 1 @ 0x02c4
-f map.cmd_rx_hop 1 @ 0x02c7
-f map.nop_0xd251 1 @ 0x02ca
-f map.ezconfig_decrypt_byte 1 @ 0x02cd
-f map.spi_parse_cmds 1 @ 0x02d0
-f map.cmd_ezconfig_check 1 @ 0x02d3
-f map.pkt_tx_unk_0xd5b1 1 @ 0x02d6
-f map.ezconfig_set_property 1 @ 0x02d9
-f map.cmd_packet_info 1 @ 0x02dc
-f map.cmd_change_state 1 @ 0x02df
-f map.rx_hop_trigger 1 @ 0x02e2
-f map.cmd_get_ph_status 1 @ 0x02e5
-f map.ezconfig_array_read 1 @ 0x02e8
+f map.cmd_get_int_status 1 @ 0x02b2
+f map.cmd_get_modem_status 1 @ 0x02b5
+f map.spi_parse_cmds 1 @ 0x02b8
+f map.cmd_start_rx 1 @0x02bb
+f map.cmd_start_tx 1 @ 0x02be
+f map.cmd_change_state 1 @ 0x02c4
+f map.cmd_get_ph_status 1 @ 0x02c7
 
-afu $$+3 @@s:0x0057 0x02eb 3
+afu $$+3 @@s:0x0057 0x02ca 3
 
 echo ..patches
 
-.(fcn 0x02eb 0x0309 patch.timer0_isr)
-axd xreg_base+0x00 @ 0x02f4
-axd xreg_base+0x10 @ 0x02fc
-f patch.pop_acc_exit_isr @ 0x0306
-.(fcn 0x0309 0x032f patch.config_modem)
-CCu IFPKD @ 0x0328
-.(fcn 0x032f 0x034b patch.reset_finish)
-.(fcn 0x034b 0x0358 patch.change_state_from_spi_active)
-CCu EZCONFIG @ 0x034d
-CCu EZCONFIG @ 0x0350
-.(fcn 0x0358 0x0367 patch.change_state_from_ezconfig)
-CCu EZConfig state? @ 0x0358
-CCu EZCONFIG @ 0x035b
-CCu SPI_ACTIVE @ 0x035f
-.(fcn 0x0367 0x036a patch.rx_packet_received)
-CCu check if RX @ 0x036c
-CCu clr hop pending @ 0x0374
-.(fcn 0x0377 0x038e patch.modem_start_rx)
-.(fcn 0x038e 0x039e patch.cmd_start_tx)
-.(fcn 0x039e 0x03a4 patch.rx_hop_trigger)
-.(fcn 0x03a4 0x03b6 patch.ezconfig_array_read)
-.(fcn 0x0488 0x049c hack.memory_dump)
+.(fcn 0x02ca 0x02e8 patch.timer0_handler)
+axd xreg_base+0x00 @ 0x02d3
+.(fcn 0x02e8 0x0307 patch.config_modem)
+.(fcn 0x0307 0x0319 patch.config_dsa_ctrl2)
+axd xreg_base+0xfa @ 0x0311
+.(fcn 0x0319 0x0327 patch.config_cmd_unk0x01)
+axd dsp_base+0x23 @ 0x0321
+.(fcn 0x0327 0x0337 patch.reset_entry)
+axd dsp_base+0x53 @ 0x032a
+axd dsp_base+0x54 @ 0x032f
+.(fcn 0x0337 0x0344 patch.radio_spi_active_to_ready)
+axd dsp_base+0x53 @ 0x033d
+.(fcn 0x0344 0x034d patch.tx_start)
+.(fcn 0x034d 0x0359 patch.rx_start)
+.(fcn 0x0359 0x0367 patch.enter_sleep_state)
+axd dsp_base+0x54 @ 0x0359
+axd dsp_base+0x54 @ 0x0362
+.(fcn 0x0367 0x0374 patch.change_state_from_spi_active)
+.(fcn 0x0374 0x0380 patch.usec_delay_unk_0xbda1)
+.(fcn 0x0380 0x0389 patch.fifo_rx_write_byte)
+.(fcn 0x0389 0x03a2 patch.reset_finish)
+.(fcn 0x03a2 0x03b1 patch.tx_ph_start)
+axd xreg_base+0xd8 @ 0x03a7
+.(fcn 0x03b1 0x03b4 patch.rx_packet_received)
+
+.(fcn 0x0500 0x0514 hack.memory_dump)
 
 # run r2 analysis
 

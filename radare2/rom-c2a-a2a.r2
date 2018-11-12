@@ -1282,7 +1282,7 @@ CCu signal state change @ 0xa94d
 CCu READY @ 0xa968
 .(fcn 0xa974 0xa97b rom.init_sfr0x93_sfr0x86)
 .(fcn 0xa97b 0xa9a8 rom.reset_entry)
-f func2.reset_entry 1 @ 0xa97d
+f rom.reset_entry_patched 1 @ 0xa97d
 CCu signal state change @ 0xa97d
 CCu SPI_ACTIVE @ 0xa99f
 .(fcn 0xa9a8 0xa9c4 rom.config_low_power_flag)
@@ -2462,6 +2462,7 @@ CCu start hw multiplier @ 0xd565
 CCu wait until hw mul done @ 0xd56a
 CCu RETRANSMIT @ 0xd58e
 .(fcn 0xd5b1 0xd5c5 rom.pkt_tx_unk_0xd5b1)
+.(fcn 0xd5c5 0xd5dc rom.pkt_tx_unk_0xd5c5)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xd5c9
 .(fcn 0xd5dc 0xd5f4 rom.pkt_tx_unk_0xd5dc)
 .(fcn 0xd5f4 0xd5f5 rom.rx_nextstate_remain)
@@ -2538,6 +2539,7 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 CCu RSSI_LATCH @ 0xda98
 .(fcn 0xd9d8 0xd9f9 func2.do_cmd_0x8c_0x8d)
 .(fcn 0xda20 0xda64 func2.main_loop_bit6_event)
+.(fcn 0xdaaa 0xdacb func2.config_radio_extra_steps)
 .(fcn 0xdacb 0xdad3 func2.config_modem)
 .(fcn 0xdad3 0xdb15 func2.spi_parse_cmds)
 .(fcn 0xdb15 0xdb1d func2.cmd_0x8c)
@@ -2553,6 +2555,7 @@ CCu WUT expired (???) @ 0xdbcf
 .(fcn 0xdbf3 0xdbf4 func2.wut_start_rx_tx)
 .(fcn 0xdbf5 0xdc4c func2.cmd_0x80)
 .(fcn 0xdc4c 0xdc5b func2.config_cmd_unk0x0c)
+.(fcn 0xdd11 0xdd44 func2.pkt_tx_unk_0xdd11)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xdd44
 .(fcn 0xdd6f 0xdd82 func2.irq07_packet_sent)
 CCu CRC_ERROR @ 0xddb2
@@ -2574,6 +2577,7 @@ CCu RSSI_THRESH int enable @ 0xdff7
 
 echo   ..0xe000
 
+.(fcn 0xe139 0xe158 func2.rx_ph_filter)
 CCu PREAMBLE_DETECT @ 0xe1a9
 .(fcn 0xe1b1 0xe1eb func2.rx_ph_init)
 CCu expect_len_field @ 0xe1c8
@@ -2593,8 +2597,11 @@ CCu TX_FIFO_ALMOST_EMPTY @ 0xe290
 CCu FILTER_MISS @ 0xe2a0
 CCu TX_FIFO_EMPTY @ 0xe2a7
 CCu TX_FIFO_EMPTY @ 0xe2af
+.(fcn 0xe2b4 0xe2c1 func2.tx_send_frame_size_r7)
+.(fcn 0xe2c1 0xe2d8 func2.pkt_tx_unk_0xe2c1)
 .(fcn 0xe2d8 0xe2f2 func2.fifo_raise_underflow_overflow_err)
 CCu RSSI_LATCH @ 0xe2e2
+.(fcn 0xe2f3 0xe2f4 func2.change_from_spi_active_to_ezconfig)
 .(fcn 0xe2f4 0xe328 func2.0x17_isr_finish)
 CCu start hw multiplier @ 0xe33b
 CCu wait until hw mul done @ 0xe33e
@@ -2627,6 +2634,7 @@ CCu 4(G)FSK modulation? @ 0xe5c8
 axd 0x059d @ 0xe6c0
 .(fcn 0xe7d9 0xe7e3 func2.fifo_rx_raise_almost_full)
 CCu POSTAMBLE_DETECT? @ 0xe7d9
+.(fcn 0xe7e3 0xe7ed func2.fifo_rx_clear_almost_full)
 CCu POSTAMBLE_DETECT? @ 0xe7e3
 .(fcn 0xe8b1 0xe8db func2.fifo_config)
 CCu fifo set to 0x4800-0x48fe ?!? @ 0xe8b8
@@ -2637,35 +2645,92 @@ CCu update current rssi if higher than previous? @ 0xe904
 CCu store current RSSI for FRR (11 is undoc) @ 0xe94d
 .(fcn 0xe95d 0xe965 rom.pti_get_fifo_len_clr_ie_2)
 f rom.clr_int_0x0f_callback 1 @ 0xe9ad
-
-# fragments of func images (see boot.load_func_image_r7)
 .(fcn 0xea2f 0xea5a func3.isr_entry)
 .(fcn 0xea5a 0xea79 func3.isr_exit)
-f func3.reset_handler 1 @ 0xea86
+.(fcn 0xea79 0xea86 func3.0x17_handler)
+.(fcn 0xea86 0xea8f func3.reset_handler)
+.(fcn 0xea8f 0xea98 func3.power_up_handler)
+.(fcn 0xea98 0xeaa1 func3.0x07_handler)
+.(fcn 0xeaa1 0xeaaa func3.0x0f_handler)
+.(fcn 0xeaaa 0xeab3 func3.eint1_handler)
+.(fcn 0xeab3 0xeabc func3.spi_cmd_handler)
+.(fcn 0xeabc 0xeac5 func3.tx_event_handler)
+.(fcn 0xeac5 0xeace func3.rx_event_handler)
+.(fcn 0xeace 0xead7 func3.0x43_handler)
+.(fcn 0xead7 0xeae0 func3.tx_frame_handler)
+.(fcn 0xeae0 0xeae9 func3.rx_byte_handler)
+.(fcn 0xeae9 0xeaf2 func3.0x3b_handler)
+.(fcn 0xeaf2 0xeafb func3.wut_handler)
+.(fcn 0xeafb 0xeb04 func3.spi_fifo_err_handler)
+.(fcn 0xeb04 0xeb0d func3.rx_ph_handler)
+.(fcn 0xeb0d 0xeb16 func3.0x2f_handler)
+.(fcn 0xeb4e 0xeb64 func3.spi_cmd_isr)
+.(fcn 0xeb64 0xeb8e func3.spi_parse_cmds)
+.(fcn 0xeb8e 0xeb91 func3.cmd_get_int_status)
+.(fcn 0xeb91 0xeb94 func3.cmd_get_ph_status)
+.(fcn 0xeb94 0xebba func3.cmd_get_modem_status)
+axd 0x0736 @ 0xeba8
+axd _idata+0x87 @ 0xebb0
+.(fcn 0xebba 0xebe7 func3.cmd_change_state)
+.(fcn 0xebe7 0xec4a func3.cmd_start_tx)
+.(fcn 0xec4a 0xecb8 func3.cmd_start_rx)
+.(fcn 0xecb8 0xecb9 func3.main_loop_rxtx_event_part2)
+.(fcn 0xecb9 0xecba func3.main_loop_bit6_event)
+.(fcn 0xecba 0xecf0 func3.config_radio_extra_steps)
+.(fcn 0xecf0 0xecf3 func3.config_modem)
+.(fcn 0xecf3 0xecf4 func3.config_cmd_unk0x0c)
+.(fcn 0xecf4 0xecf5 func3.config_from_ezconfig)
+.(fcn 0xecf5 0xecf6 func3.rx_hop_config)
+.(fcn 0xecf6 0xecf7 func3.config_cmd_unk0x10)
+.(fcn 0xecf7 0xecf8 func3.config_cmd_unk0x11)
+.(fcn 0xecf8 0xecf9 func3.config_cmd_unk0x12)
+.(fcn 0xecfa 0xed00 func3.ph_process_len_field)
+.(fcn 0xed00 0xed0d func3.rx_ph_filter)
+.(fcn 0xed0d 0xed10 func3.rx_preamble_timeout)
+.(fcn 0xed10 0xed11 func3.raise_preamble_detect)
+.(fcn 0xed11 0xed12 func3.rx_sync_timeout)
+.(fcn 0xed12 0xed13 func3.raise_sync_detect)
+.(fcn 0xed13 0xed22 func3.rx_packet_received)
 CCu PACKET_RX @ 0xed13
+.(fcn 0xed22 0xed2c func3.rx_packet_invalid)
+.(fcn 0xed2c 0xed2d func3.irq0x07_rssi_jump)
+.(fcn 0xed2d 0xed2e func3.rx_process_byte_b)
+.(fcn 0xed2f 0xed30 func3.rssi_above_thresh)
+.(fcn 0xed30 0xed31 func3.clear_int_modem_rssi)
+.(fcn 0xed31 0xed32 func3.rx_ph_isr_bit5)
+.(fcn 0xed32 0xed44 func3.packet_sent)
 CCu PACKET_SENT @ 0xed32
+.(fcn 0xed46 0xed47 func3.fifo_tx_check_almost_empty)
+.(fcn 0xed47 0xed4c func3.tx_send_frame_size_r7)
+.(fcn 0xed4c 0xed59 func3.pkt_tx_unk_0xed4c)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xed4c
+.(fcn 0xed59 0xed5a func3.fifo_raise_underflow_overflow_err)
+.(fcn 0xed5a 0xed5b func3.fifo_rx_raise_almost_full)
+.(fcn 0xed5b 0xed5c func3.fifo_rx_clear_almost_full)
+.(fcn 0xed5c 0xed5d func3.check_thresh_at_latch)
+.(fcn 0xed5d 0xed5e func3.raise_postamble_detect)
+.(fcn 0xed5e 0xed6a func3.ph_enabled_check)
+CCu ph enabled @ 0xed62
+CCu PH_RX_DISABLE @ 0xed64
+CCu ph disabled @ 0xed67
+.(fcn 0xed6a 0xed6b func3.wut_start_rx_tx)
+.(fcn 0xed6c 0xed6d func3.change_from_spi_active_to_ezconfig)
+.(fcn 0xed6d 0xed6e func3.0x17_isr_finish)
+.(fcn 0xede7 0xeed0 func3.rx_ph_init)
+.(fcn 0xeed0 0xeef6 func3.fifo_config)
+CCu shared FIFO: 0x04ef @ 0xeed9
+CCu TX FIFO: 0x056f @ 0xeee6
+CCu RX FIFO: 0x04ef @ 0xeeef
+.(fcn 0xef06 0xef0d func3.spi_cmd_done)
 
 echo   ..0xf000
 
+.(fcn 0xf001 0xf114 func3.pkt_tx_unk0xf001)
 f func1.vector_table 1 @ 0xf114
 f func3.fragment 1 @ 0xf16d
 f func2.vector_table 1 @ 0xf603
 f func2.map_table 1 @ 0xf64a
 CCu copied to 0x0057, 0xf5f3 offset compared to rom (func1) @ 0xf64a
-f func2.map_spi_parse_more_cmds 1 @ 0xf64a-0x57+0x195
-f func2.map_spi_parse_cmds 1 @ 0xf64a-0x57+0x2d6
-f func2.map_cmd_0x80 1 @ 0xf64a-0x57+0x2dc
-f func2.map_cmd_0x81 1 @ 0xf64a-0x57+0x2e2
-f func2.map_cmd_0x82 1 @ 0xf64a-0x57+0x2df
-f func2.map_cmd_0x83 1 @ 0xf64a-0x57+0x2eb
-f func2.map_cmd_0x84 1 @ 0xf64a-0x57+0x315
-f func2.map_cmd_0x85 1 @ 0xf64a-0x57+0x327
-f func2.map_cmd_0x87 1 @ 0xf64a-0x57+0x2c7
-f func2.map_cmd_0x8c 1 @ 0xf64a-0x57+0x324
-f func2.map_cmd_0x8d 1 @ 0xf64a-0x57+0x2c4
-f func2.map_cmd_0x8a 1 @ 0xf64a-0x57+0x312
-f func2.map_do_cmd_0x8c_0x8d 1 @ 0xf64a-0x57+0x2b8
 
 Cd 1 0x6d5 @ 0xf929
 f rom.end_of_code @ 0xf929
