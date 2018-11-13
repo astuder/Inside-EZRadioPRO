@@ -194,6 +194,9 @@ f var.cmd80_arg1 1 @ 0x05fb
 f var.cmd80_arg2 1 @ 0x05fc
 f var.cmd80_arg3 1 @ 0x05fd
 
+f var.cmd80_unk5fe 1 @ 0x05fe
+
+f var.cmd8x_unk600 1 @ 0x0600
 f var.cmd8x_unk601 1 @ 0x0601
 f var.cmd8x_unk602 1 @ 0x0602
 f var.cmd8x_unk603 1 @ 0x0603

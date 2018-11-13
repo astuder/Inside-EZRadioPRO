@@ -21,8 +21,8 @@ This list applies only to A2A and C2A devices.
 |0x09|READ_FACTORY_DATA|&#x2713;||||||
 |0x0a|PATCH_COPY|&#x2713;|||||same as 0x06|
 |0x10|FUNC_INFO|&#x2713;|&#x2713;|&#x2713;|&#x2713;||&#x2713;|
-|0x11|SET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
-|0x12|GET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
+|0x11|SET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713; [more](#Property-groups)|
+|0x12|GET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713; [more](#Property-groups)|
 |0x13|GPIO_PIN_CFG||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x14|GET_ADC_READING||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x15|FIFO_INFO||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
@@ -66,3 +66,24 @@ This list applies only to A2A and C2A devices.
 |0xf1|POKE||&#x2713;|&#x2713;|&#x2713;||knowledge base|
 |0xf2|CMD_F2||&#x2713;|&#x2713;|&#x2713;|||
 |0xfe|TAIL_ROM|&#x2713;||||||
+
+# Property groups
+
+|ID|Size|Name|Documented|
+|--|--|--|--|
+|0x00|0x0b|GLOBAL|&#x2713;|
+|0x01|0x04|INT_CTL|&#x2713;|
+|0x02|0x04|FRR_CTL|&#x2713;|
+|0x10|0x0f|PREAMBLE|&#x2713;|
+|0x11|0x0a|SYNC|&#x2713;|
+|0x12|0x3a|PKT|&#x2713;|
+|0x20|0x60|MODEM|&#x2713;|
+|0x21|0x24|MODEM_CHFLT|&#x2713;|
+|0x22|0x07|PA|&#x2713;|
+|0x23|0x08|SYNTH|&#x2713;|
+|0x24|0x09|EZCONFIG|&#x2713; (EZRadio)|
+|0x30|0x0c|MATCH|&#x2713;|
+|0x40|0x08|FREQ_CONTROL|&#x2713;|
+|0x50|0x42|RX_HOP|&#x2713;|
+|0xf0|0x05|PTI|&#x2713;|
+|0xf2|0x37|CAL_DATA||

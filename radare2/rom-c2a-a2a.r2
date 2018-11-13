@@ -113,7 +113,7 @@ axd xreg_base+0xab @ 0x82bc
 axd dsp_base+0x54 @ 0x82ca
 .(fcn 0x82ce 0x82ed boot.prepare_exit)
 .(fcn 0x82ed 0x8301 boot.cmd_read_nvram_74c0)
-CCu dest addr: response buffer @82f1
+CCu dest addr: response buffer @ 0x82f1
 CCu src addr: 0x7400+arg[1] @ 0x82f3
 CCu length: 16 bytes @ 0x82fb
 .(fcn 0x8301 0x835b boot.parse_cmd)
@@ -2580,6 +2580,7 @@ CCu raise TX/RX event @ 0xdc36
 .(fcn 0xdc4c 0xdc5b func2.config_cmd_unk0x0c)
 .(fcn 0xdd11 0xdd44 func2.pkt_tx_unk_0xdd11)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xdd44
+axc 0x032a @ 0xdd5f
 .(fcn 0xdd6f 0xdd82 func2.irq07_packet_sent)
 CCu CRC_ERROR @ 0xddb2
 CCu ALT_CRC_ERROR @ 0xddc3
