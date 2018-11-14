@@ -164,23 +164,31 @@ f var.ezconfig_pos @ _idata+0x97
 f var.cmd8x_unk59a 1 @ 0x059a
 f var.cmd8x_unk59c 1 @ 0x059c
 
+f var.cmd8x_unk5a7 1 @ 0x05a7
+f var.cmd8x_unk5a8 1 @ 0x05a8
 f var.cmd8x_unk5a9 1 @ 0x05a9
 f var.cmd8x_rssi_thresh 1 @ 0x05aa
+f var.cmd8x_unk5ac 1 @ 0x05ac
+f var.cmd8x_unk5ad 1 @ 0x05ad
 
 f var.cmd8x_unk5b7 1 @ 0x05b7
 f var.cmd8x_unk5bb 1 @ 0x05bb
 f var.cmd8x_unk5bc 1 @ 0x05bc
 
+f var.cmd8x_unk5c1 1 @ 0x05c1
+f var.cmd8x_unk5c2 1 @ 0x05c2
+
 f var.cmd8x_unk5e1 1 @ 0x05e1
 f var.cmd8x_unk5e2 1 @ 0x05e2
 f var.cmd8x_unk5e4 1 @ 0x05e4
 
-f var.cmd8x_unk5e8 1 @ 0x05e8
-f var.cmd8x_unk5e9 1 @ 0x05e9
+f var.cmd8x_rxtx_delay_msb 1 @ 0x05e8
+f var.cmd8x_rxtx_delay_lsb 1 @ 0x05e9
 
 f var.cmd8x_unk5dc 1 @ 0x05dc
 
 f var.cmd8x_unk5f3 1 @ 0x05f3
+f var.cmd8x_unk5f5 1 @ 0x05f5
 
 CCu parameters of CMD_0x81 command @ 0x05f6
 f var.cmd81_arg1 1 @ 0x05f6
@@ -195,6 +203,7 @@ f var.cmd80_arg2 1 @ 0x05fc
 f var.cmd80_arg3 1 @ 0x05fd
 
 f var.cmd80_unk5fe 1 @ 0x05fe
+f var.cmd80_unk5ff 1 @ 0x05ff
 
 f var.cmd8x_unk600 1 @ 0x0600
 f var.cmd8x_unk601 1 @ 0x0601
@@ -408,6 +417,7 @@ f map.do_cmd_0x8c_0x8d 1 @ 0x02b8
 f map.cmd_0x8d 1 @ 0x02c4
 f map.cmd_0x87 1 @ 0x02c7
 f map.spi_parse_cmds 1 @ 0x02d6
+f map.mul_0x5c1_x_r6r7_x_r4r5 1 @ 0x02d9
 f map.cmd_0x80 1 @ 0x02dc
 f map.cmd_0x82 1 @ 0x02df
 f map.cmd_0x81 1 @ 0x02e2

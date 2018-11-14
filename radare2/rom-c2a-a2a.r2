@@ -2578,6 +2578,7 @@ CCu CMD_ERR_BAD_COMMAND @ 0xdc08
 axd 0x05fb @ 0xdc0d
 CCu raise TX/RX event @ 0xdc36
 .(fcn 0xdc4c 0xdc5b func2.config_cmd_unk0x0c)
+axd 0x05ff @ 0xdc57
 .(fcn 0xdd11 0xdd44 func2.pkt_tx_unk_0xdd11)
 CCu TX_FIFO_ALMOST_EMPTY @ 0xdd44
 axc 0x032a @ 0xdd5f
@@ -2595,6 +2596,7 @@ CCu FILTER_MATCH @ 0xde7d
 CCu CMD_ERR_BAD_COMMAND @ 0xdef6
 axd 0x05f6 @ 0xdefb
 .(fcn 0xdf10 0xdf27 func2.config_cmd_unk0x0d)
+axd 0x05e9 @ 0xdf23
 .(fcn 0xdff0 0xdff3 func2.tx_preamble_timeout)
 .(fcn 0xdff3 0xdff4 func2.raise_preamble_detect)
 .(fcn 0xdff4 0xdffb func2.rx_sync_timeout)
@@ -2632,10 +2634,19 @@ CCu TX_FIFO_EMPTY @ 0xe2af
 CCu RSSI_LATCH @ 0xe2e2
 .(fcn 0xe2f3 0xe2f4 func2.change_from_spi_active_to_ezconfig)
 .(fcn 0xe2f4 0xe328 func2.0x17_isr_finish)
+.(fcn 0xe328 0xe360 func2.mul_0x5c1_x_r6r7_x_r4r5)
+CCu c=0 @ 0xe329
+CCu b=[0x05c1] @ 0xe32d
+axd 0x05c2 @ 0xe333
+CCu a=r6r7 @ 0xe337
 CCu start hw multiplier @ 0xe33b
 CCu wait until hw mul done @ 0xe33e
+CCu c=b @ 0xe343
+CCu b=a @ 0xe349
+CCu a=r4r5 @ 0xe34f
 CCu start hw multiplier @ 0xe353
 CCu wait until hw mul done @ 0xe356
+CCu r6r7=b @ 0xe35b
 .(fcn 0xe360 0xe37a func2.config_cmd_unk0x0e)
 CCu MOD_TYPE @ 0xe364
 CCu 4FSK @ 0xe367
@@ -2652,9 +2663,10 @@ CCu store current RSSI for FRR (11 is undoc) @ 0xe437
 CCu indicate RX/TX event @ 0xe43e
 .(fcn 0xe443 0xe498 func2.int0x0f_cb_unk0xe443)
 CCu int 0x0f impl at 0xe435 @ 0xe4a4
+.(fcn 0xe4d6 0xe512 func2.main_loop_rxtx_event_bit4)
 .(fcn 0xe512 0xe542 func2.main_loop_rxtx_event_part2)
-CCu manual RX hop @ 0xe512
-CCu RX hop @ 0xe519
+CCu cmd_0x80 @ 0xe512
+CCu ? @ 0xe519
 .(fcn 0xe551 0xe554 func2.rx_process_byte_b)
 .(fcn 0xe554 0xe5a8 func2.ph_process_len_field)
 CCu clr expect_len_field @ 0xe5a3
@@ -2673,10 +2685,12 @@ CCu peak detect? @ 0xe8ef
 CCu var.CURRENT_RSSI @ 0xe900
 CCu update current rssi if higher than previous? @ 0xe904
 .(fcn 0xe90d 0xe92d func2.pti_send_func2_0x607)
-CCu store current RSSI for FRR (11 is undoc) @ 0xe94d
+.(fcn 0xe94b 0xe952 func2.frr_curr_rssi_to_0)
+CCu set current RSSI to 0 for FRR (11 is undoc) @ 0xe94d
 .(fcn 0xe95d 0xe965 func2.pti_get_fifo_len_clr_ie_2)
 .(fcn 0xe98d 0xe994 func2.change_state_to_r7_ret_dptr_0x607)
-f rom.clr_int_0x0f_callback 1 @ 0xe9ad
+.(fcn 0xe994 0xe99f func2.clr_int_ph)
+.(fcn 0xe9ad 0xe9b6 func2.clr_int_0x0f_callback)
 CCu RX @ 0xea0d
 .(fcn 0xea2f 0xea5a func3.isr_entry)
 .(fcn 0xea5a 0xea79 func3.isr_exit)
