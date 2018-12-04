@@ -712,6 +712,8 @@ CCu RSSI_THRESH int enable @ 0x9663
 .(fcn 0x966c 0x96e9 rom.rx_start)
 CCu clear ph irq flags @ 0x96c6
 CCu RSSI_THRESH int enable @ 0x96d1
+CCu if ph enabled @ 0x96d6
+CCu start timer? @ 0x96d9
 CCu FIFO_SRC_SEL @ 0x96e0
 CCu src is packet handler @ 0x96e3
 .(fcn 0x96e9 0x96f4 rom.dsp_set_reg_r7_from_cache)
