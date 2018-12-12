@@ -1326,6 +1326,7 @@ CCu stop timer @ 0xaaee
 CCu disable timer interrupt @ 0xaaf1
 .(fcn 0xaaf5 0xaafe rom.eint1_pause)
 .(fcn 0xaafe 0xab23 rom.eint1_disable)
+CCu stop ph hw @0xab0f
 axd xreg_base+0x02 @ 0xab1b
 CCu clear ph irq flags @ 0xab1f
 .(fcn 0xab23 0xab43 rom.copy_xreg0x4a_to_0x737)
@@ -1362,9 +1363,12 @@ CCu MAN_ENABLE @ 0xabdf
 CCu preamble is manchester encoded @ 0xabe2
 CCu MAN_CONST @ 0xabe9
 CCu PREAM_FIRST_1_OR_0 @ 0xabf4
+CCu enable preambles @ 0xabfa
 CCu RX_THRESH @ 0xac01
 CCu branch if no preamble check @ 0xac03
+CCu no rx preamble @ 0xac05
 CCu branch if tx preamble @ 0xac0d
+CCu no tx preamble @ 0xac0f
 CCu PREAMBLE_CONFIG @ 0xac18
 CCu LENGTH_CONFIG @ 0xac19
 CCu branch if length in bytes @ 0xac1f
@@ -1405,6 +1409,8 @@ CCu SW_WHT_CTRL (enable sw whitening) @ 0xad64
 .(fcn 0xad67 0xade2 rom.config_sync)
 axd xreg_base+0xd7 @ 0xad6b
 CCu SKIP_TX @ 0xad95
+CCu no tx sync word @ 0xad98
+CCu send sync word on tx @ 0xad9d
 CCu SYNC_ERROR_ONLY_BEGIN @ 0xada5
 CCu RX_ERRORS, 4FSK, MANCH @ 0xada9
 CCu DUAL_SYNC_EN @ 0xadb0
@@ -1441,6 +1447,8 @@ CCu PA_MODE @ 0xaf35
 CCu mode SWC (switched current) @ 0xaf39
 CCu mode CLE (class e) @ 0xaf3d
 .(fcn 0xaf44 0xafcb rom.config_pkt_config)
+CCu clr BIT_ORDER, MANCH_POL @ 0xaf47
+CCu clr CRC_PADDING @ 0xaf4a
 CCu 4FSK_EN @ 0xaf52
 CCu undocumented @ 0xaf59
 CCu MANCH_POL @ 0xaf60
@@ -1455,11 +1463,13 @@ CCu rx and tx split pkt field cfg @ 0xafbc
 axd 0x06f1 @ 0xafbc
 CCu rx and tx share pkt field cfg @ 0xafc2
 axd 0x06dd @ 0xafc2
-.(fcn 0xafcb 0xafde rom.pkt_end_unk_0xafcb)
+.(fcn 0xafcb 0xafde rom.ph_disable)
+CCu disable packet handler @ 0xafcf
+CCu reset ph irq flags @ 0xafd5
+CCu reset ph status flags @ 0xafd8
+.(fcn 0xafde 0xafed rom.tx_frame_isr)
 CCu # of bytes below 8 to send to DSP at a time (set to 2) @ 0xafe1
 CCu tx in chunks, based on DSP buffer size? @ 0xafe2
-CCu clr ph irq flags @ 0xafd5
-.(fcn 0xafde 0xafed rom.tx_frame_isr)
 .(fcn 0xafed 0xaff0 rom.rx_byte_isr)
 .(fcn 0xaff0 0xaffd rom.0x3b_isr)
 CCu usec delay expired @ 0xaff0
@@ -2099,6 +2109,9 @@ CCu return bytes stored in rx fifo @ 0xcac7
 .(fcn 0xcac9 0xcad3 rom.fifo_rx_pos_plus_r7)
 .(fcn 0xcad3 0xcada rom.rx_state_entry)
 CCu RX @ 0xcad6
+.(fcn 0xcada 0xcae4 rom.rx_start_ph)
+CCu disable ph @ 0xcada
+CCu bit 0 is set if PH is enabled @ 0xcadd
 .(fcn 0xcae4 0xcaee rom.compare_imem_0x0e_to_imem_0x0a_0x0b)
 .(fcn 0xcaee 0xcaf5 rom.return_r6_lonib_in_acc_hinib)
 .(fcn 0xcaf5 0xcafc rom.get_ETSI_mode)
@@ -2456,7 +2469,7 @@ axd 0x0605 @ 0xd4a2
 CCu PKT_LEN_ADJUST @ 0xd4a6
 CCu PKT_LEN_ADJUST @ 0xd4ab
 CCu DST_FIELD @ 0xd4b9
-.(fcn 0xd512 0xd5b1 rom.pkt_tx_packet_sent)
+.(fcn 0xd512 0xd5b1 rom.pkt_tx_unk_0xd512)
 CCu PACKET_SENT @ 0xd512
 CCu tx_len is zero @ 0xd525
 CCu tx_len * 8 (=pkt bits) @ 0xd537

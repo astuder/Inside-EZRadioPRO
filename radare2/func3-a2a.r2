@@ -234,7 +234,7 @@ f map.wut_expired 1 @ 0x00cf
 f map.gpio_read_pin_cfg 1 @ 0x00d2
 f map.tx_pwr_seq_start 1 @ 0x00d5
 f map.dma_disable 1 @ 0x00d8
-f map.pkt_end_unk_0xafcb 1 @ 0x00db
+f map.ph_disable 1 @ 0x00db
 f map.enter_sleep_state 1 @ 0x00de
 f map.change_from_tx 1 @ 0x00e1
 f map.latch_rssi 1 @ 0x00e7

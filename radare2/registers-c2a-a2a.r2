@@ -32,8 +32,8 @@ f sfr.rxtx_byte 1 @ _sfr+0xa7
 CCu read in rx, written in tx @ _sfr+0xa7
 CCu 4:eint1 (bit timer) @ _sfr+0xa8
 CCu set to #0x01 end of tx, #0x10 end of rx packet @ _sfr+0xa9
-f sfr.preamble_ctrl 1 @ _sfr+0xaa
-CCu 0:? 2:no tx preamble 3:no tx sync word 4:no rx preamble 5:BIT_ORDER 6:MANCH_POL @ _sfr+0xaa
+f sfr.ph_ctrl 1 @ _sfr+0xaa
+CCu 0:enable ph 2:no tx preamble 3:skip tx sync word 4:no rx preamble 5:BIT_ORDER 6:MANCH_POL 7:? @ _sfr+0xaa
 f sfr.wht_ctrl 1 @ _sfr+0xab
 CCu 3:PN_DIRECTION 7:CRC_PADDING @ _sfr+0xab
 f sfr.crc_ctrl 1 @ _sfr+0xac
@@ -48,7 +48,7 @@ f sfr.int_ph_mask 1 @ _sfr+0xb4
 f sfr.int_modem_mask 1 @ _sfr+0xb5
 f sfr.int_chip_mask 1 @ _sfr+0xb6
 f sfr.ph_irq_flags 1 @ _sfr+0xba
-CCu 3:preamble detected 4:sync detected 5:? 7:pkt end @ _sfr+0xba
+CCu 3:preamble detected 4:sync detected 5:? 6:? 7:pkt end @ _sfr+0xba
 f sfr.ph_status 1 @ _sfr+0xbb
 CCu 0:crc error 1:alt crc error 2:? 3:? 4:clr=rx byte avail 5:clr=sync word 1 trigger, set=sync word 2 trigger @ _sfr+0xbb
 
@@ -67,12 +67,12 @@ CCu 0:PHASE_SAMPLE 1:PKT_SENT 2:RSSI_THRESH 3:? 4:PREAMBLE_TIMEOUT 5:SYNC_TIMEOU
 f sfr.irq0x07_flags 1 @ _sfr+0xca
 CCu 0:PHASE_SAMPLE 1:PKT_SENT 2:RSSI_THRESH 3:? 4:PREAMBLE_TIMEOUT 5:SYNC_TIMEOUT 6:RSSI_JUMP 7:? clr on preamble detect @ _sfr+0xca
 
-f sfr.ph_cfg_ctl @ _sfr+0xd1
+f sfr.ph_field_cfg_ctl @ _sfr+0xd1
 CCu 0-4:field to cfg (bitfield) 5:1=RX,0=TX @ _sfr+0xd1
 f sfr.ph_field_len_lsb @ _sfr+0xd2
 CCu packet field length in bits @ _sfr+0xd2
 f sfr.ph_field_len_msb @ _sfr+0xd3
-f sfr.ph_ctl @ _sfr+0xd4
+f sfr.ph_field_ctl @ _sfr+0xd4
 CCU 0:MANCH 1:WHITEN 2:last field 3:PKTLEN_FLD 4:4FSK @ _sfr+0xd4
 f sfr.ph_crc_ctl @ _sfr+0xd5
 CCu 0:ALT_CRC_EN 1:CRC_EN 2:CHECK_ALT_CRC 3:CHECK_CRC 4:SEND_ALT_CRC 5:SEND_CRC @ _sfr+0xd5
