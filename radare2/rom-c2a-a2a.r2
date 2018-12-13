@@ -1351,7 +1351,8 @@ CCu PREAMBLE_TIMEOUT int disable @ 0xab87
 axd xreg_base+0x57 @ 0xab98
 CCu PREAMBLE_TIMEOUT int enable @ 0xab9d
 .(fcn 0xaba1 0xac64 rom.config_preamble)
-CCu PREMABLE_CONFIG_NSTD @ 0xabb0
+axd xreg_base+0xd2 @ 0xaba4
+axd 0x06be @ 0xabb0
 CCu STANDARD_PREAM @ 0xabc5
 CCu branch if 0101 @ 0xabc9
 CCu branch if non-std @ 0xabcc
@@ -1373,8 +1374,15 @@ CCu PREAMBLE_CONFIG @ 0xac18
 CCu LENGTH_CONFIG @ 0xac19
 CCu branch if length in bytes @ 0xac1f
 CCu store length in nibbles @ 0xac21
-CCu get len in nibbles @ 0xac2a
+CCu nibbles = bytes * 2 @ 0xac27
+CCu len in nibbles msb @ 0xac2d
+CCu lsb @0xac32
 CCu dec tx preamble len by 1 @ 0xac34
+CCu EN_3_OF_6 encoding @ 0xac40
+CCu PREAMBLE_TX_LENGTH in nibbles bit 8 @ 0xac46
+axd xreg_base+0xcc @ 0xac4e
+CCu PREAMBLE_TX_LENGTH bits 7-0 @ 0xac4f
+CCu POSTAMBLE_EN @ 0xac56
 CCu DSA @ 0xac5d
 .(fcn 0xac64 0xac70 rom.config_run_r7)
 f rom.config_cmd_table 1 @ 0xac70
@@ -2091,7 +2099,7 @@ CCu group info addr @ 0xca24
 .(fcn 0xca35 0xca41 rom.gpio_get_pin_var)
 CCu addr=0x727+pin @ 0xca35
 axd 0x0727 @ 0xca35
-.(fcn 0xca41 0xca4a rom.dptr_to_r6_dptr_ror7_to_acc)
+.(fcn 0xca41 0xca4a rom.dptr_to_r6_dptr_ror7_and1_to_acc)
 f rom.rotate_acc_right_7_and_1 @ 0xca43
 .(fcn 0xca56 0xca62 rom.rssi_thresh_int_disable)
 CCu RSSI_THRES int disable @ 0xca56

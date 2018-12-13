@@ -327,9 +327,9 @@ f xreg.wht_seed_msb @ xreg_base+0xca
 f xreg.wht_bit_num @ xreg_base+0xcb
 CCu 0-3: wht_bit_num @ xreg_base+0xcb
 f xreg.preamble_tx_len 1 @ xreg_base+0xcc
-CCu length in nibbles 1 @ xreg_base+0xcc
+CCu length in nibbles lsb @ xreg_base+0xcc
 f xreg.preamble_config_flags 1 @ xreg_base+0xcd
-CCu 0:length msb 2:EN_3_OF_6 3:first_1 4:man_enable 5:1010 6:1010 7:man_const @ xreg_base+0xcd
+CCu 0:tx length msb 2:EN_3_OF_6 3:first_1 4:man_enable 5:1010 6:1010 7:man_const @ xreg_base+0xcd
 f xreg.preamble_config_nstd 1 @ xreg_base+0xce
 f xreg.preamble_pattern_7_0 1 @ xreg_base+0xcf
 
