@@ -174,7 +174,12 @@ f var.cmd8x_unk5ad 1 @ 0x05ad
 f var.cmd8x_unk5b7 1 @ 0x05b7
 f var.cmd8x_unk5bb 1 @ 0x05bb
 f var.cmd8x_unk5bc 1 @ 0x05bc
+f var.cmd8x_unk5bd 1 @ 0x05bd
+CCu 7:? 1:? 0:? @ 0x05bd
+f var.cmd8x_unk5be 1 @ 0x05be
+f var.cmd8x_unk5bf 1 @ 0x05bf
 
+f var.cmd8x_unk5c0 1 @ 0x05c0
 f var.cmd8x_unk5c1 1 @ 0x05c1
 f var.cmd8x_unk5c2 1 @ 0x05c2
 
@@ -186,6 +191,8 @@ f var.cmd8x_rxtx_delay_msb 1 @ 0x05e8
 f var.cmd8x_rxtx_delay_lsb 1 @ 0x05e9
 
 f var.cmd8x_unk5dc 1 @ 0x05dc
+f var.cmd8x_unk5dd 1 @ 0x05dd
+f var.cmd8x_unk5de 1 @ 0x05de
 
 f var.cmd8x_unk5f3 1 @ 0x05f3
 f var.cmd8x_unk5f5 1 @ 0x05f5

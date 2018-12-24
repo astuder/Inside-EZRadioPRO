@@ -399,7 +399,7 @@ f xreg.int_ctl_chip_enable 1 @ xreg_base+0xff
 
 echo ..xreg2
 
-Cd 1 0x10 @ 0x5100
+Cd 1 0x100 @ 0x5100
 f xreg2.dma_status 1 @ 0x5100
 CCu 0:set while dma cmd in progress @ 0x5100
 f xreg2.dma_cmd 1 @ 0x5101
