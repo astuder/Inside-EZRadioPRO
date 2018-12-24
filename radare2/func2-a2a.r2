@@ -138,8 +138,8 @@ f var.loc6a 1 @ _idata+0x6a
 f var.loc6b 1 @ _idata+0x6b
 f var.loc6c 1 @ _idata+0x6c
 
-f var.ph_field_len_msb 1 @ _idata+0x71
-f var.ph_field_len_lsb 1 @ _idata+0x72
+f var.cmd8x_unk71 1 @ _idata+0x71
+
 f var.ezconfig_ptr_msb 1 @ _idata+0x73
 f var.ezconfig_ptr_lsb 1 @ _idata+0x74
 f var.tx_num_repeat_cnt 1 @ _idata+0x75
@@ -183,25 +183,22 @@ f var.cmd8x_unk5c0 1 @ 0x05c0
 f var.cmd8x_unk5c1 1 @ 0x05c1
 f var.cmd8x_unk5c2 1 @ 0x05c2
 
-f var.cmd8x_unk5e1 1 @ 0x05e1
-f var.cmd8x_unk5e2 1 @ 0x05e2
-f var.cmd8x_unk5e4 1 @ 0x05e4
-
-f var.cmd8x_rxtx_delay_msb 1 @ 0x05e8
-f var.cmd8x_rxtx_delay_lsb 1 @ 0x05e9
-
 f var.cmd8x_unk5dc 1 @ 0x05dc
 f var.cmd8x_unk5dd 1 @ 0x05dd
 f var.cmd8x_unk5de 1 @ 0x05de
 
+f var.cmd8x_unk5e1 1 @ 0x05e1
+f var.cmd8x_unk5e2 1 @ 0x05e2
+f var.cmd8x_rx_unk5e4 1 @ 0x05e4
+f var.cmd8x_rxtx_delay_msb 1 @ 0x05e8
+f var.cmd8x_rxtx_delay_lsb 1 @ 0x05e9
+
 f var.cmd8x_unk5f3 1 @ 0x05f3
 f var.cmd8x_unk5f5 1 @ 0x05f5
-
 CCu parameters of CMD_0x81 command @ 0x05f6
-f var.cmd81_arg1 1 @ 0x05f6
+f var.cmd81_arg1_ch_rx 1 @ 0x05f6
 f var.cmd81_arg2 1 @ 0x05f7
-
-f var.cmd8x_unk5f9 1 @ 0x05f9
+f var.cmd8x_tx_unk5f9 1 @ 0x05f9
 f var.cmd8x_unk5fa 1 @ 0x05fa
 
 CCu parameters of CMD_0x80 command @ 0x05fb
@@ -220,7 +217,7 @@ f var.cmd8x_unk604 1 @ 0x0604
 f var.cmd8x_unk605 1 @ 0x0605
 f var.cmd8x_unk606 1 @ 0x0606
 f var.cmd8x_unk607 1 @ 0x0607
-f var.cmd8x_unk608 1 @ 0x0608
+f var.cmd87_arg1 1 @ 0x0608
 
 # CODE
 

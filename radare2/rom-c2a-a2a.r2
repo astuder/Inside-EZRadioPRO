@@ -2562,8 +2562,12 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 .(fcn 0xd8e1 0xd8ea func2.0x2f_handler)
 CCu raise bit6 event @ 0xd950
 CCu SLEEP @ 0xd960
+axd 0x0607 @ 0xd967
+axd 0x0607 @ 0xd999
 CCu TX @ 0xd9b9
+axd 0x0607 @ 0xd9c0
 CCu READY @ 0xd9cc
+axd 0x0607 @ 0xd9d3
 .(fcn 0xd9d8 0xd9f9 func2.do_cmd_0x8c_0x8d)
 .(fcn 0xda20 0xda64 func2.main_loop_bit6_event)
 CCu if 2 @ 0xda26
@@ -2580,7 +2584,7 @@ CCu 0x0607 was 3 @ 0xda42
 CCu 0x0607 was 4 @ 0xda47
 CCu 0x0607 was 0x40 @ 0xda4c
 CCu 0x0607 was 5 @ 0xda50
-CCu copy 606 to 607 @ 0xda52
+CCu compare 606 to 607 @ 0xda52
 axd 0x0607 @ 0xda57
 CCu repeat event if not equal @ 0xda59
 CCu raise bit6 event @ 0xda5c
@@ -2694,6 +2698,7 @@ CCu int 0x0f impl at 0xe435 @ 0xe4a4
 .(fcn 0xe512 0xe542 func2.main_loop_rxtx_event_part2)
 CCu cmd_0x80 @ 0xe512
 CCu ? @ 0xe519
+axd 0x0607 @ 0xe54c
 .(fcn 0xe551 0xe554 func2.rx_process_byte_b)
 .(fcn 0xe554 0xe5a8 func2.ph_process_len_field)
 CCu clr expect_len_field @ 0xe5a3
@@ -2707,6 +2712,7 @@ CCu POSTAMBLE_DETECT? @ 0xe7d9
 CCu POSTAMBLE_DETECT? @ 0xe7e3
 .(fcn 0xe8b1 0xe8db func2.fifo_config)
 CCu fifo set to 0x4800-0x48fe ?!? @ 0xe8b8
+axd 0x0607 @ 0xe8e9
 .(fcn 0xe8ef 0xe90d func2.eint1_cb_unk0xe8ef)
 CCu peak detect? @ 0xe8ef
 CCu var.CURRENT_RSSI @ 0xe900
@@ -2715,7 +2721,9 @@ CCu update current rssi if higher than previous? @ 0xe904
 .(fcn 0xe94b 0xe952 func2.frr_curr_rssi_to_0)
 CCu set current RSSI to 0 for FRR (11 is undoc) @ 0xe94d
 .(fcn 0xe95d 0xe965 func2.pti_get_fifo_len_clr_ie_2)
-.(fcn 0xe98d 0xe994 func2.change_state_to_r7_ret_dptr_0x607)
+.(fcn 0xe986 0xe994 func2.set_channel_dptr_state_rx_ret_dptr0x607)
+CCu RX @ 0xe98b
+f func2.change_state_to_r7_ret_dptr_0x607 @ 0xe98d 
 .(fcn 0xe994 0xe99f func2.clr_int_ph)
 .(fcn 0xe9ad 0xe9b6 func2.clr_int_0x0f_callback)
 CCu RX @ 0xea0d
