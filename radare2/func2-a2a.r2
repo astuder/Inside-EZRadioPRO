@@ -186,7 +186,9 @@ f var.cmd8x_unk5c2 1 @ 0x05c2
 f var.cmd8x_unk5dc 1 @ 0x05dc
 f var.cmd8x_unk5dd 1 @ 0x05dd
 f var.cmd8x_unk5de 1 @ 0x05de
+f var.cmd8x_tx_buf_msb 1 @ 0x05df
 
+f var.cmd8x_tx_buf_lsb 1 @ 0x05e0
 f var.cmd8x_unk5e1 1 @ 0x05e1
 f var.cmd8x_unk5e2 1 @ 0x05e2
 f var.cmd8x_rx_unk5e4 1 @ 0x05e4
@@ -194,17 +196,20 @@ f var.cmd8x_rxtx_delay_msb 1 @ 0x05e8
 f var.cmd8x_rxtx_delay_lsb 1 @ 0x05e9
 
 f var.cmd8x_unk5f3 1 @ 0x05f3
+f var.cmd8x_unk5f4 1 @ 0x05f4
 f var.cmd8x_unk5f5 1 @ 0x05f5
 CCu parameters of CMD_0x81 command @ 0x05f6
 f var.cmd81_arg1_ch_rx 1 @ 0x05f6
-f var.cmd81_arg2 1 @ 0x05f7
+f var.cmd81_arg2_next_bit6_state 1 @ 0x05f7
+CCu 3-0: next bit6 state after int17 @ 0x05f7
 f var.cmd8x_tx_unk5f9 1 @ 0x05f9
 f var.cmd8x_unk5fa 1 @ 0x05fa
 
 CCu parameters of CMD_0x80 command @ 0x05fb
 f var.cmd80_arg1 1 @ 0x05fb
 f var.cmd80_arg2 1 @ 0x05fc
-f var.cmd80_arg3 1 @ 0x05fd
+f var.cmd80_arg3_next_bit6_state 1 @ 0x05fd
+CCu 7-4: next bit6 state after int0f @ 0x05f7
 
 f var.cmd80_unk5fe 1 @ 0x05fe
 f var.cmd80_unk5ff 1 @ 0x05ff
@@ -212,11 +217,11 @@ f var.cmd80_unk5ff 1 @ 0x05ff
 f var.cmd8x_unk600 1 @ 0x0600
 f var.cmd8x_unk601 1 @ 0x0601
 f var.cmd8x_unk602 1 @ 0x0602
-f var.cmd8x_unk603 1 @ 0x0603
-f var.cmd8x_unk604 1 @ 0x0604
+f var.cmd8x_int0f_counter 1 @ 0x0603
+f var.cmd8x_int0f_repeat 1 @ 0x0604
 f var.cmd8x_unk605 1 @ 0x0605
-f var.cmd8x_unk606 1 @ 0x0606
-f var.cmd8x_unk607 1 @ 0x0607
+f var.cmd8x_bit6_target_state 1 @ 0x0606
+f var.cmd8x_bit6_curr_state 1 @ 0x0607
 f var.cmd87_arg1 1 @ 0x0608
 
 # CODE
@@ -420,15 +425,17 @@ f map.cmd_get_int_status 1 @ 0x02b5
 f map.do_cmd_0x8c_0x8d 1 @ 0x02b8
 f map.cmd_0x8d 1 @ 0x02c4
 f map.cmd_0x87 1 @ 0x02c7
+f map.bit6_change_state 1 @ 0x02cd
 f map.spi_parse_cmds 1 @ 0x02d6
 f map.mul_0x5c1_x_r6r7_x_r4r5 1 @ 0x02d9
 f map.cmd_0x80 1 @ 0x02dc
 f map.cmd_0x82 1 @ 0x02df
 f map.cmd_0x81 1 @ 0x02e2
 f map.cmd_0x83 1 @ 0x02eb
+f map.set_cmd8x_0x71_pti_send_curr_state @ 0x02f7
 f map.cmd_0x8a 1 @ 0x0312
 f map.cmd_0x84 1 @ 0x0315
-f map.pti_send_func2_0x607 @ 0x0318
+f map.pti_send_bit6_curr_state @ 0x0318
 f map.cmd_0x8c 1 @ 0x0324
 f map.cmd_0x85 1 @ 0x0327
 

@@ -2560,7 +2560,13 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 .(fcn 0xd8cf 0xd8d8 func2.spi_fifo_err_handler)
 .(fcn 0xd8d8 0xd8e1 func2.rx_ph_handler)
 .(fcn 0xd8e1 0xd8ea func2.0x2f_handler)
+.(fcn 0xd932 0xd95b func2.bit6_change_state)
+CCu bit7: force state change 6-0: target state @ 0xd932
+CCu force new target state @ 0xd93d
+CCu ignore if state change in progress @ 0xd948
+CCu set new target state @ 0xd94f
 CCu raise bit6 event @ 0xd950
+.(fcn 0xd95b 0xd960 set_cmd8x_0x71_pti_send_curr_state)
 CCu SLEEP @ 0xd960
 axd 0x0607 @ 0xd967
 axd 0x0607 @ 0xd999
@@ -2578,13 +2584,13 @@ axd _idata+0x93 @ 0xdac4
 CCu if 5 @ 0xda2f
 CCu if 0x40 @ 0xda33
 CCu if 1 @ 0xda37
-CCu 0x0607 was 1 @ 0xda39
-CCu 0x0607 was 2 @ 0xda3d
-CCu 0x0607 was 3 @ 0xda42
-CCu 0x0607 was 4 @ 0xda47
-CCu 0x0607 was 0x40 @ 0xda4c
-CCu 0x0607 was 5 @ 0xda50
-CCu compare 606 to 607 @ 0xda52
+CCu state 1 @ 0xda39
+CCu state 2 @ 0xda3d
+CCu state 3 @ 0xda42
+CCu state 4 @ 0xda47
+CCu state 0x40 @ 0xda4c
+CCu state 5 @ 0xda50
+CCu compare current to target state @ 0xda52
 axd 0x0607 @ 0xda57
 CCu repeat event if not equal @ 0xda59
 CCu raise bit6 event @ 0xda5c
@@ -2603,9 +2609,12 @@ CCu raise bit6 event @ 0xda5c
 CCu WUT expired (???) @ 0xdbcf
 .(fcn 0xdbf3 0xdbf4 func2.wut_start_rx_tx)
 .(fcn 0xdbf5 0xdc4c func2.cmd_0x80)
+CCu if curr state 4 or 0x40, error @ 0xdbfe
 CCu CMD_ERR_BAD_COMMAND @ 0xdc08
 axd 0x05fb @ 0xdc0d
+CCu bit6 state 0x04 @ 0xdc22
 CCu raise TX/RX event @ 0xdc36
+CCu bit6 state 0x40 @ 0xdc40
 .(fcn 0xdc4c 0xdc5b func2.config_cmd_unk0x0c)
 axd 0x05ff @ 0xdc57
 .(fcn 0xdd11 0xdd44 func2.pkt_tx_unk_0xdd11)
@@ -2615,6 +2624,8 @@ axc 0x032a @ 0xdd5f
 CCu CRC_ERROR @ 0xddb2
 CCu ALT_CRC_ERROR @ 0xddc3
 .(fcn 0xddd5 0xddea func2.rx_packet_received)
+.(fcn 0xddea 0xde05 func2.rx_append_packet_stats)
+CCu loc6b = bytes added to fifo @ 0xddef
 CCu INVALID_PREAMBLE @ 0xde0d
 axd _idata+0x98 @ 0xde1b
 CCu TX @ 0xde23
@@ -2665,6 +2676,13 @@ CCu TX_FIFO_EMPTY @ 0xe2af
 CCu RSSI_LATCH @ 0xe2e2
 .(fcn 0xe2f3 0xe2f4 func2.change_from_spi_active_to_ezconfig)
 .(fcn 0xe2f4 0xe328 func2.0x17_isr_finish)
+CCu bit6 state is not 3 @ 0xe2fd
+CCu buffer pos msb @ 0xe306
+axd 0x05e0 @ 0xe307
+CCu buffer pos lsb @ 0xe309
+CCu curr buffer pos msb @ 0xe310
+axd 0x05e0 @ 0xe312
+CCu curr buffer pos lsb @ 0xe313
 .(fcn 0xe328 0xe360 func2.mul_0x5c1_x_r6r7_x_r4r5)
 CCu c=0 @ 0xe329
 CCu b=[0x05c1] @ 0xe32d
@@ -2710,6 +2728,7 @@ CCu RX @ 0xe7af
 CCu POSTAMBLE_DETECT? @ 0xe7d9
 .(fcn 0xe7e3 0xe7ed func2.fifo_rx_clear_almost_full)
 CCu POSTAMBLE_DETECT? @ 0xe7e3
+.(fcn 0xe7f4 0xe7fb func2.is_bit6_state_3)
 .(fcn 0xe8b1 0xe8db func2.fifo_config)
 CCu fifo set to 0x4800-0x48fe ?!? @ 0xe8b8
 axd 0x0607 @ 0xe8e9
@@ -2717,15 +2736,22 @@ axd 0x0607 @ 0xe8e9
 CCu peak detect? @ 0xe8ef
 CCu var.CURRENT_RSSI @ 0xe900
 CCu update current rssi if higher than previous? @ 0xe904
-.(fcn 0xe90d 0xe92d func2.pti_send_func2_0x607)
+.(fcn 0xe90d 0xe92d func2.pti_send_bit6_curr_state)
+.(fcn 0xe92d 0xe94b func2.fifo_rx_write_r7_0x00_0x00)
+f func2.fifo_rx_write_r7 @ 0xe942
 .(fcn 0xe94b 0xe952 func2.frr_curr_rssi_to_0)
 CCu set current RSSI to 0 for FRR (11 is undoc) @ 0xe94d
 .(fcn 0xe95d 0xe965 func2.pti_get_fifo_len_clr_ie_2)
-.(fcn 0xe986 0xe994 func2.set_channel_dptr_state_rx_ret_dptr0x607)
+.(fcn 0xe986 0xe994 func2.set_channel_dptr_state_rx_ret_dptr_bit6_curr_state)
 CCu RX @ 0xe98b
-f func2.change_state_to_r7_ret_dptr_0x607 @ 0xe98d 
+f func2.change_state_to_r7_ret_dptr_bit6_curr_state @ 0xe98d 
 .(fcn 0xe994 0xe99f func2.clr_int_ph)
+.(fcn 0xe99f 0xe9ad func2.raise_int_mode_clr_var_0x71_get_next_state)
+f func2.clr_var_0x71_get_next_state @ 0xe9a2
+f func2.get_cmd81_arg2_next_state @ 0xe9a5
 .(fcn 0xe9ad 0xe9b6 func2.clr_int_0x0f_callback)
+.(fcn 0xe9b6 0xe9c1 func2.change_bit6_state_to_cmd80_arg3)
+.(fcn 0xe9df 0xe9e9 func2.tx_0x2a_0x2a_0x2a)
 CCu RX @ 0xea0d
 .(fcn 0xea2f 0xea5a func3.isr_entry)
 .(fcn 0xea5a 0xea79 func3.isr_exit)
