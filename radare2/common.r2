@@ -5,7 +5,7 @@ echo configuring r2 for Si4x6x rev C2A
 e asm.cpu=8051-shared-code-xdata
 e cfg.bigendian = true
 e asm.jmpsub=true
-e asm.shortcut=0
+e asm.hint.pos=0
 
 # macro for manual function declaration
 "(fcn start end name,f $2=$0; afu $1 @ $0)"
