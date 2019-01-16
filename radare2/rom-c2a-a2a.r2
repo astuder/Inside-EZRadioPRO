@@ -2071,6 +2071,7 @@ axd xreg_base+0xab @ 0xc935
 f xreg_r0_and_0xfe_inc_r0_mov_xreg_r0_to_acc 1 @0xc936
 axd xreg_base+0xac @ 0xc93a
 .(fcn 0xc950 0xc95a rom.set_eint1_callback_r4r5)
+axd _idata+0x8b @ 0xc950
 f rom.store_r4r5_at_scratch_r0_ret_r4_or_r5 1 @ 0xc952
 .(fcn 0xc95a 0xc969 rom.bufclk_enable_hw)
 CCu BUFCLK_EN @ 0xc95d

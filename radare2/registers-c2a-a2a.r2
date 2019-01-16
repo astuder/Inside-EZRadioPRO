@@ -14,7 +14,9 @@ f sfr.mul_b_lsb @ _sfr+0x8b
 f sfr.mul_a_msb @ _sfr+0x8c
 f sfr.mul_a_lsb @ _sfr+0x8d
 f sfr.spi_unk8e @ _sfr+0x8e
+CCu 4-7: hi nibble of 0x08f address? @_sfr+0x8e
 f sfr.spi_unk8f @ _sfr+0x8f
+CCu set to and address in func2 int0x0f config? @ _sfr+0x8f
 f sfr.mul_ctl @ _sfr+0x90
 CCu 0:start hw mul 1:hw mul done @ _sfr+0x90
 f sfr.bit_timer_ctl 1 @ _sfr+0x91
@@ -144,7 +146,7 @@ CCu 2:set to enter SLEEP, clr on wakeup @ xreg_base+0x07
 f xreg.rc32k_internal_unk0x08 @ xreg_base+0x08
 CCu set to 0x02 at start of calibration @ xreg_base+0x08
 f xreg.div_clk_output_ctrl 1 @ xreg_base+0x09
-CCu 0:enable 1-3:div clk sel 6-7:related to bit timer? @ xreg_base+0x09
+CCu 0:enable 1-3:div clk sel 4-5:? 6-7:related to bit timer? @ xreg_base+0x09
 
 f xreg.modem_dsa_eye 1 @ xreg_base+0x1b
 CCu 6:EYEXEST_FAST 7:EYEXEST_EN @ xreg_base+0x1b
