@@ -1,5 +1,7 @@
 # SPI peripheral
 
+**Needs updating based on information found in XML documentation**
+
 The SPI peripheral of the EZRadioPRO handles the SPI communication:
 * Receiving command and argument stream
 * Controlling CTS status and pin

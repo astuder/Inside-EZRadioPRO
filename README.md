@@ -16,6 +16,7 @@ Pull requests are welcome.
 - Run custom code on radio IC
 - Analyze and annotate large parts of the firmware using radare2
   - Si4362-C2A: bootloader, main application image (FUNC1)
+- Found internal documentation for API and registers hidden in WDS
 
 [To-do](TODO.md)
 
@@ -43,6 +44,7 @@ It is likely, that members of the EZRadio and EZRadioPRO product families share 
 
 ## Tools
 
+- [/python/ezradiopro.py](python/wds-xml-extract.py): Python script to extract XML files with internal documentation hidden in SiLabs WDS.
 - [/python/ezradiopro.py](python/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](python/README.md) for usage.
 - [/radare2/*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radare/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
 - [/python/find-refs.py](python/find-refs.py): Python script to create r2 xrefs for indirect data and register access
