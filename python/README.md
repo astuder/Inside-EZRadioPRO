@@ -2,8 +2,8 @@
 
 This folder contains Python scripts to help with reverse engineering EZRadioPRO radio ICs.
 
-- [wds-xml-extract.py](#wds-xml-extract) Script to extract hidden XML files from SiLabs Wireless Development Suite
-- [ezradiopro.py](#ezradiopro) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
+- [wds-xml-extract.py](#wds-xml-extractpy) Script to extract hidden XML files from SiLabs Wireless Development Suite
+- [ezradiopro.py](#ezradiopropy) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
 
 # wds-xml-extract.py
 
