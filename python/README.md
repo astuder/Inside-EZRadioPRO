@@ -2,15 +2,16 @@
 
 This folder contains Python scripts to help with reverse engineering EZRadioPRO radio ICs.
 
-* [wds-xml-extract.py](#wds-xml-extract.py) Script to extract hidden XML files from SiLabs Wireless Development Suite
-* [ezradiopro.py](#ezradiopro.py) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
+- [wds-xml-extract.py](#wds-xml-extract.py) Script to extract hidden XML files from SiLabs Wireless Development Suite
+- [ezradiopro.py](#ezradiopro.py) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
 
 # wds-xml-extract.py
 
 The exectuable of the SiLabs Wireless Development Suite contains hidden XML files. Besides all the information in the official API documentation, these XML files also contain information about:
-* Undocumented API commands (e.g. for MFSK TX)
-* Undocumented power-up modes (e.g. for IEEE 802.15.4)
-* List of register names and fields (8051 SFRs, etc.)
+
+- Undocumented API commands (e.g. for MFSK TX)
+- Undocumented power-up modes (e.g. for IEEE 802.15.4)
+- List of register names and fields (8051 SFRs, etc.)
 
 ## Usage
 
