@@ -7,7 +7,7 @@ There are 5 known modes in which the EZRadioPRO processes API commands:
 * `FUNC3`: MBUS mode, entered on `POWER_UP` with `FUNC=3` (A2A only)
 * `SPI`: Some commands are directly processed by the SPI peripheral and are always active
 
-It's unknown if `FUNC2` and `FUNC3` are actually functional in Si446x-A2A devices.
+`FUNC2` and `FUNC3` are not mentioned in the official documentation and it is unknown if they are fully functional in Si446x-A2A devices.
 
 This list applies only to A2A and C2A devices.
 
