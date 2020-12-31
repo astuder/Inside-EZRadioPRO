@@ -11,7 +11,7 @@ There are 5 known modes in which the EZRadioPRO processes API commands:
 
 This list applies only to A2A and C2A devices.
 
-`root.xml` refers to a file extracted from SiLabs Wireless Development Suite using [wds-xml-extract.py](../python/README.md#wds-xml-extract.py).
+`root.xml` refers to a file extracted from SiLabs Wireless Development Suite using [wds-xml-extract.py](../python/README.md#wds-xml-extractpy).
 
 |ID|Command|BOOT|FUNC1|FUNC2|FUNC3|SPI|Documented|
 |--|--|--|--|--|--|--|--|
