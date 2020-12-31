@@ -30,6 +30,7 @@ This list applies only to A2A and C2A devices.
 |0x13|GPIO_PIN_CFG||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x14|GET_ADC_READING||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x15|FIFO_INFO||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
+|0x16|PACKET_INFO||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x17|IRCAL||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x18|PROTOCOL_CFG||&#x2713;|&#x2713;|&#x2713;||&#x2713; (EZRadio)|
 |0x19|EZCONFIG_CHECK||&#x2713;||||&#x2713; (EZRadio)|
