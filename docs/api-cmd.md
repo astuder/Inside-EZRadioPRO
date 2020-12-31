@@ -61,7 +61,9 @@ This list applies only to A2A and C2A devices.
 |0x83|IE154_GET_TX_STATUS|||&#x2713;|||root.xml|
 |0x84|IE154_GET_RX_STATUS|||&#x2713;|||root.xml|
 |0x85|IE154_OVERRIDE_NEXT_ACK|||&#x2713;|||root.xml|
+|0x86|IE154_GET_MAC_TIMER||||||root.xml (not implemented)|
 |0x87|IE154_START_ENERGY_DETECT|||&#x2713;|||root.xml|
+|0x89|IE154_IS_CHANNEL_CLEAR||||||root.xml (not implemented)|
 |0x8a|IE154_QUERY_MODE|||&#x2713;|||root.xml|
 |0x8c|IE154_START_IDLE|||&#x2713;|||root.xml|
 |0x8d|IE154_START_SLEEP|||&#x2713;|||root.xml|
