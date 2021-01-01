@@ -7,11 +7,8 @@ This folder contains Python scripts to help with reverse engineering EZRadioPRO 
 
 # wds-xml-extract.py
 
-The exectuable of the SiLabs Wireless Development Suite contains hidden XML files. Besides all the information in the official API documentation, these XML files also contain information about:
-
-- Undocumented API commands (e.g. for MFSK TX)
-- Undocumented power-up modes (e.g. for IEEE 802.15.4)
-- List of register names and fields (8051 SFRs, etc.)
+Script to extract XML files hidden in Silicon Labs Wireless Development Suite executable.
+See [here](../docs/wds-xml-docs.md) for more information about the content of these files.
 
 ## Usage
 

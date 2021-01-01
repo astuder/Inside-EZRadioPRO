@@ -16,7 +16,7 @@ Pull requests are welcome.
 - Run custom code on radio IC
 - Analyze and annotate large parts of the firmware using radare2
   - Si4362-C2A: bootloader, main application image (FUNC1)
-- Found internal documentation for API and registers hidden in WDS
+- Found [internal documentation](docs/wds-xml-docs.md) for API and registers hidden in WDS
 
 [To-do](TODO.md)
 
@@ -51,6 +51,7 @@ It is likely, that members of the EZRadio and EZRadioPRO product families share 
 
 ## Documentation
 
+- [Documentation hidden in WDS](docs/wds-xml-docs.md)
 - [Memory map](docs/memory-map.md)
 - [API commands](docs/api-cmd.md)
 - [SPI peripheral](docs/spi.md)
