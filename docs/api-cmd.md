@@ -11,19 +11,19 @@ There are 5 known modes in which the EZRadioPRO processes API commands:
 
 This list applies only to A2A and C2A devices.
 
-`root.xml` refers to a file extracted from SiLabs Wireless Development Suite using [wds-xml-extract.py](../python/README.md#wds-xml-extractpy).
+`root.xml` and `API.xml` refer to a files extracted from SiLabs Wireless Development Suite using [wds-xml-extract.py](../python/README.md#wds-xml-extractpy).
 
 |ID|Command|BOOT|FUNC1|FUNC2|FUNC3|SPI|Documented|
 |--|--|--|--|--|--|--|--|
 |0x00|NOP|&#x2713;|&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x01|PART_INFO|&#x2713;|&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x02|POWER_UP|&#x2713;|||||&#x2713;|
-|0x03|RAM_TEST|&#x2713;|||||root.xml|
-|0x04|PATCH_IMAGE|&#x2713;|||||root.xml|
-|0x05|PATCH_ARGS|&#x2713;|||||root.xml|
-|0x06|PATCH_COPY|&#x2713;|||||root.xml|
-|0x09|TEST_DATA|&#x2713;|||||root.xml|
-|0x0a|PATCH_COPY_2|&#x2713;|||||root.xml (sames as 0x06)|
+|0x03|RAM_TEST|&#x2713;|||||root.xml, API.xml|
+|0x04|PATCH_IMAGE|&#x2713;|||||root.xml, API.xml|
+|0x05|PATCH_ARGS|&#x2713;|||||root.xml, API.xml|
+|0x06|PATCH_COPY|&#x2713;|||||root.xml, API.xml|
+|0x09|TEST_DATA|&#x2713;|||||root.xml, API.xml|
+|0x0a|PATCH_COPY_2|&#x2713;|||||root.xml, API.xml (sames as 0x06)|
 |0x10|FUNC_INFO|&#x2713;|&#x2713;|&#x2713;|&#x2713;||&#x2713;|
 |0x11|SET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713; [more](#Property-groups)|
 |0x12|GET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713; [more](#Property-groups)|
@@ -67,10 +67,10 @@ This list applies only to A2A and C2A devices.
 |0x8a|IE154_QUERY_MODE|||&#x2713;|||root.xml|
 |0x8c|IE154_START_IDLE|||&#x2713;|||root.xml|
 |0x8d|IE154_START_SLEEP|||&#x2713;|||root.xml|
-|0xd0|AGC_OVERRIDE||&#x2713;|&#x2713;|&#x2713;||root.xml|
-|0xe_|PATCH_DATA|&#x2713;|||||root.xml|
-|0xf0|PEEK||&#x2713;|&#x2713;|&#x2713;||root.xml, knowledge base|
-|0xf1|POKE||&#x2713;|&#x2713;|&#x2713;||root.xml, knowledge base|
+|0xd0|AGC_OVERRIDE||&#x2713;|&#x2713;|&#x2713;||root.xml, API.xml|
+|0xe_|PATCH_DATA|&#x2713;|||||root.xml, API.xml|
+|0xf0|PEEK||&#x2713;|&#x2713;|&#x2713;||root.xml, API.xml, knowledge base|
+|0xf1|POKE||&#x2713;|&#x2713;|&#x2713;||root.xml, API.xml, knowledge base|
 |0xf2|SRAND||&#x2713;|&#x2713;|&#x2713;||root.xml|
 |0xfe|DIE_INFO|&#x2713;|||||root.xml|
 
@@ -93,4 +93,4 @@ This list applies only to A2A and C2A devices.
 |0x40|0x08|FREQ_CONTROL|&#x2713;|
 |0x50|0x42|RX_HOP|&#x2713;|
 |0xf0|0x05|PTI|&#x2713;|
-|0xf2|0x37|OTP_VARS|root.xml|
+|0xf2|0x37|OTP_VARS|root.xml, API.xml|
