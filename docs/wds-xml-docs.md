@@ -81,4 +81,8 @@ Covered ICs:
 - `Si4467` (PRO2) rev A0
 - `Si4468` (PRO2) rev A0
 
-The registers are identical across part numbers, but significantly different between silicon revisions: B0 == B1, C0 == A0. B0/B1 != C0/A0. This further proofs that different parts share the same die.
+The registers are identical across part numbers, but significantly different between silicon revisions: 
+- `B0 == B1`, `C0 == A0`, `B0/B1 != C0/A0`
+- `Si4355 C0 == Si4362-C0 == Si4467-A0`
+- `Si4362-B1 != Si4362-C0`
+This further proofs that different parts share the same die.
