@@ -86,4 +86,5 @@ The registers are identical across part numbers, but significantly different bet
 - `B0/B1 != C0/A0`
 - `Si4355-C0 == Si4362-C0 == Si4467-A0`
 - `Si4362-B1 != Si4362-C0`
+
 This further proves that different parts share the same die.
