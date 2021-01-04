@@ -1,3 +1,6 @@
 # do not add copyrighted material to github repository
 dumps/
 datasheets/
+*.html
+*.xml
+*.sublime*
