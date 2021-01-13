@@ -4,9 +4,6 @@ Reverse engineering the SiLabs EZRadioPRO family of RF ICs with the goal of writ
 
 To avoid copyright violations, this repository does not contain firmware images. Use the provided tools to extract and analyze your own images.
 
-The recording of my talk about this project at the 2018 radare2 conference is now available on YouTube:
-https://www.youtube.com/watch?v=iu_TeS0ahi8
-
 Pull requests are welcome.
 
 ## Progress
@@ -37,6 +34,7 @@ It is likely, that members of the EZRadio and EZRadioPRO product families share 
 - The firmware ROM is identical for all C2A and A2A parts, but significantly changes from older B1B to the newer C2A/A2A parts.
 - Code in RAM is identical among the C2A parts investigated, with small differences compared to A2A parts.
 - Code in RAM, hardware presets and calibration data is copied from NVRAM during boot and power up.
+- Content of NVRAM is significantly different between C2A and A2A parts.
 - NVRAM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
 - The firmware includes code for EZConfig commands, which are only documented for the EZRadio product family (Si4355, Si4455)
 - The string ```si4440``` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/docs/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
