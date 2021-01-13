@@ -1,22 +1,8 @@
-# Copyright (c) 2018 Adrian Studer
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-# THE SOFTWARE.
+# App and library to explore Silicon Labs EZRadioPRO family of ISM radio ICs.
+# - dump various memory spaces
+# - run custom code
+# - tested with Si446x and Si4362
+# More info: https://github.com/astuder/Inside-EZRadioPRO/tree/master/python#ezradiopropy
 
 import collections
 import argparse
@@ -186,8 +172,8 @@ class EZRadioPRO:
         self.poke(patch_jmp + 2, self._patch_jmp[1])
 
     def dump_code(self, start=0, end=65535):
-        # TODO: if range includes 0x200-0x500, read with peek before patch
-        # install patch
+        # TODO: if range includes 0x200-0x500, read with peek before
+        # installing patch
         patch = [0x78, 0x71, 0xe2, 0xf5, 0x83, 0x08, 0xe2, 0xf5,
                  0x82, 0x78, 0x70, 0xe4, 0x93, 0xa3, 0xf2, 0x08,
                  0xb8, 0x80, 0xf8, 0x22]
@@ -206,8 +192,8 @@ class EZRadioPRO:
         return mem_dump
 
     def dump_xdata(self, start=0, end=65535):
-        # TODO: if range includes 0x200-0x500, read with before patch
-        # install patch
+        # TODO: if range includes 0x200-0x500, read with peek before
+        # installing patch
         patch = [0x78, 0x71, 0xe2, 0xf5, 0x83, 0x08, 0xe2, 0xf5,
                  0x82, 0x78, 0x70, 0xe0, 0xa3, 0xf2, 0x08, 0xb8,
                  0x80, 0xf9, 0x22]
