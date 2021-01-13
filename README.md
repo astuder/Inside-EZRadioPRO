@@ -39,13 +39,12 @@ It is likely, that members of the EZRadio and EZRadioPRO product families share 
 - The firmware includes code for EZConfig commands, which are only documented for the EZRadio product family (Si4355, Si4455)
 - The string ```si4440``` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/docs/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
 
-
 ## Tools
 
-- [/python/wds-xml-extract.py](python/wds-xml-extract.py): Python script to extract XML files with internal documentation hidden in SiLabs WDS. See [readme](python/README.md) for usage.
-- [/python/ezradiopro.py](python/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](python/README.md) for usage.
-- [/radare2/*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radare/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
-- [/python/find-refs.py](python/find-refs.py): Python script to create r2 xrefs for indirect data and register access
+- [/tools/wds-xml-extract.py](python/wds-xml-extract.py): Python script to extract XML files with internal documentation hidden in SiLabs WDS. See [readme](tools/README.md) for usage.
+- [/tools/ezradiopro.py](tools/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](tools/README.md) for usage.
+- [/radare2/*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radareorg/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
+- [/radare2/find-refs.py](radare2/find-refs.py): Python script to create r2 xrefs for indirect data and register access
 
 ## Documentation
 

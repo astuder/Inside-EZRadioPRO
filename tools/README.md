@@ -1,4 +1,4 @@
-# Helper scripts
+# Tools
 
 This folder contains Python scripts to help with reverse engineering EZRadioPRO radio ICs.
 
