@@ -1,5 +1,15 @@
 # Memory map
 
+| Start | End | Size | Type | Description |
+| --- | --- | --- | --- | --- |
+| 0x0000 | 0x07ff | 2 KB | RAM | |
+| 0x5000 | 0x51ff | 512 B | XREG | |
+| 0x5400 | 0x54ff | 256 B | IDATA | mirror |
+| 0x5500 | 0x74ff | 8 KB | NVRAM | Located at 0xc000 for B0B/B1B parts |
+| 0x8000 | 0xffff | 32 KB | ROM | Only 16 KB for B0B/B1B parts |
+
+In addition, there are the usual 8051 address spaces (IDATA, SFR).
+
 ## Si4x6x-C2A
 
 | Start | End | Type | Description |
@@ -26,7 +36,7 @@
 
 ## Si446x-A2A
 
-In normal operation, the memory map A2A and C2A parts is identical, except for the space occupied by firmware patches:
+In normal operation (FUNC 1), the memory map of A2A and C2A parts is identical, except for the space occupied by firmware patches:
 
 | Start | End | Type | Description |
 | --- | --- | --- | --- |
