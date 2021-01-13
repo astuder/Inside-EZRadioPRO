@@ -6,7 +6,7 @@ The exectuable NewWDS.exe provided with the SiLabs Wireless Development Suite (W
 - Undocumented power-up modes (e.g. for IEEE 802.15.4)
 - List of register names and fields (8051 SFRs, etc.)
 
-Use [this Python script](../python/README.md#wds-xml-extractpy) to extract the XML files from your own copy of WDS.
+Use [this Python script](../tools/README.md#wds-xml-extractpy) to extract the XML files from your own copy of WDS.
 
 The files are:
 - [`API.xml`](#APIxml)
