@@ -21,7 +21,7 @@ After the next restart of Ghidra, Si4440 will be available as variant of the 805
 
 ![Ghidra dialog for selecting processor](../img/ghidra-8051-Si4440.png)
 
-As this processor has a flat 16 bit address space, we recommend using full 64 KB dumps of CODE or XMEM address space for firmware analysis.
+As this processor has a flat 16 bit address space, we recommend using full 64 KB dumps of the CODE or XMEM address spaces for firmware analysis.
 
 ## EZRadioPRO importer
 
