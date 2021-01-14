@@ -1,12 +1,16 @@
 # Hidden internal documentation
 
-The exectuable NewWDS.exe provided with the SiLabs Wireless Development Suite (WDS) contains hidden XML files. Besides all the information available in official API documentation, these XML files also contain information about:
+The exectuable `NewWDS.exe` provided with the SiLabs Wireless Development Suite (WDS) contains hidden XML files. Besides all the information available in official API documentation, these XML files also contain information about:
 
 - Undocumented API commands (e.g. for MFSK TX)
 - Undocumented power-up modes (e.g. for IEEE 802.15.4)
-- List of register names and fields (8051 SFRs, etc.)
+- Name, adress and fields of internal registers of the radio IC (8051 SFRs, etc.)
 
-Use [this Python script](../tools/README.md#wds-xml-extractpy) to extract the XML files from your own copy of WDS.
+Use [/docs/generate-docs.py](generate-docs.py) to generate HTML documentation from information stored in `NewWDS.exe`. The script creates
+- `registers.html` documenting internal registers of radio IC
+- `spiapi.html` documenting SPI API, identical with official SDK docs but including internal commands and comments
+
+Use [/tools/wds-xml-extract.py](../tools/README.md#wds-xml-extractpy) to extract the XML files from your own copy of WDS.
 
 The files are:
 - [`API.xml`](#APIxml)

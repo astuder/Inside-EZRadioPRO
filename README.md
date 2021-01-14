@@ -15,7 +15,21 @@ Pull requests are welcome.
   - Si4362-C2A: bootloader, main application image (FUNC1)
 - Found [internal documentation](docs/wds-xml-docs.md) for API and registers hidden in WDS
 
-[To-do](TODO.md)
+## Documentation
+
+- [Documentation hidden in WDS](docs/wds-xml-docs.md)
+- [Memory map](docs/memory-map.md)
+- [API commands](docs/api-cmd.md)
+- [SPI peripheral](docs/spi.md) (old, needs updating based on register docs)
+- [Talks](talks)
+
+## Tools
+
+- [/docs/generate-docs.py](docs/generate-docs.py): Python script generating HTML documentation from information hidden in SiLabs WDS executable.
+- [/tools/wds-xml-extract.py](tools/wds-xml-extract.py): Python script to extract XML files with internal documentation hidden in SiLabs WDS. See [readme](tools/README.md) for usage.
+- [/tools/ezradiopro.py](tools/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](tools/README.md) for usage.
+- [/radare2/\*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radareorg/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
+- [/radare2/find-refs.py](radare2/find-refs.py): Python script to create r2 xrefs for indirect data and register access
 
 ## Findings
 
@@ -30,26 +44,11 @@ The remaining functionality is implemented in hardware:
 - GPIO seems to be controlled by multiplexers, with only indirect ways for the 8051 MCU to interact with pins.
 - According to [patents](https://patents.google.com/patent/US8050313B2), the RF modem is implemented with a DSP. No access to DSP RAM or firmware has been found (yet).
 
-It is likely, that members of the EZRadio and EZRadioPRO product families share the same silicon die, and are differentiated at the factory through programming of the NVRAM. See also [this patent](https://patents.google.com/patent/US7613913B2/en). Evidence for this conclusion includes:
-- The firmware ROM is identical for all C2A and A2A parts, but significantly changes from older B1B to the newer C2A/A2A parts.
+Members of the EZRadio and EZRadioPRO product families share the same silicon die, and are differentiated at the factory through programming of the NVRAM. See also [this patent](https://patents.google.com/patent/US7613913B2/en). Evidence for this conclusion includes:
+- Register maps and firmware ROM are identical across parts of the same revision (B1B, C2A/A2A), but differ significantly between older B1B and newer C2A/A2A parts.
 - Code in RAM is identical among the C2A parts investigated, with small differences compared to A2A parts.
 - Code in RAM, hardware presets and calibration data is copied from NVRAM during boot and power up.
 - Content of NVRAM is significantly different between C2A and A2A parts.
 - NVRAM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
-- The firmware includes code for EZConfig commands, which are only documented for the EZRadio product family (Si4355, Si4455)
-- The string ```si4440``` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/docs/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
-
-## Tools
-
-- [/tools/wds-xml-extract.py](tools/wds-xml-extract.py): Python script to extract XML files with internal documentation hidden in SiLabs WDS. See [readme](tools/README.md) for usage.
-- [/tools/ezradiopro.py](tools/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](tools/README.md) for usage.
-- [/radare2/\*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radareorg/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
-- [/radare2/find-refs.py](radare2/find-refs.py): Python script to create r2 xrefs for indirect data and register access
-
-## Documentation
-
-- [Documentation hidden in WDS](docs/wds-xml-docs.md)
-- [Memory map](docs/memory-map.md)
-- [API commands](docs/api-cmd.md)
-- [SPI peripheral](docs/spi.md)
-- [Talks](talks)
+- The firmware of EZRadioPRO parts includes code for EZConfig commands, which are only documented for the EZRadio product family (Si4355, Si4455)
+- The string `si4440` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/docs/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
