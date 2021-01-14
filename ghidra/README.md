@@ -14,7 +14,9 @@ The EZRadioPRO runs on an 8051 core that is slightly different from the standard
 - Added entry points for reset vector, interrupt vectors and boot loader
 
 To add the Si4440 variant to your Ghidra installation, copy the contents of the folder [`ghidra/8051`](8051) into
-```{ghidra-root}/Ghidra/Processors/8051/data/languages```
+
+`{ghidra-root}/Ghidra/Processors/8051/data/languages`
+
 This will replace 2 existing files (`8051.ldefs`, `8051_main.sinc`) and add 3 new files. 
 
 After the next restart of Ghidra, Si4440 will be available as variant of the 8051 processor:
