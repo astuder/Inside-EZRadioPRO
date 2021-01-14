@@ -14,6 +14,7 @@ Pull requests are welcome.
 - Analyze and annotate large parts of the firmware using radare2
   - Si4362-C2A: bootloader, main application image (FUNC1)
 - Found [internal documentation](docs/wds-xml-docs.md) for API and registers hidden in WDS
+- Created [tooling](ghidra/README.md) for firmware analysis with Ghidra
 
 ## Documentation
 
@@ -51,4 +52,4 @@ Members of the EZRadio and EZRadioPRO product families share the same silicon di
 - Content of NVRAM is significantly different between C2A and A2A parts.
 - NVRAM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
 - The firmware of EZRadioPRO parts includes code for EZConfig commands, which are only documented for the EZRadio product family (Si4355, Si4455)
-- The string `si4440` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/docs/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
+- The string `si4440` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/img/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
