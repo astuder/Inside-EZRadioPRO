@@ -21,7 +21,7 @@ This will replace 2 existing files (`8051.ldefs`, `8051_main.sinc`) and add 3 ne
 
 After the next restart of Ghidra, Si4440 will be available as variant of the 8051 processor:
 
-![Ghidra dialog for selecting processor](../img/ghidra-8051-Si4440.png?raw=true)
+![Ghidra dialog for selecting processor](../img/ghidra-8051-si4440.png)
 
 As this processor has a flat 16 bit address space, we recommend using full 64 KB dumps of the CODE or XMEM address spaces for firmware analysis.
 
