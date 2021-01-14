@@ -1,0 +1,5 @@
+# use standard 8051 definition in 8051_main.sinc, with a few exceptions..
+@define MCS51 ""
+@define SI4440 ""
+
+@include "8051_main.sinc"

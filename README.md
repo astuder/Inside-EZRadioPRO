@@ -26,11 +26,11 @@ Pull requests are welcome.
 
 ## Tools
 
+- [/tools/ezradiopro.py](tools/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](tools/README.md) for usage.
 - [/docs/generate-docs.py](docs/generate-docs.py): Python script generating HTML documentation from information hidden in SiLabs WDS executable.
 - [/tools/wds-xml-extract.py](tools/wds-xml-extract.py): Python script to extract XML files with internal documentation hidden in SiLabs WDS. See [readme](tools/README.md) for usage.
-- [/tools/ezradiopro.py](tools/ezradiopro.py): Python library and command line tool to talk to radio, dump memory and upload custom code. See [readme](tools/README.md) for usage.
-- [/radare2/\*.r2](radare2): Scripts to process dumped firmware with [radare2](https://github.com/radareorg/radare2). Launch with *r2 -a 8051 -i ./radare2/func1-c2a.r2 ./dumps/Si4362-C2A-code.bin*. Use Vp command to explore.
-- [/radare2/find-refs.py](radare2/find-refs.py): Python script to create r2 xrefs for indirect data and register access
+- [/ghidra](ghidra) Ghidra tooling to analyze dumped firmware with [Ghidra](https://ghidra-sre.org/), including custom processor definition for 8051 core and plugin to import EZRadioPRO registers
+- [/radare2/\*.r2](radare2): Scripts to analyze dumped firmware with [radare2](https://github.com/radareorg/radare2).
 
 ## Findings
 

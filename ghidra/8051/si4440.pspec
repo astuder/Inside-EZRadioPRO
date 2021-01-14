@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<processor_spec>
+
+  <programcounter register="PC"/>
+  
+  <volatile outputop="write_volatile" inputop="read_volatile">
+    <range space="SFR" first="0x0" last="0xFF"/>
+    <range space="RAM" first="0x5000" last="0x51ff"/>
+    <range space="RAM" first="0x5480" last="0x54ff"/>
+  </volatile>
+  
+  <default_symbols>
+    <!-- reset and interrupt vectors -->
+    <symbol name="RESET" address="RAM:0000" type="code" entry="true"/>
+    <symbol name="ENTRY" address="RAM:0003" type="code" entry="true"/>
+    <symbol name="INT_07" address="RAM:0007" type="code" entry="true"/>
+    <symbol name="INT_TIM0" address="RAM:000B" type="code" entry="true"/>
+    <symbol name="INT_0F" address="RAM:000F" type="code" entry="true"/>
+    <symbol name="INT_EINT1" address="RAM:0013" type="code" entry="true"/>
+    <symbol name="INT_17" address="RAM:0017" type="code" entry="true"/>
+    <symbol name="INT_RX_PH" address="RAM:001B" type="code" entry="true"/>
+    <symbol name="INT_SPI_DMA" address="RAM:001F" type="code" entry="true"/>
+    <symbol name="INT_TX_EVENT" address="RAM:0023" type="code" entry="true"/>
+    <symbol name="INT_RX_EVENT" address="RAM:0027" type="code" entry="true"/>
+    <symbol name="INT_SPI_FIFO_ERR" address="RAM:002B" type="code" entry="true"/>
+    <symbol name="INT_2F" address="RAM:002F" type="code" entry="true"/>
+    <symbol name="INT_TX_FRAME" address="RAM:0033" type="code" entry="true"/>
+    <symbol name="INT_RX_BYTE" address="RAM:0037" type="code" entry="true"/>
+    <symbol name="INT_3B" address="RAM:003B" type="code" entry="true"/>
+    <symbol name="INT_WUT" address="RAM:003F" type="code" entry="true"/>
+    <symbol name="INT_43" address="RAM:0043" type="code" entry="true"/>
+
+    <symbol name="BOOT_RESET" address="RAM:8000" type="code" entry="true"/>
+    <symbol name="BOOT_ENTRY" address="RAM:8003" type="code" entry="true"/>
+    <symbol name="BOOT_INT_SPI_DMA" address="RAM:801F" type="code" entry="true"/>
+    <symbol name="BOOT_INT_43" address="RAM:8043" type="code" entry="true"/>
+
+    <!-- memory mapped registers -->    
+    <symbol name="BANK0_R0" address="INTMEM:00"/>
+    <symbol name="BANK0_R1" address="INTMEM:01"/>
+    <symbol name="BANK0_R2" address="INTMEM:02"/>
+    <symbol name="BANK0_R3" address="INTMEM:03"/>
+    <symbol name="BANK0_R4" address="INTMEM:04"/>
+    <symbol name="BANK0_R5" address="INTMEM:05"/>
+    <symbol name="BANK0_R6" address="INTMEM:06"/>
+    <symbol name="BANK0_R7" address="INTMEM:07"/>
+
+    <!-- fundamental 8051 SFR registers -->
+    <symbol name="SP" address="SFR:81"/>
+    <symbol name="DPL" address="SFR:82"/>
+    <symbol name="DPH" address="SFR:83"/>
+    <symbol name="IE" address="SFR:a8"/>
+    <symbol name="IP" address="SFR:b8"/>
+    <symbol name="PSW" address="SFR:d0"/>    
+    <symbol name="A" address="SFR:e0"/>
+    <symbol name="B" address="SFR:f0"/>
+
+    <!-- bit-addressed memory -->
+    <symbol name="20.0" address="BITS:00"/>
+    <symbol name="20.1" address="BITS:01"/>
+    <symbol name="20.2" address="BITS:02"/>
+    <symbol name="20.3" address="BITS:03"/>
+    <symbol name="20.4" address="BITS:04"/>
+    <symbol name="20.5" address="BITS:05"/>
+    <symbol name="20.6" address="BITS:06"/>
+    <symbol name="20.7" address="BITS:07"/>
+    <symbol name="21.0" address="BITS:08"/>
+    <symbol name="21.1" address="BITS:09"/>
+    <symbol name="21.2" address="BITS:0a"/>
+    <symbol name="21.3" address="BITS:0b"/>
+    <symbol name="21.4" address="BITS:0c"/>
+    <symbol name="21.5" address="BITS:0d"/>
+    <symbol name="21.6" address="BITS:0e"/>
+    <symbol name="21.7" address="BITS:0f"/>
+    <symbol name="22.0" address="BITS:10"/>
+    <symbol name="22.1" address="BITS:11"/>
+    <symbol name="22.2" address="BITS:12"/>
+    <symbol name="22.3" address="BITS:13"/>
+    <symbol name="22.4" address="BITS:14"/>
+    <symbol name="22.5" address="BITS:15"/>
+    <symbol name="22.6" address="BITS:16"/>
+    <symbol name="22.7" address="BITS:17"/>
+    <symbol name="23.0" address="BITS:18"/>
+    <symbol name="23.1" address="BITS:19"/>
+    <symbol name="23.2" address="BITS:1a"/>
+    <symbol name="23.3" address="BITS:1b"/>
+    <symbol name="23.4" address="BITS:1c"/>
+    <symbol name="23.5" address="BITS:1d"/>
+    <symbol name="23.6" address="BITS:1e"/>
+    <symbol name="23.7" address="BITS:1f"/>
+    <symbol name="24.0" address="BITS:20"/>
+    <symbol name="24.1" address="BITS:21"/>
+    <symbol name="24.2" address="BITS:22"/>
+    <symbol name="24.3" address="BITS:23"/>
+    <symbol name="24.4" address="BITS:24"/>
+    <symbol name="24.5" address="BITS:25"/>
+    <symbol name="24.6" address="BITS:26"/>
+    <symbol name="24.7" address="BITS:27"/>
+    <symbol name="25.0" address="BITS:28"/>
+    <symbol name="25.1" address="BITS:29"/>
+    <symbol name="25.2" address="BITS:2a"/>
+    <symbol name="25.3" address="BITS:2b"/>
+    <symbol name="25.4" address="BITS:2c"/>
+    <symbol name="25.5" address="BITS:2d"/>
+    <symbol name="25.6" address="BITS:2e"/>
+    <symbol name="25.7" address="BITS:2f"/>
+    <symbol name="26.0" address="BITS:30"/>
+    <symbol name="26.1" address="BITS:31"/>
+    <symbol name="26.2" address="BITS:32"/>
+    <symbol name="26.3" address="BITS:33"/>
+    <symbol name="26.4" address="BITS:34"/>
+    <symbol name="26.5" address="BITS:35"/>
+    <symbol name="26.6" address="BITS:36"/>
+    <symbol name="26.7" address="BITS:37"/>
+    <symbol name="27.0" address="BITS:38"/>
+    <symbol name="27.1" address="BITS:39"/>
+    <symbol name="27.2" address="BITS:3a"/>
+    <symbol name="27.3" address="BITS:3b"/>
+    <symbol name="27.4" address="BITS:3c"/>
+    <symbol name="27.5" address="BITS:3d"/>
+    <symbol name="27.6" address="BITS:3e"/>
+    <symbol name="27.7" address="BITS:3f"/>
+    <symbol name="28.0" address="BITS:40"/>
+    <symbol name="28.1" address="BITS:41"/>
+    <symbol name="28.2" address="BITS:42"/>
+    <symbol name="28.3" address="BITS:43"/>
+    <symbol name="28.4" address="BITS:44"/>
+    <symbol name="28.5" address="BITS:45"/>
+    <symbol name="28.6" address="BITS:46"/>
+    <symbol name="28.7" address="BITS:47"/>
+    <symbol name="29.0" address="BITS:48"/>
+    <symbol name="29.1" address="BITS:49"/>
+    <symbol name="29.2" address="BITS:4a"/>
+    <symbol name="29.3" address="BITS:4b"/>
+    <symbol name="29.4" address="BITS:4c"/>
+    <symbol name="29.5" address="BITS:4d"/>
+    <symbol name="29.6" address="BITS:4e"/>
+    <symbol name="29.7" address="BITS:4f"/>
+    <symbol name="2a.0" address="BITS:50"/>
+    <symbol name="2a.1" address="BITS:51"/>
+    <symbol name="2a.2" address="BITS:52"/>
+    <symbol name="2a.3" address="BITS:53"/>
+    <symbol name="2a.4" address="BITS:54"/>
+    <symbol name="2a.5" address="BITS:55"/>
+    <symbol name="2a.6" address="BITS:56"/>
+    <symbol name="2a.7" address="BITS:57"/>
+    <symbol name="2b.0" address="BITS:58"/>
+    <symbol name="2b.1" address="BITS:59"/>
+    <symbol name="2b.2" address="BITS:5a"/>
+    <symbol name="2b.3" address="BITS:5b"/>
+    <symbol name="2b.4" address="BITS:5c"/>
+    <symbol name="2b.5" address="BITS:5d"/>
+    <symbol name="2b.6" address="BITS:5e"/>
+    <symbol name="2b.7" address="BITS:5f"/>
+    <symbol name="2c.0" address="BITS:60"/>
+    <symbol name="2c.1" address="BITS:61"/>
+    <symbol name="2c.2" address="BITS:62"/>
+    <symbol name="2c.3" address="BITS:63"/>
+    <symbol name="2c.4" address="BITS:64"/>
+    <symbol name="2c.5" address="BITS:65"/>
+    <symbol name="2c.6" address="BITS:66"/>
+    <symbol name="2c.7" address="BITS:67"/>
+    <symbol name="2d.0" address="BITS:68"/>
+    <symbol name="2d.1" address="BITS:69"/>
+    <symbol name="2d.2" address="BITS:6a"/>
+    <symbol name="2d.3" address="BITS:6b"/>
+    <symbol name="2d.4" address="BITS:6c"/>
+    <symbol name="2d.5" address="BITS:6d"/>
+    <symbol name="2d.6" address="BITS:6e"/>
+    <symbol name="2d.7" address="BITS:6f"/>
+    <symbol name="2e.0" address="BITS:70"/>
+    <symbol name="2e.1" address="BITS:71"/>
+    <symbol name="2e.2" address="BITS:72"/>
+    <symbol name="2e.3" address="BITS:73"/>
+    <symbol name="2e.4" address="BITS:74"/>
+    <symbol name="2e.5" address="BITS:75"/>
+    <symbol name="2e.6" address="BITS:76"/>
+    <symbol name="2e.7" address="BITS:77"/>
+    <symbol name="2f.0" address="BITS:78"/>
+    <symbol name="2f.1" address="BITS:79"/>
+    <symbol name="2f.2" address="BITS:7a"/>
+    <symbol name="2f.3" address="BITS:7b"/>
+    <symbol name="2f.4" address="BITS:7c"/>
+    <symbol name="2f.5" address="BITS:7d"/>
+    <symbol name="2f.6" address="BITS:7e"/>
+    <symbol name="2f.7" address="BITS:7f"/>
+  </default_symbols>
+  
+  <default_memory_blocks>
+    <memory_block name="REG_BANK_1" start_address="INTMEM:0" length="0x8" initialized="false"/>
+    <memory_block name="INTMEM" start_address="INTMEM:8" length="0xf8" initialized="false"/>
+    <memory_block name="BITS" start_address="BITS:00" bit_mapped_address="INTMEM:20" length="0x80"/>
+    <memory_block name="SFR" start_address="SFR:80" length="0x80" initialized="false"/>
+    
+    <!-- only covering bits for select SFR registers -->   
+    <memory_block name="SFR-BITS-IE" start_address="BITS:A8" bit_mapped_address="SFR:A8" mode="rwv" length="0x8"/>
+    <memory_block name="SFR-BITS-IP" start_address="BITS:B8" bit_mapped_address="SFR:B8" mode="rwv" length="0x8"/>
+    <memory_block name="SFR-BITS-PSW" start_address="BITS:D0" bit_mapped_address="SFR:D0" mode="rwv" length="0x8"/>
+    <memory_block name="SFR-BITS-A" start_address="BITS:E0" bit_mapped_address="SFR:E0" mode="rwv" length="0x8"/>
+    <memory_block name="SFR-BITS-B" start_address="BITS:F0" bit_mapped_address="SFR:F0" mode="rwv" length="0x8"/>
+  </default_memory_blocks>
+  
+</processor_spec>
