@@ -14,7 +14,7 @@ Pull requests are welcome.
 - Analyze and annotate large parts of the firmware using radare2
   - Si4362-C2A: bootloader, main application image (FUNC1)
 - Found [internal documentation](docs/wds-xml-docs.md) for API and registers hidden in WDS
-- Created [tooling](ghidra/README.md) for firmware analysis with Ghidra
+- Created [tooling](ghidra) for firmware analysis with Ghidra
 
 ## Documentation
 
