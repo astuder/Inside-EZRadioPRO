@@ -2,23 +2,24 @@
 
 This tooling was tested with Ghidra 9.2.
 
-## si4440 processor
+## Si4440 processor
 
-The EZRadioPRO runs on an 8051 core that is slightly different from the standard 8051 supported by Ghidra. We created a custom 8051 variant si4440 to ease reverse engineering of EZRadioPRO firmware:
+The EZRadioPRO runs on an 8051 core that is slightly different from the standard 8051 supported by Ghidra. We created a custom 8051 variant Si4440 to ease reverse engineering of EZRadioPRO firmware:
 
-- Code and external memory share the same 16 bit address space (RAM:)
-- `MOVX @Ri` uses `XPAGE` SFR to determine MSB of 16 bit address (hard-coded to `0x5000`)
+- Code and external memory share the same 16 bit address space (RAM)
+- `MOVX @Ri` uses SFR `XPAGE` to determine MSB of 16 bit address (hard-coded to `0x5000`)
 - Only 1 memory mapped register bank to free INTMEM used for variables
-- Dropped unsupported 8051 SFR's 
-- Mapped SFR bits for A, B, IE, IP and PSW
-- Added entry points for reset, boot loader, interrupt vectors
+- Removed 8051 SFR's not supported by Si4440
+- Memory mapped SFR bits for A, B, IE, IP and PSW
+- Added entry points for reset vector, interrupt vectors and boot loader
 
-To add the si4440 variant to a Ghidra installation, copy the contents of the folder [`./8051`](8051) into
-`{ghidra-root}/Ghidra/Processors/8051/data/languages`. This will replace 2 existing files (`8051.ldefs`, `8051_main.sinc`)
-and add 3 new files. 
+To add the Si4440 variant to your Ghidra installation, copy the contents of the folder [`ghidra/8051`](8051) into
+```{ghidra-root}/Ghidra/Processors/8051/data/languages```
+This will replace 2 existing files (`8051.ldefs`, `8051_main.sinc`) and add 3 new files. 
 
-After the next restart of Ghidra, si4440 will be available as 8051 variant:
-![Ghidra dialog for selecting processor](../img/ghidra-8051-si4440.png)
+After the next restart of Ghidra, Si4440 will be available as variant of the 8051 processor:
+
+![Ghidra dialog for selecting processor](../img/ghidra-8051-Si4440.png)
 
 As this processor has a flat 16 bit address space, we recommend using full 64 KB dumps of CODE or XMEM address space for firmware analysis.
 
@@ -39,7 +40,7 @@ The script will show up in the Script Manager under the category `Silabs`. Or si
 When running the script, you will be prompted to locate `NewWDS.exe`. After reading the file, you are prompted to select the Silabs part number and revision.
 
 Note:
-- it's recommended to use the 8051 si4440 processor variant
+- it's recommended to use the 8051 Si4440 processor variant
 - this script will replace existing labels
 - this script is designed to be run repeatedly
 

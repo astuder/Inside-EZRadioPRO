@@ -1,6 +1,8 @@
 # Radare2 tooling
 
-*no longer maintained - current focus is on Ghidra*
+**no longer maintained - current focus is on [Ghidra](../ghidra)**
+
+*These scripts include a lot of (wrong) guesswork as they were created before discovering the documentation hidden in WDS.*
 
 The `*.r2` files are radare2 scripts with labels, functions and comments to annotate firmware dumps. 
 
