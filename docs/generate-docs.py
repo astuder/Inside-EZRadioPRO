@@ -681,7 +681,7 @@ if __name__ == '__main__':
     emit('<h2>Table of Contents</h2>')
     emit('<li /><a href="#register-map">Register Maps</a>')
     if len(module_list) > 0:
-        emit('<li /><a href="#modules">Modules</a>')
+        emit('<li /><a href="#modules">Peripherals</a>')
     emit('<li /><a href="#registers">Registers</a>')
     emit('<hr />')
 
@@ -705,9 +705,9 @@ if __name__ == '__main__':
         regmap('Register Map', 0, 0, 8, reg_list)
         emit('<hr />')
 
-    # registers grouped by module    
+    # registers grouped by module (peripheral)
     if len(module_list) > 0:
-        emit('<h2><a name="modules">Modules</a></h2>')
+        emit('<h2><a name="modules">Peripherals</a></h2>')
 
         for m in module_list:
             emit('<li />{}'.format(modlink(m)))
@@ -735,7 +735,7 @@ if __name__ == '__main__':
     emit('<h2><a name="registers">Registers</a></h2>')
     for r in sorted(reg_list, key = lambda r: r['address']):
         emit('<h3><a name="{}">{}</a></h3>'.format(anchor('reg', r['name']), r['name']))
-        emit('<p>Module: {}<br />'.format(modlink(r['module'])))
+        emit('<p>Peripheral: {}<br />'.format(modlink(r['module'])))
         rspace = None
         raddr = r['address']
         if r['isSFR'] == True:
