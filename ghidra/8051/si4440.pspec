@@ -14,27 +14,33 @@
     <!-- reset and interrupt vectors -->
     <symbol name="RESET" address="RAM:0000" type="code" entry="true"/>
     <symbol name="ENTRY" address="RAM:0003" type="code" entry="true"/>
-    <symbol name="INT_07" address="RAM:0007" type="code" entry="true"/>
-    <symbol name="INT_TIM0" address="RAM:000B" type="code" entry="true"/>
-    <symbol name="INT_0F" address="RAM:000F" type="code" entry="true"/>
-    <symbol name="INT_EINT1" address="RAM:0013" type="code" entry="true"/>
-    <symbol name="INT_17" address="RAM:0017" type="code" entry="true"/>
-    <symbol name="INT_RX_PH" address="RAM:001B" type="code" entry="true"/>
-    <symbol name="INT_SPI_DMA" address="RAM:001F" type="code" entry="true"/>
-    <symbol name="INT_TX_EVENT" address="RAM:0023" type="code" entry="true"/>
-    <symbol name="INT_RX_EVENT" address="RAM:0027" type="code" entry="true"/>
-    <symbol name="INT_SPI_FIFO_ERR" address="RAM:002B" type="code" entry="true"/>
-    <symbol name="INT_2F" address="RAM:002F" type="code" entry="true"/>
-    <symbol name="INT_TX_FRAME" address="RAM:0033" type="code" entry="true"/>
-    <symbol name="INT_RX_BYTE" address="RAM:0037" type="code" entry="true"/>
-    <symbol name="INT_3B" address="RAM:003B" type="code" entry="true"/>
+    <symbol name="INT_MODEM" address="RAM:0007" type="code" entry="true"/>
+    <symbol name="INT_DEBUG" address="RAM:000B" type="code" entry="true"/>
+    <symbol name="INT_TIMER0" address="RAM:000F" type="code" entry="true"/>
+    <symbol name="INT_TIMER1" address="RAM:0013" type="code" entry="true"/>
+    <symbol name="INT_PA_RAMP" address="RAM:0017" type="code" entry="true"/>
+    <symbol name="INT_PH_INFO" address="RAM:001B" type="code" entry="true"/>
+    <symbol name="INT_COMMAND" address="RAM:001F" type="code" entry="true"/>
+    <symbol name="INT_DMAWR" address="RAM:0023" type="code" entry="true"/>
+    <symbol name="INT_DMARD" address="RAM:0027" type="code" entry="true"/>
+    <symbol name="INT_SPI_ERR" address="RAM:002B" type="code" entry="true"/>
+    <symbol name="INT_PH_ERR" address="RAM:002F" type="code" entry="true"/>
+    <symbol name="INT_TX_PH_AE" address="RAM:0033" type="code" entry="true"/>
+    <symbol name="INT_RX_PH_AF" address="RAM:0037" type="code" entry="true"/>
+    <symbol name="INT_PH_HALT" address="RAM:003B" type="code" entry="true"/>
     <symbol name="INT_WUT" address="RAM:003F" type="code" entry="true"/>
-    <symbol name="INT_43" address="RAM:0043" type="code" entry="true"/>
+    <symbol name="INT_MCTLCMD" address="RAM:0043" type="code" entry="true"/>
+    <!-- address space of the following vectors is reporpused for patch code in known FW images
+    <symbol name="INT_BITCLK" address="RAM:0047" type="code" entry="true"/>
+    <symbol name="INT_XOSC_OK" address="RAM:004B" type="code" entry="true"/>
+    <symbol name="INT_MCUSW" address="RAM:004F" type="code" entry="true"/>
+    -->
 
+    <!-- reset and interrupt vectors used in bootloader, address space of the other vectors is repurposed -->
     <symbol name="BOOT_RESET" address="RAM:8000" type="code" entry="true"/>
     <symbol name="BOOT_ENTRY" address="RAM:8003" type="code" entry="true"/>
-    <symbol name="BOOT_INT_SPI_DMA" address="RAM:801F" type="code" entry="true"/>
-    <symbol name="BOOT_INT_43" address="RAM:8043" type="code" entry="true"/>
+    <symbol name="BOOT_INT_COMMAND" address="RAM:801F" type="code" entry="true"/>
+    <symbol name="BOOT_INT_MCTLCMD" address="RAM:8043" type="code" entry="true"/>
 
     <!-- memory mapped registers -->    
     <symbol name="BANK0_R0" address="INTMEM:00"/>
