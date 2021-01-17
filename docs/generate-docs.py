@@ -155,7 +155,8 @@ def extract_regs(part):
                 if r['module'] == 'clkgen':
                     r['module'] = 'clk_gen_acfg'
                     r['submodule'] = 'clk_gen_acfg'
-
+            r['module'] = r['module'].upper()
+            r['submodule'] = r['submodule'].upper()
         reg_list.append(r)
 
     return reg_list
