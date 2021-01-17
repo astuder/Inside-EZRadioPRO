@@ -649,6 +649,9 @@ if __name__ == '__main__':
         part = parts[0]
         print('Found {} rev {}'.format(part.get('type'), part.get('revision')))
 
+    part_type = part.get('type')
+    part_rev = part.get('revision')
+
     # extract list of registers from XML
     reg_list = extract_regs(part)
 
@@ -661,7 +664,7 @@ if __name__ == '__main__':
 
     # create HTML file
     print('Generating registers.html')
-    out_name = args.out + 'registers.html'
+    out_name = args.out + 'registers-{}-{}.html'.format(part_type, part_rev)
     try:
         out_file = open(out_name, 'w', encoding='utf-8')
     except:
@@ -670,7 +673,7 @@ if __name__ == '__main__':
 
     # HTML header, title
     emit('<html><head>')
-    emit('<title>{} rev {} Registers</title>'.format(part.get('type'), part.get('revision')))
+    emit('<title>{} rev {} Registers</title>'.format(part_type, part_rev))
     emit('<link rel="stylesheet" {}>'.format(css_global))
     emit(css_local)
     emit('</head>')
@@ -812,7 +815,7 @@ if __name__ == '__main__':
 
     # create HTML file
     print('Generating spiapi.html')
-    out_name = args.out + 'spiapi.html'
+    out_name = args.out + 'spiapi-{}-{}.html'.format(part_type, part_rev)
     try:
         out_file = open(out_name, 'w', encoding='utf-8')
     except:
