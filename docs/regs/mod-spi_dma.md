@@ -24,8 +24,6 @@ When receiving new data with `WRITE_TX_FIFO`, the SPI DMA transfers the data int
 
 The 8051 firmware must ensure that `DMA_WROFF` doesn't go past the write limit (`DMAWR_LIMIT`) and stays within the configured FIFO size (`DMAWR_WRPNT`).
 
-## Address space 
+## DMA address space 
 
-When dumping the memory range addressable by the FIFO, `0x000` to `0x0ff` returns data that changes between dumps and is not found in other dumps.
-
-`0x100` to `0x7ff` is accessing RAM. `0x800` to `0xfff` is a mirror of `0x000` to `0x7ff`. Reading past `0x1000` by setting FIFO base address to `0xfff` also wraps around to `0x000`.
+When dumping the memory range addressable by the DMA, `0x000` to `0x0ff` returns data that changes between dumps and is not found in other dumps. `0x100` to `0x7ff` is accessing RAM. `0x800` to `0xfff` is a mirror of `0x000` to `0x7ff`. Reading past `0x1000` by setting FIFO base address to `0xfff` also wraps around to `0x000`.
