@@ -18,10 +18,9 @@ Pull requests are welcome.
 
 ## Documentation
 
-- [Documentation hidden in WDS](docs/wds-xml-docs.md)
+- [Register and API documentation](docs/wds-xml-docs.md) generated from data hidden in WDS, augmented with RE notes
+- [Complete list of API commands](docs/api-cmd.md), including undocumented commands
 - [Memory map](docs/memory-map.md)
-- [API commands](docs/api-cmd.md)
-- [SPI peripheral](docs/spi.md) (old, needs updating based on register docs)
 - [Talks](talks)
 
 ## Tools
