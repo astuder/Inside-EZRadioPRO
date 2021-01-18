@@ -18,21 +18,21 @@ In addition, there are the usual 8051 address spaces (IDATA, SFR).
 | 0x0058 | 0x02ea | RAM | Firmware jump table |
 | 0x02eb | 0x03b5 | RAM | Firmware patches |
 | 0x03b6 | 0x051d | RAM | unused |
-| 0x051e | 0x07ef | RAM | Firmware variables (prop groups, FIFO, DSP cache, cal data, ...) |
+| 0x051e | 0x07ef | RAM | Firmware variables (prop groups, FIFO, ACFG cache, cal data, ...) |
 | 0x07f0 | 0x07ff | RAM | Part info |
 | | | | --- |
 | 0x5000 | 0x50ff | XREG | Registers, also mapped to PDATA (movx @rn) |
 | 0x5100 | 0x5121 | XREG2 | More registers |
 | | | | --- |
 | 0x5400 | 0x54ff | IDATA | Mirror of IDATA address space |
-| 0x5500 | 0x55ff | NVRAM | Part info, DSP defaults, cal data, .. |
-| 0x5600 | 0x56ff | NVRAM | Bootloader setup script |
+| 0x5500 | 0x55ff | NVRAM | Part info, ACFG defaults, cal data, .. |
+| 0x5600 | 0x56ff | NVRAM | Bootloader script (series of SPI API cmds) |
 | 0x5700 | 0x74bf | NVRAM | FUNC image descriptors and scripts |
-| 0x74c0 | 0x74ff | NVRAM | Production data? |
+| 0x74c0 | 0x74ff | NVRAM | Production test data |
 | | | | --- |
 | 0x8000 | 0x876f | ROM | Bootloader |
-| 0x8770 | 0xfffc | ROM | Firmware |
-| 0xfffd | 0xffff | ROM | ROM rev, chip rev |
+| 0x8770 | 0xfff5 | ROM | Firmware |
+| 0xfff6 | 0xffff | ROM | Die info (part, ROM ID, chip rev) |
 
 ## Si446x-A2A
 
