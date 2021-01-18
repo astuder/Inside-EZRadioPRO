@@ -6,6 +6,7 @@
 import argparse
 import xml.etree.ElementTree as ET
 import urllib.parse
+import re
 
 # table to fixup registers that are clearly in the wrong module
 module_fix = {  'IE': 'interrupts', 'EIE1': 'interrupts', 'EIE2': 'interrupts', 'IP': 'interrupts',
@@ -357,8 +358,8 @@ def maplink(name):
     return '<a href="#{}">{}</a>'.format(anchor('map', name), name)
 
 # return link to register
-def reglink(reg):
-    return '<a href="#{}">{}</a>'.format(anchor('reg', reg['name']), reg['name'])
+def reglink(name):
+    return '<a href="#{}">{}</a>'.format(anchor('reg', name), name)
 
 # generate HTML register map
 def emit_regmap(name, start, end = 0, width = 8, regs = None, offset = 0):
@@ -381,7 +382,7 @@ def emit_regmap(name, start, end = 0, width = 8, regs = None, offset = 0):
         for addr in range(row, row+width):
             r = addr2reg(addr + offset, regs)
             if r:
-                emit('<td>{}</td>'.format(reglink(r)))
+                emit('<td>{}</td>'.format(reglink(r['name'])))
             else:
                 emit('<td></td>')
         emit('</tr>')
@@ -591,6 +592,44 @@ def emit_field_details(params, ptype, parent, prefix = False):
         emit('</ul></li>')
     emit('</ul>')
 
+# emit text as HTML using a basic markdown parser
+def emit_markdown(text):
+    if len(text.rstrip()) == 0:
+        return    
+    re_reglink = re.compile(r'`reg:([^`]*)`', re.IGNORECASE)
+    re_modlink = re.compile(r'`mod:([^`]*)`', re.IGNORECASE)
+    re_li = re.compile(r'^\* (.*)')
+    re_bold = re.compile(r'.\*([^\*]*)')
+    re_code = re.compile(r'`([^`]*)`', re.IGNORECASE)
+    emit('<p>')
+    for line in text.splitlines():
+        if len(line.rstrip()) == 0:
+            emit('</p><p>')
+        else:
+            line = re_reglink.sub(lambda x: reglink(x.group(1).upper()), line)
+            line = re_modlink.sub(lambda x: modlink(x.group(1).upper()), line)
+            line = re_li.sub(lambda x: '<li>{}</li>'.format(x.group(1)), line)
+            line = re_bold.sub(lambda x: '<b>{}</b>'.format(x.group(1)), line)
+            html = re_code.sub(lambda x: '<code>{}</code>'.format(x.group(1)), line)
+            emit(html)
+    emit('</p>')
+
+# load additional information stored in markdown files
+def load_extra(folder, type, id):
+    filename = '{}{}/{}-{}.md'.format(args.out, folder, type, id)
+    title = ''
+    text = ''
+    try:
+        with open(filename, 'r', encoding='utf-8') as extra:
+            for line in extra:
+                if line.startswith('# '):
+                    title = line[2:].rstrip()
+                else:
+                    text += line
+    except FileNotFoundError:
+        pass
+    return title, text
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Generates HTML pages with register documentation for EZRadioPRO radio IC.')
     parser.add_argument('wds', type=argparse.FileType('rb', 0),
@@ -683,10 +722,12 @@ if __name__ == '__main__':
     
     # TOC
     emit('<h2>Table of Contents</h2>')
-    emit('<li /><a href="#register-map">Register Maps</a>')
+    emit('<ul>')
+    emit('<li><a href="#register-map">Register Maps</a></li>')
     if len(module_list) > 0:
-        emit('<li /><a href="#modules">Peripherals</a>')
-    emit('<li /><a href="#registers">Registers</a>')
+        emit('<li><a href="#modules">Peripherals</a></li>')
+    emit('<li><a href="#registers">Registers</a></li>')
+    emit('</ul>')
     emit('<hr />')
 
     # register maps (SFR, ACFG, XREG)
@@ -695,9 +736,11 @@ if __name__ == '__main__':
     acfg_list = [r for r in reg_list if r['isAconfig'] == 1]
     xreg_list = [r for r in reg_list if r['isXReg'] == 1]
     if len(sfr_list) > 0:
-        emit('<li />{}<br />'.format(maplink('SFR')))
-        emit('<li />{}<br />'.format(maplink('ACFG')))
-        emit('<li />{}'.format(maplink('XREG')))
+        emit('<ul>')
+        emit('<li>{}</li>'.format(maplink('SFR')))
+        emit('<li>{}</li>'.format(maplink('ACFG')))
+        emit('<li>{}</li>'.format(maplink('XREG')))
+        emit('</ul>')
         emit('<hr />')
         emit_regmap('SFR', 0x80, 0, 8, sfr_list, 0x5400)
         emit('<hr />')
@@ -713,12 +756,20 @@ if __name__ == '__main__':
     if len(module_list) > 0:
         emit('<h2><a name="modules">Peripherals</a></h2>')
 
+        emit('<ul>')
         for m in module_list:
-            emit('<li />{}'.format(modlink(m)))
+            emit('<li>{}</li>'.format(modlink(m)))
+        emit('</ul>')
         emit('<hr />')
 
         for m in module_list:
-            emit('<h3><a name="{}">{}</a></h3>'.format(anchor('mod', m), m))
+            mod_title, mod_text = load_extra('regs', 'mod', m.lower())
+            if len(mod_title) > 0:
+                mod_title = '{} - {}'.format(m, mod_title)
+            else:
+                mod_title = m
+            emit('<h3><a name="{}">{}</a></h3>'.format(anchor('mod', m), mod_title))
+            emit_markdown(mod_text)
             mregs = sorted(filter(lambda r: 'module' in r and r['module'] == m, reg_list), key = lambda r: r['name'])
             sml = set()
             for r in mregs:
@@ -728,17 +779,26 @@ if __name__ == '__main__':
                 submod_list = sorted(sml)
                 for sm in submod_list:
                     emit('<h4>{}</h4>'.format(sm))
+                    emit('<ul>')
                     for r in filter(lambda r: 'submodule' in r and r['submodule'] == sm, mregs):
-                        emit('<li />{}'.format(reglink(r)))
+                        emit('<li>{}</li>'.format(reglink(r['name'])))
+                    emit('</ul>')
             else:
+                emit('<ul>')
                 for r in mregs:
-                    emit('<li />{}'.format(reglink(r)))
+                    emit('<li>{}</li>'.format(reglink(r['name'])))
+                emit('</ul>')
             emit('<hr />')
 
     # individual registers
     emit('<h2><a name="registers">Registers</a></h2>')
     for r in sorted(reg_list, key = lambda r: r['address']):
-        emit('<h3><a name="{}">{}</a></h3>'.format(anchor('reg', r['name']), r['name']))
+        reg_title, reg_text = load_extra('regs', 'reg', r['name'].lower())
+        if len(reg_title) > 0:
+            reg_title = '{} - {}'.format(r['name'], reg_title)
+        else:
+            reg_title = r['name']
+        emit('<h3><a name="{}">{}</a></h3>'.format(anchor('reg', r['name']), reg_title))
         emit('<p>Peripheral: {}<br />'.format(modlink(r['module'])))
         rspace = None
         raddr = r['address']
@@ -759,6 +819,7 @@ if __name__ == '__main__':
             raccess += 'W'
         emit('Access: {}'.format(raccess))
         emit('</p>')
+        emit_markdown(reg_text)
 
         # table with fields of register
         flist = extract_fields(r)
