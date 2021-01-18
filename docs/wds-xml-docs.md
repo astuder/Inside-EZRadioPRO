@@ -7,8 +7,10 @@ The exectuable `NewWDS.exe` provided with the SiLabs Wireless Development Suite 
 - Name, adress and fields of internal registers of the radio IC (8051 SFRs, etc.)
 
 Use [/docs/generate-docs.py](generate-docs.py) to generate HTML documentation from information stored in `NewWDS.exe`. The script creates
-- `registers.html` documenting internal registers of radio IC
-- `spiapi.html` documenting SPI API, identical with official SDK docs but including internal commands and comments
+- `registers-*.html` documenting internal registers of radio IC
+- `spiapi-*.html` documenting SPI API, identical with official SDK docs but including internal commands and comments
+
+The register documentation is enriched with our own notes stored in [/docs/regs/](./regs).
 
 Use [/tools/wds-xml-extract.py](../tools/README.md#wds-xml-extractpy) to extract the XML files from your own copy of WDS.
 
