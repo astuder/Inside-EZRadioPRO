@@ -328,8 +328,13 @@ def csetlink(name):
     return '<a href="#{}">{}</a>'.format(anchor('cset', name), name)
 
 # return link to command
-def cmdlink(name):
-    return '<a href="#{}">{}</a>'.format(anchor('cmd', name), name)
+def cmdlink(name, external = False):
+    if external == False:
+        return '<a href="#{}"><code>{}</code></a>'.format(anchor('cmd', name), name)
+    else:
+        # target won't jump to anchor if API page already open
+        # return '<a href="{}#{}" target="api"><code>{}</code></a>'.format(api_doc, anchor('cmd', name), name)
+        return '<a href="{}#{}"><code>{}</code></a>'.format(api_doc, anchor('cmd', name), name)
 
 # return link to command argument field
 def arglink(name):
@@ -621,7 +626,7 @@ def emit_markdown(text, level):
         else:
             line = re_reglink.sub(lambda x: reglink(x.group(1).upper()), line)
             line = re_modlink.sub(lambda x: modlink(x.group(1).upper()), line)
-            line = re_cmdlink.sub(lambda x: cmdlink(x.group(1).upper()), line)
+            line = re_cmdlink.sub(lambda x: cmdlink(x.group(1).upper(), True), line)
             line = re_li.sub(lambda x: '<li>{}</li>'.format(x.group(1)), line)
             line = re_bold.sub(lambda x: '<b>{}</b>'.format(x.group(1)), line)
             html = re_code.sub(lambda x: '<code>{}</code>'.format(x.group(1)), line)
@@ -707,19 +712,25 @@ if __name__ == '__main__':
     part_type = part.get('type')
     part_rev = part.get('revision')
 
+    reg_doc = 'registers-{}-{}.html'.format(part_type, part_rev)
+    api_doc = 'spiapi-{}-{}.html'.format(part_type, part_rev)
+
     # extract list of registers from XML
     reg_list = extract_regs(part)
 
     # build list of modules (peripherals)
-    ml = set()
+    ml = []
     for r in reg_list:
-        if 'module' in r:
-            ml.add(r['module'])
-    module_list = sorted(ml)
+        if 'module' in r and next(filter(lambda m: m['name'] == r['module'], ml), None) is None:
+            mod = {}
+            mod['name'] = r['module']
+            mod['title'], mod['text'] = load_extra('regs', 'mod', mod['name'].lower())
+            ml.append(mod)
+    module_list = sorted(ml, key = lambda m: m['name'])
 
     # create HTML file
     print('Generating registers.html')
-    out_name = args.out + 'registers-{}-{}.html'.format(part_type, part_rev)
+    out_name = args.out + reg_doc
     try:
         out_file = open(out_name, 'w', encoding='utf-8')
     except:
@@ -773,20 +784,23 @@ if __name__ == '__main__':
 
         emit('<ul>')
         for m in module_list:
-            emit('<li>{}</li>'.format(modlink(m)))
+            if len(m['title']) > 0:
+                emit('<li>{} - {}</li>'.format(modlink(m['name']), m['title']))
+            else:
+                emit('<li>{}</li>'.format(modlink(m['name'])))
         emit('</ul>')
         emit('<hr />')
 
         for m in module_list:
-            mod_title, mod_text = load_extra('regs', 'mod', m.lower())
-            if len(mod_title) > 0:
-                mod_title = '{} - {}'.format(m, mod_title)
+            if len(m['title']) > 0:
+                mod_title = '{} - {}'.format(m['name'], m['title'])
             else:
-                mod_title = m
-            emit('<h3><a name="{}">{}</a></h3>'.format(anchor('mod', m), mod_title))
-            emit_markdown(mod_text, 3)
+                mod_title = m['name']
+            emit('<h3><a name="{}">{}</a></h3>'.format(anchor('mod', m['name']), mod_title))
+            if 'text' in m:
+                emit_markdown(m['text'], 3)
             emit('<h4>Registers</h4>')
-            mregs = sorted(filter(lambda r: 'module' in r and r['module'] == m, reg_list), key = lambda r: r['name'])
+            mregs = sorted(filter(lambda r: 'module' in r and r['module'] == m['name'], reg_list), key = lambda r: r['name'])
             sml = set()
             for r in mregs:
                 if 'submodule' in r:
@@ -894,7 +908,7 @@ if __name__ == '__main__':
 
     # create HTML file
     print('Generating spiapi.html')
-    out_name = args.out + 'spiapi-{}-{}.html'.format(part_type, part_rev)
+    out_name = args.out + api_doc
     try:
         out_file = open(out_name, 'w', encoding='utf-8')
     except:
