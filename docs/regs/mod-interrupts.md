@@ -20,7 +20,7 @@
         <tr><td>`0x0033`</td><td align="left">INT_TX_PH_AE</td><td align="left">mod:PACKET_HANDLER</td><td>reg:EIE1</td><td>reg:EIP1</td><td>reg:EIRQ1</td></tr>
         <tr><td>`0x0037`</td><td align="left">INT_RX_PH_AF</td><td align="left">mod:PACKET_HANDLER</td><td>reg:EIE1</td><td>reg:EIP1</td><td>reg:EIRQ1</td></tr>
         <tr><td>`0x003B`</td><td align="left">INT_PH_HALT</td><td align="left">mod:PACKET_HANDLER</td><td>reg:EIE2</td><td>reg:EIP2</td><td>reg:EIRQ2</td></tr>
-        <tr><td>`0x003F`</td><td align="left">INT_WUT</td><td align="left">mod:PACKET_WUT</td><td>reg:EIE2</td><td>reg:EIP2</td><td>reg:EIRQ2</td></tr>
+        <tr><td>`0x003F`</td><td align="left">INT_WUT</td><td align="left">mod:WUT</td><td>reg:EIE2</td><td>reg:EIP2</td><td>reg:EIRQ2</td></tr>
         <tr><td>`0x0043`</td><td align="left">INT_MCTLCMD</td><td align="left">mod:MEMCTL</td><td>reg:EIE2</td><td>reg:EIP2</td><td>reg:EIRQ2</td></tr>
         <tr><td>`0x0047`</td><td align="left">INT_BITCLK</td><td align="left"></td><td>reg:EIE2</td><td>reg:EIP2</td><td>reg:EIRQ2</td></tr>
         <tr><td>`0x004B`</td><td align="left">INT_XOSC_OK</td><td align="left"></td><td>reg:EIE2</td><td>reg:EIP2</td><td>reg:EIRQ2</td></tr>

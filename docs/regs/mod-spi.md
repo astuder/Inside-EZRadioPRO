@@ -6,10 +6,10 @@ The SPI peripheral of the EZRadioPRO handles the SPI API communication:
 * Sending the reply stream 
 
 The SPI peripheral handles the following SPI API commands autonomously without invoking the 8051 MCU:
-* `READ_CMD_BUFF` to send reply stream
-* `FRR_x_READ` to read fast response registers (FRR) A-D
-* `WRITE_TX_FIFO` to write bytes into the transmit FIFO
-* `READ_RX_FIFO` to read bytes from the receive FIFO
+* cmd:READ_CMD_BUFF to send reply stream
+* cmd:FRR_A_READ - cmd:FRR_D_READ to read fast response registers (FRR) A-D
+* cmd:WRITE_TX_FIFO to write bytes into the transmit FIFO
+* cmd:READ_RX_FIFO to read bytes from the receive FIFO
 
 ## SPI communication
 
@@ -27,15 +27,15 @@ The register reg:CTS is set to `0xff` when the 8051 completed processing of a co
 
 ## Fast read registers (FRR)
 
-The SPI commands `FRR_A_READ` through `FRR_D_READ` provide fast access to arbritrary variables. The 8051 sets the content of FRR A through D by writing to reg:FAST_RES_A through reg:FAST_RES_D.
+The SPI API commands cmd:FRR_A_READ through cmd:FRR_D_READ provide fast access to arbritrary variables. The 8051 sets the content of FRR A through D by writing to reg:FAST_RES_A through reg:FAST_RES_D.
 
 ## RX and TX FIFOs
 
-The SPI peripheral processes the commands `READ_RX_FIFO` and `WRITE_TX_FIFO` without invoking the 8051. The FIFOs are located in RAM and processed by DMA. See mod:SPI_DMA for more information.
+The SPI peripheral processes the commands cmd:READ_RX_FIFO and cmd:WRITE_TX_FIFO without invoking the 8051. The FIFOs are located in RAM and processed by DMA. See mod:SPI_DMA for more information.
 
 ## EZRadioPRO firmware implementation
 
-In the EZRadioPRO firmware, most commands are processed synchronously within the `INT_COMMAND` interrupt service routine. The exceptions are `GET_ADC_READING` (`0x14`), `IRCAL` (`0x17`), `PROTOCOL_CFG` (`0x18`) and undocumented `WAIT_PROPERTY_PROCESSED` (`0x1b`), which run asynchronously within the main loop.
+In the EZRadioPRO firmware, most commands are processed synchronously within the `INT_COMMAND` interrupt service routine. The exceptions are cmd:GET_ADC_READING, cmd:IRCAL, cmd:PROTOCOL_CFG and undocumented cmd:WAIT_PROPERTY_PROCESSED (`0x1b`), which run asynchronously within the main loop.
 
 Custom commands can be added by hooking `map.spi_unknown_cmd` (`0x0132`) for synchronous or `map.main_loop_unknown_cmd` (`0x0213`) for asynchronous processing.
 
