@@ -36,11 +36,13 @@ css_global = 'href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/
 
 # overrides for CSS
 css_local = '<style type="text/css">\
-    body { padding: 10px; }\
+    body { padding: 10px; font-size: 14; }\
     h1, h2, h3 { padding-top: 20px; }\
     h4 { padding-top: 10px; }\
-    table { min-width: 50%; border: 1px solid black; border-spacing: 1px; text-align: center; }\
-    td { border: 1px solid black; border-spacing: 0px; }\
+    p { font-size: 14; } \
+    code { font-size: 14; color: black } \
+    table { min-width: 50%; border: 1px solid black; border-spacing: 1px; text-align: center; font-size: 14; }\
+    td { border: 1px solid black; border-spacing: 0px; padding-left: 3px; padding-right: 3px; }\
     thead { text-align: center; background: #bbd5f0; }\
     dl { width: 100%; margin-top: 0; margin-bottom: 0; overflow: hidden; }\
     dt { width: 10%; float: left; text-aling: right } \
@@ -359,7 +361,7 @@ def maplink(name):
 
 # return link to register
 def reglink(name):
-    return '<a href="#{}">{}</a>'.format(anchor('reg', name), name)
+    return '<code><a href="#{}">{}</a></code>'.format(anchor('reg', name), name)
 
 # generate HTML register map
 def emit_regmap(name, start, end = 0, width = 8, regs = None, offset = 0):
@@ -374,11 +376,11 @@ def emit_regmap(name, start, end = 0, width = 8, regs = None, offset = 0):
     emit('<thead><tr>')
     emit('<td></td>')
     for col in range(width):
-        emit('<td>{:X}</td>'.format(col))
+        emit('<td><code>{:X}</code></td>'.format(col))
     emit('</tr></thead>')
     emit('<tbody>')
     for row in range(start, end, width):
-        emit('<tr><td>{:02X}</td>'.format(row))
+        emit('<tr><td style="hpadding: 4px"><code>{:02X}</code></td>'.format(row))
         for addr in range(row, row+width):
             r = addr2reg(addr + offset, regs)
             if r:
@@ -593,25 +595,38 @@ def emit_field_details(params, ptype, parent, prefix = False):
     emit('</ul>')
 
 # emit text as HTML using a basic markdown parser
-def emit_markdown(text):
-    if len(text.rstrip()) == 0:
+def emit_markdown(text, level):
+    text = text.rstrip()
+    if len(text) == 0:
         return    
-    re_reglink = re.compile(r'`reg:([^`]*)`', re.IGNORECASE)
-    re_modlink = re.compile(r'`mod:([^`]*)`', re.IGNORECASE)
+    re_reglink = re.compile(r'reg:([A-Z0-9_]*)', re.IGNORECASE)
+    re_modlink = re.compile(r'mod:([A-Z0-9_]*)', re.IGNORECASE)
+    re_cmdlink = re.compile(r'cmd:([A-Z0-9_]*)', re.IGNORECASE)
     re_li = re.compile(r'^\* (.*)')
     re_bold = re.compile(r'.\*([^\*]*)')
     re_code = re.compile(r'`([^`]*)`', re.IGNORECASE)
     emit('<p>')
+    first_line = True
     for line in text.splitlines():
         if len(line.rstrip()) == 0:
-            emit('</p><p>')
+            if first_line == True:
+                # ignore empty line after heading
+                pass
+            else:
+                emit('</p><p>')
+        elif line.startswith('## '):
+            emit('<h{}>{}</h{}'.format(level+1, line[3:], level+1))
+        elif line.startswith('### '):
+            emit('<h{}>{}</h{}'.format(level+2, line[3:], level+2))
         else:
             line = re_reglink.sub(lambda x: reglink(x.group(1).upper()), line)
             line = re_modlink.sub(lambda x: modlink(x.group(1).upper()), line)
+            line = re_cmdlink.sub(lambda x: cmdlink(x.group(1).upper()), line)
             line = re_li.sub(lambda x: '<li>{}</li>'.format(x.group(1)), line)
             line = re_bold.sub(lambda x: '<b>{}</b>'.format(x.group(1)), line)
             html = re_code.sub(lambda x: '<code>{}</code>'.format(x.group(1)), line)
             emit(html)
+        first_line = False
     emit('</p>')
 
 # load additional information stored in markdown files
@@ -769,7 +784,8 @@ if __name__ == '__main__':
             else:
                 mod_title = m
             emit('<h3><a name="{}">{}</a></h3>'.format(anchor('mod', m), mod_title))
-            emit_markdown(mod_text)
+            emit_markdown(mod_text, 3)
+            emit('<h4>Registers</h4>')
             mregs = sorted(filter(lambda r: 'module' in r and r['module'] == m, reg_list), key = lambda r: r['name'])
             sml = set()
             for r in mregs:
@@ -810,8 +826,8 @@ if __name__ == '__main__':
         else:
             rspace = 'XREG'
         emit('Register space: {}<br />'.format(maplink(rspace)))
-        emit('Offset: 0x{:02X}<br />'.format(raddr))
-        emit('Reset value: 0x{:02X}<br />'.format(r['defaultVal']))
+        emit('Offset: <code>0x{:02X}</code><br />'.format(raddr))
+        emit('Reset value: <code>0x{:02X}</code><br />'.format(r['defaultVal']))
         raccess = ''
         if r['isRead'] == 1:
             raccess += 'R'
@@ -819,7 +835,6 @@ if __name__ == '__main__':
             raccess += 'W'
         emit('Access: {}'.format(raccess))
         emit('</p>')
-        emit_markdown(reg_text)
 
         # table with fields of register
         flist = extract_fields(r)
@@ -836,19 +851,21 @@ if __name__ == '__main__':
                     bits = '[{}]'.format(f['first'])
                 else:
                     bits = '[{}:{}]'.format(f['first'], f['last'])
-                emit('<td colspan="{}">{}{}</td>'.format(f['span'], f['name'], bits))
+                emit('<td colspan="{}"><code>{}{}</code></td>'.format(f['span'], f['name'], bits))
             else:
-                emit('<td ">{}</td>'.format(f['name']))
+                emit('<td><code>{}</code></td>'.format(f['name']))
         emit('</tr>')
         emit('<tr>')
         emit('<td>Reset</td>')
         for f in flist:
             if 'first' in f:
-                emit('<td colspan="{}">0x{:X}</td>'.format(f['span'], f['default']))
+                emit('<td colspan="{}"><code>0x{:X}</code></td>'.format(f['span'], f['default']))
             else:                
-                emit('<td ">0x{:X}</td>'.format(f['default']))
+                emit('<td><code>0x{:X}</code></td>'.format(f['default']))
 
         emit('</tr></tbody></table>')
+        emit('<p></p>')
+        emit_markdown(reg_text, 3)
         emit('<hr />')
     emit('</body>')
     emit('</html>')
