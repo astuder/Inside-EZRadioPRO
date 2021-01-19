@@ -2,13 +2,13 @@
 
 Reverse engineering the SiLabs EZRadioPRO family of RF ICs with the goal of writing custom firmware patches.
 
-To avoid copyright violations, this repository does not contain firmware images. Use the provided tools to extract and analyze your own images.
+To avoid copyright violations, this repository does not contain firmware images or documents auto-generated from SiLabs binaries. Use the provided Python scripts to extract firmware images or generate documentation.
 
-Pull requests are welcome.
+Pull requests are welcome, especially [reverse engineering notes](docs/regs) that augment documentation.
 
 ## Progress
 
-- Dump all memory address spaces, including CODE and NVRAM
+- Dump all memory address spaces, including CODE and NVM
   - Si4362-B1B, Si4362-C2A, Si4460-C2A, Si4463-B1B, Si4467-A2A
 - Run custom code on radio IC
 - Analyze and annotate large parts of the firmware using radare2
@@ -44,11 +44,11 @@ The remaining functionality is implemented in hardware:
 - GPIO seems to be controlled by multiplexers, with only indirect ways for the 8051 MCU to interact with pins.
 - According to [patents](https://patents.google.com/patent/US8050313B2), the RF modem is implemented with a DSP. No access to DSP RAM or firmware has been found (yet).
 
-Members of the EZRadio and EZRadioPRO product families share the same silicon die, and are differentiated at the factory through programming of the NVRAM. See also [this patent](https://patents.google.com/patent/US7613913B2/en). Evidence for this conclusion includes:
+Members of the EZRadio and EZRadioPRO product families share the same silicon die, and are differentiated at the factory through on-time programming (OTP) of non-volatile memory (NVM). See also [this patent](https://patents.google.com/patent/US7613913B2/en). Evidence for this conclusion includes:
 - Register maps and firmware ROM are identical across parts of the same revision (B1B, C2A/A2A), but differ significantly between older B1B and newer C2A/A2A parts.
 - Code in RAM is identical among the C2A parts investigated, with small differences compared to A2A parts.
-- Code in RAM, hardware presets and calibration data is copied from NVRAM during boot and power up.
-- Content of NVRAM is significantly different between C2A and A2A parts.
-- NVRAM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
+- Code in RAM, hardware presets and calibration data is copied from NVM during boot and power up.
+- Content of NVM is significantly different between C2A and A2A parts.
+- NVM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
 - The firmware of EZRadioPRO parts includes code for EZConfig commands, which are only documented for the EZRadio product family (Si4355, Si4455)
 - The string `si4440` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/img/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
