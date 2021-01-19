@@ -47,3 +47,19 @@ Note:
 - this script is designed to be run repeatedly
 
 Future versions of this script may import additional data. 
+
+## Radare2 importer
+
+The Python script [r2import.py](r2import.py) is a Ghidra plugin to import symbols, functions and comments from [r2 scripts](../radare2).
+
+This script will:
+- skip existing labels and functions, unless their name starts with `FUN_`
+- rename existing functions if their name starts with `FUN_`
+- disassemble code and create missing functions
+- rename existing labels if their name start with `DAT_`
+- create missing labels
+- import EOL comments
+
+This script only supports a very small subset of commands as used in [r2 scripts created for this project](../radare2). It is NOT a generic importer for radare2 scripts.
+
+To add this script to your Ghidra installation, copy `r2import.py` into `{USER_HOME}/ghidra_scripts`.

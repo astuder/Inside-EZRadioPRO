@@ -362,18 +362,18 @@ f prop.cal_dsp0x1f_low_pwr 1 @ prop.cal_data+0x18
 f prop.cal_dsp0x1e_low_pwr 1 @ prop.cal_data+0x19
 f prop.cal_clkgen_band_lpwr_ltmp_0x1a 1 @ prop.cal_data+0x1a
 f prop.cal_dsp0x06_temp_range_lo 1 @ prop.cal_data+0x1b
-CCu 4-7:dsp0x06 @ @ prop.cal_data+0x1b
+CCu 4-7:dsp0x06 @ prop.cal_data+0x1b
 f prop.cal_clkgen_band_lpw_ltmp_0x1c 1 @ prop.cal_data+0x1c
 f prop.cal_dsp0x08_temp_range_lo_0x1d 1 @ prop.cal_data+0x1d
 f prop.cal_dsp0x1f_norm_pwr 1 @ prop.cal_data+0x1e
 f prop.cal_dsp0x1e_norm_pwr 1 @ prop.cal_data+0x1f
 f prop.cal_clkgen_band_hpwr_ltmp_0x20 1 @ prop.cal_data+0x20
 f prop.cal_dsp0x06_ETSI169 1 @ prop.cal_data+0x21
-CCu 4-7:dsp0x06 @ @ prop.cal_data+0x21
+CCu 4-7:dsp0x06 @ prop.cal_data+0x21
 f prop.cal_clkgen_band_hpwr_ltmp_0x22 1 @ prop.cal_data+0x22
 f prop.cal_data_0x23 1 @ prop.cal_data+0x23
 f prop.cal_dsp0x06_ETSI868 data_0x24 1 @ prop.cal_data+0x24
-CCu 4-7:dsp0x06 @ @ prop.cal_data+0x24
+CCu 4-7:dsp0x06 @ prop.cal_data+0x24
 f prop.cal_data_0x25 1 @ prop.cal_data+0x25
 f prop.cal_data_0x26 1 @ prop.cal_data+0x26
 f prop.cal_clkgen_band_hpwr_0x29 1 @ prop.cal_data+0x29
@@ -383,7 +383,7 @@ f prop.cal_clkgen_band_hpwr_htmp_0x2c 1 @ prop.cal_data+0x2c
 f prop.cal_data_0x2d 1 @ prop.cal_data+0x2d
 f prop.cal_data_0x2e 1 @ prop.cal_data+0x2e
 f prop.cal_dsp0x06_temp_range_hi 1 @ prop.cal_data+0x2e
-CCu 4-7:dsp0x06 @ @ prop.cal_data+0x2e
+CCu 4-7:dsp0x06 @ prop.cal_data+0x2e
 f prop.cal_data_0x2f 1 @ prop.cal_data+0x2f
 f prop.cal_data_0x30 1 @ prop.cal_data+0x30
 f prop.cal_data_0x31 1 @ prop.cal_data+0x31
