@@ -1,8 +1,12 @@
 # Ghidra tooling
 
+* [Si4440 process variant](#si4440-processor-variant)
+* [EZRadioPRO importer](#ezradiopro-importer)
+* [Radare2 importer](#radare2-importer)
+
 This tooling was tested with Ghidra 9.2.
 
-## Si4440 processor
+## Si4440 processor variant
 
 The EZRadioPRO runs on an 8051 core that is slightly different from the standard 8051 supported by Ghidra. We created a custom 8051 variant Si4440 to ease reverse engineering of EZRadioPRO firmware:
 
@@ -53,9 +57,8 @@ Future versions of this script may import additional data.
 The Python script [r2import.py](r2import.py) is a Ghidra plugin to import symbols, functions and comments from [r2 scripts](../radare2).
 
 This script will:
-- skip existing labels and functions, unless their name starts with `FUN_`
 - rename existing functions if their name starts with `FUN_`
-- disassemble code and create missing functions
+- create missing functions, disassembling code if necessary
 - rename existing labels if their name start with `DAT_`
 - create missing labels
 - import EOL comments
