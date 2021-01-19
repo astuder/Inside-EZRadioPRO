@@ -12,4 +12,4 @@ Launch: `r2 -a 8051 -i func1-c2a.r2 ./dumps/Si4362-C2A-code.bin`
 
 Use Vp command to explore.
 
-`[/radare2/find-refs.py](radare2/find-refs.py)` is a python script to create r2 xrefs for indirect data and register access.
+[/radare2/find-refs.py](radare2/find-refs.py) is a python script to create r2 xrefs for indirect data and register access.
