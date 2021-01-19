@@ -4,7 +4,7 @@ The mod:SPI peripheral processes the cmd:READ_RX_FIFO and cmd:WRITE_TX_FIFO API 
 
 The two FIFO buffers are controlled by two sets of registers. Registers and fields that start with `DMARD` control the RX FIFO, Registers and fields that start with `DMAWR` control the TX FIFO. 
 
-If the commands cmd:READ_RX_FIFO or cmd:WRITE_TX_FIFO cause a FIFO underflow or overlow condition, the 8051 will receive a `SPI_ERR` interrupt (vector `INT_SPI_ERR`, `0x002B`).
+If the commands cmd:READ_RX_FIFO or cmd:WRITE_TX_FIFO cause a FIFO underflow or overlow condition, the 8051 will receive a `SPI_ERR` interrupt (vector 0x2B `INT_SPI_ERR`).
 
 FIFOs are reset/emptied with flags in reg:DMA_RST.
 
@@ -12,7 +12,7 @@ FIFOs are reset/emptied with flags in reg:DMA_RST.
 
 Base address of the RX FIFO buffer is set in reg:DMARD_BASE_LSB and reg:DMA_BASE_MSBS[3:0]. Length (wrap point) of the RX FIFO buffer is set in reg:DMARD_WRPNT_LSB and reg:DMA_WRPNT_MSBS[2:0]. 
 
-The 8051 indicates new data in the RX FIFO by updating (incrementing) reg:DMARD_LIMIT_LSB and reg:DMARD_LIMIT_MSB. When reading data with cmd:READ_RX_FIFO, the SPI DMA transfers data from RAM, updates reg:DMA_RDOFF_LSBS and reg:DMA_RDOFF_MSBS, and triggers a `DMARD` interrupt (vector `INT_DMARD`, `0x0027`)
+The 8051 indicates new data in the RX FIFO by updating (incrementing) reg:DMARD_LIMIT_LSB and reg:DMARD_LIMIT_MSB. When reading data with cmd:READ_RX_FIFO, the SPI DMA transfers data from RAM, updates reg:DMA_RDOFF_LSBS and reg:DMA_RDOFF_MSBS, and triggers a `DMARD` interrupt (vector 0x27 `INT_DMARD`)
 
 The 8051 firmware must ensure that `DMARD_LIMIT` doesn't go past the read offset (`DMA_RDOFF`) and stays within the configured FIFO size (`DMARD_WRPNT`).
 
@@ -20,10 +20,10 @@ The 8051 firmware must ensure that `DMARD_LIMIT` doesn't go past the read offset
 
 Base address of the TX FIFO buffer is set in reg:DMAWR_BASE_LSB and reg:DMA_BASE_MSBS[7:5]. Length (wrap point) of the TX FIFO buffer is set in reg:DMAWR_WRPNT_LSB and reg:DMA_WRPNT_MSBS[6:4]. 
 
-When receiving new data with cmd:WRITE_TX_FIFO, the SPI DMA transfers the data into RAM, updates reg:DMAWR_LIMIT_LSB and reg:DMAWR_LIMIT_MSB, and triggers a `DMAWR` interrupt (vector `INT_DMAWR`, `0x0023`). When consuming data from the FIFO, the 8051 firmware updates (increments) reg:DMA_WROFF_LSBS and reg:DMA_WROFF_MSBS.
+When receiving new data with cmd:WRITE_TX_FIFO, the SPI DMA transfers the data into RAM, updates reg:DMAWR_LIMIT_LSB and reg:DMAWR_LIMIT_MSB, and triggers a `DMAWR` interrupt (vector 0x23 `INT_DMAWR`). When consuming data from the FIFO, the 8051 firmware updates (increments) reg:DMA_WROFF_LSBS and reg:DMA_WROFF_MSBS.
 
 The 8051 firmware must ensure that `DMA_WROFF` doesn't go past the write limit (`DMAWR_LIMIT`) and stays within the configured FIFO size (`DMAWR_WRPNT`).
 
 ## DMA address space 
 
-When dumping the memory range addressable by the DMA, `0x000` to `0x0ff` returns data that changes between dumps and is not found in other dumps. `0x100` to `0x7ff` is accessing RAM. `0x800` to `0xfff` is a mirror of `0x000` to `0x7ff`. Reading past `0x1000` by setting FIFO base address to `0xfff` also wraps around to `0x000`.
+When dumping the memory range addressable by the DMA, 0x000 to 0x0ff returns data that changes between dumps and is not found in other dumps. 0x100 to 0x7ff is accessing RAM. 0x800 to 0xfff is a mirror of 0x000 to 0x7ff. Reading past 0x1000 by setting FIFO base address to 0xfff also wraps around to 0x000.

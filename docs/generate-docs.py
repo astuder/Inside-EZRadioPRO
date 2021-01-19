@@ -604,6 +604,7 @@ def emit_markdown(text, level):
     text = text.rstrip()
     if len(text) == 0:
         return    
+    re_hex = re.compile(r'0x([0-9A-F]*)', re.IGNORECASE)
     re_reglink = re.compile(r'reg:([A-Z0-9_]*)', re.IGNORECASE)
     re_modlink = re.compile(r'mod:([A-Z0-9_]*)', re.IGNORECASE)
     re_cmdlink = re.compile(r'cmd:([A-Z0-9_]*)', re.IGNORECASE)
@@ -624,6 +625,7 @@ def emit_markdown(text, level):
         elif line.startswith('### '):
             emit('<h{}>{}</h{}'.format(level+2, line[3:], level+2))
         else:
+            line = re_hex.sub(lambda x: '<code>0x{}</code>'.format(x.group(1).upper()), line)
             line = re_reglink.sub(lambda x: reglink(x.group(1).upper()), line)
             line = re_modlink.sub(lambda x: modlink(x.group(1).upper()), line)
             line = re_cmdlink.sub(lambda x: cmdlink(x.group(1).upper(), True), line)
