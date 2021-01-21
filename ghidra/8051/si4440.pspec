@@ -30,7 +30,7 @@
     <symbol name="INT_PH_HALT" address="RAM:003B" type="code" entry="true"/>
     <symbol name="INT_WUT" address="RAM:003F" type="code" entry="true"/>
     <symbol name="INT_MCTLCMD" address="RAM:0043" type="code" entry="true"/>
-    <!-- address space of the following vectors is reporpused for patch code in known FW images
+    <!-- address space of the following vectors is repurposed for patch code in known FW images
     <symbol name="INT_BITCLK" address="RAM:0047" type="code" entry="true"/>
     <symbol name="INT_XOSC_OK" address="RAM:004B" type="code" entry="true"/>
     <symbol name="INT_MCUSW" address="RAM:004F" type="code" entry="true"/>
