@@ -4,3 +4,4 @@ datasheets/
 *.html
 *.xml
 *.sublime*
+__pycache__

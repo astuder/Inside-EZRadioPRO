@@ -19,8 +19,9 @@ Pull requests are welcome, especially [reverse engineering notes](docs/regs) tha
 ## Documentation
 
 - [Register and API documentation](docs/wds-xml-docs.md) generated from data hidden in WDS, augmented with RE notes
-- [Complete list of API commands](docs/api-cmd.md), including undocumented commands
+- [List of API commands](docs/api-cmd.md) in different modes, including undocumented commands
 - [Memory map](docs/memory-map.md)
+- [Bootloader](docs/boot.md)
 - [Talks](talks)
 
 ## Tools
@@ -34,13 +35,13 @@ Pull requests are welcome, especially [reverse engineering notes](docs/regs) tha
 ## Findings
 
 The digital portion of the radio is run by an 8051 core, which implements:
-- Boot and power up process
+- [Boot and power up process](docs/boot.md)
 - Most of the SPI API (exceptions: CTS, FIFO read/write, FRR access)
 - Device state machine and interrupts, watchdog timer, IRCAL, channel hopping
 - Majority of packet handler functionality
 
 The remaining functionality is implemented in hardware: 
-- SPI communication is handled by a dedicated peripheral using DMA to interact with 8051 address space.
+- SPI communication is handled by a [dedicated peripheral](docs/regs/mod-spi.md) using [DMA](docs/regs/mod-spi_dma.md) to interact with 8051 address space.
 - GPIO seems to be controlled by multiplexers, with only indirect ways for the 8051 MCU to interact with pins.
 - According to [patents](https://patents.google.com/patent/US8050313B2), the RF modem is implemented with a DSP. No access to DSP RAM or firmware has been found (yet).
 
