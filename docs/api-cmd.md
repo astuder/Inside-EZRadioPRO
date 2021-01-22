@@ -24,7 +24,7 @@ This list applies only to A2A and C2A devices.
 |0x06|PATCH_COPY|&#x2713;|||||root.xml, API.xml|
 |0x09|TEST_DATA|&#x2713;|||||root.xml, API.xml|
 |0x0a|PATCH_COPY_2|&#x2713;|||||root.xml, API.xml (sames as 0x06)|
-|0x10|FUNC_INFO|&#x2713;|&#x2713;|&#x2713;|&#x2713;||&#x2713;|
+|0x10|FUNC_INFO|&#x2713;|&#x2713;|&#x2713;|&#x2713;||&#x2713; (in boot mode only returns ROM ID)|
 |0x11|SET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713; [more](#Property-groups)|
 |0x12|GET_PROPERTY||&#x2713;|&#x2713;|&#x2713;||&#x2713; [more](#Property-groups)|
 |0x13|GPIO_PIN_CFG||&#x2713;|&#x2713;|&#x2713;||&#x2713;|
