@@ -4,6 +4,7 @@ This folder contains Python scripts to help with reverse engineering EZRadioPRO 
 
 - [wds-xml-extract.py](#wds-xml-extractpy) Script to extract hidden XML files from SiLabs Wireless Development Suite
 - [ezradiopro.py](#ezradiopropy) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
+- [patch-crypto.py](#patch-cryptopy) Script to decrypt firmware patches
 
 # wds-xml-extract.py
 
@@ -17,6 +18,22 @@ Run the script providing the path to the WDS exectuable as command line paramete
 ~~~~
 wds-xml-extract.py path-to-wds/NewWDS.exe
 ~~~~
+
+# patch-crypto.py
+
+The firmware of the EZRadioPRO can be patched during power up. The patch commands are protected by a checksum and partially encrpyted. `patch-crypto.py` decrypts firmware patches.
+
+## Usage
+
+Run the script providing a ROM dump and a patch file.
+
+~~~~
+patch-crypto.py path-to-dump/rom.bin path-to-patch/patch.csg
+~~~~
+
+The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the CODE address space.
+
+A few patch files can be found in `C:\Program Files (x86)\SiliconLabs\WDS3\Patch`. 
 
 # ezradiopro.py
 
