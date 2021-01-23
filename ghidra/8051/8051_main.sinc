@@ -584,6 +584,18 @@ Direct:  mainreg   is bank=0 & mainreg	{ tmp:3 = mainreg + 0x7f0000; export *[RA
 @elif defined(MCS51) || defined(MCS80390)
 Direct:  mainreg   is bank=0 & mainreg	{ export *[INTMEM]:1 mainreg; }
 @endif
+
+@if defined(SI4440)
+Direct:  "R0"        is bank=0 & mainreg=0x00 { export R0; }
+Direct:  "R1"        is bank=0 & mainreg=0x01 { export R1; }
+Direct:  "R2"        is bank=0 & mainreg=0x02 { export R2; }
+Direct:  "R3"        is bank=0 & mainreg=0x03 { export R3; }
+Direct:  "R4"        is bank=0 & mainreg=0x04 { export R4; }
+Direct:  "R5"        is bank=0 & mainreg=0x05 { export R5; }
+Direct:  "R6"        is bank=0 & mainreg=0x06 { export R6; }
+Direct:  "R7"        is bank=0 & mainreg=0x07 { export R7; }
+@endif
+
 Direct:  direct    is bank=1 & direct 	{ export *[SFR]:1 direct; }
 Direct:  PSW       is bank=1 & direct=0xD0 & PSW  { export PSW;  }
 Direct:  "A"       is bank=1 & direct=0xE0 	{ export ACC; }
