@@ -76,7 +76,7 @@ Some patch commands are partially encrypted:
 * `PATCH_ARGS`: Arguments `0x01` - `0x05`
 * `PATCH_DATA`: Arguments `0x01` - `0x07`
 
-[This Python script](../tools/README.md#patch-crypto.py) reimplements the decryption logic of the bootloader.
+[This Python script](../tools/README.md#patch-cryptopy) reimplements the decryption logic of the bootloader.
 
 The encryption scheme has four parts:
 * Two 8 bit keys provided with the patch (`PATCH_IMAGE` `KEY1` and `KEY2`)
