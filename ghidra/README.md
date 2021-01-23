@@ -13,6 +13,7 @@ The EZRadioPRO runs on an 8051 core that is slightly different from the standard
 - Code and external memory share the same 16 bit address space (RAM)
 - `MOVX @Ri` uses SFR `XPAGE` to determine MSB of 16 bit address (hard-coded to `0x5000`)
 - Only 1 memory mapped register bank to free INTMEM used for variables
+- Translate addressing of memory mapped register bank to registers R0-R7 for better decompilation results
 - Removed 8051 SFR's not supported by Si4440
 - Memory mapped SFR bits for A, B, IE, IP and PSW
 - Added entry points for reset vector, interrupt vectors and boot loader
