@@ -47,7 +47,7 @@ class Crypto:
             print('key: {:02X}, {:02X}, {:02X}, {:02X}'.format(self.crc[0], self.crc[1], self.crc[2], self.crc[3]))
             print('idx1: {:04X}'.format(self.idx1))
             print('idx2: {:04X}'.format(self.idx2))
-            print('e: {:02X}'.format(self.e))            
+            print('e: {:02X}'.format(self.e))
 
         return val
 
@@ -64,13 +64,13 @@ class Crypto:
     def get_crc(self):
         return self.crc[0]*256 + self.crc[1]
 
-def hex_list(data):
+def hex_list(data, prefix=''):
     hex_str = ''
     for b in data:
         if hex_str == '':
-            hex_str += '{:02X}'.format(b)
+            hex_str += '{}{:02X}'.format(prefix, b)
         else:
-            hex_str += ',{:02X}'.format(b)
+            hex_str += ',{}{:02X}'.format(prefix, b)
     return hex_str
 
 PATCH_IMAGE = 0x04
@@ -91,16 +91,26 @@ if __name__ == "__main__":
                         help='Path and name of a binary dump of CODE address space to extract ROM data.')
     parser.add_argument('patch', type=argparse.FileType('r'),
                         help='Path and name of patch file to decode.')
+    parser.add_argument('-o', '--out',
+                        help='Path and name to save decoded patch file.')
     args = parser.parse_args()
 
-    rom_dump = args.rom.read()
-    args.rom.close()
+    if not args.out is None:
+        try:
+            outfile = open(args.out, 'w')
+        except:
+            print('Failed to open output file.')
+            exit()
+    else:
+        outfile = None
 
     # load boot rom into RAM array
+    rom_dump = args.rom.read()
+    args.rom.close()
     print('{} bytes ROM data loaded.'.format(len(rom_dump)))
     RAM = rom_dump[0x8000:0x8900]
     ROM_ID = rom_dump[0xfffe]
-    
+
     # decode patch
     crypto = Crypto()
     for line in args.patch:
@@ -117,7 +127,7 @@ if __name__ == "__main__":
                 flags = args[1]
                 crc = args[2]*256 + args[3]
                 key1 = args[6]
-                key2 = args[7]                
+                key2 = args[7]
                 print('CRC: {:04X}'.format(crc))
                 print('VERIFY_CRC: {}'.format((flags >> 5) & 0x01))
                 print('KEYS: {:02X}, {:02X}'.format(key1, key2))
@@ -158,3 +168,8 @@ if __name__ == "__main__":
                 print('COUNT: {}'.format(count))
                 print('DATA: {}'.format(hex_list(data)))
                 print()
+            if not outfile is None:
+                print(hex_list(args, '0x'), file=outfile)
+
+    if not outfile is None:
+        outfile.close()
