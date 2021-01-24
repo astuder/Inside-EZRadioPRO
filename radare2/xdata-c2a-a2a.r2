@@ -23,8 +23,8 @@ Cd 1 0x2e2 @ 0x51e
 f prop.grp_0x24_ezconfig 9 @ 0x051e
 CCu see EZRadio Si4455 @ 0x051e
 f prop.EZCONFIG_MODULATION 1 @ prop.grp_0x24_ezconfig+0x00
-f prop.EZCONFIG_UNDOC_0x01 1 @ prop.grp_0x24_ezconfig+0x01
-f prop.EZCONFIG_UNDOC_0x02 1 @ prop.grp_0x24_ezconfig+0x02
+f prop.EZCONFIG_EZCONFIG_CONFIG_SELECT 1 @ prop.grp_0x24_ezconfig+0x01
+f prop.EZCONFIG_EZCONFIG_PKT 1 @ prop.grp_0x24_ezconfig+0x02
 f prop.EZCONFIG_XO_TUNE 1 @ prop.grp_0x24_ezconfig+0x03
 
 f prop.grp_0x30_match 12 @ 0x0527
@@ -109,8 +109,8 @@ f prop.MODEM_AFC_MISC 1				 @ prop.grp_0x20_modem+0x32
 f prop.MODEM_AFC_ZIFOFF 1			 @ prop.grp_0x20_modem+0x33
 f prop.MODEM_ADC_CTRL 1				 @ prop.grp_0x20_modem+0x34
 f prop.MODEM_AGC_CONTROL 1			 @ prop.grp_0x20_modem+0x35
-f prop.MODEM_UNDOCUMENTED_0x36 1	 @ prop.grp_0x20_modem+0x36
-f prop.MODEM_UNDOCUMENTED_0x37 1	 @ prop.grp_0x20_modem+0x37
+f prop.MODEM_RESERVED_0x36 1	     @ prop.grp_0x20_modem+0x36
+f prop.MODEM_RESERVED_0x37 1	     @ prop.grp_0x20_modem+0x37
 f prop.MODEM_AGC_WINDOW_SIZE 1		 @ prop.grp_0x20_modem+0x38
 f prop.MODEM_AGC_RFPD_DECAY 1		 @ prop.grp_0x20_modem+0x39
 f prop.MODEM_AGC_IFPD_DECAY 1		 @ prop.grp_0x20_modem+0x3a
@@ -122,7 +122,7 @@ f prop.MODEM_OOK_PDTC 1				 @ prop.grp_0x20_modem+0x40
 f prop.MODEM_OOK_BLOPK 1			 @ prop.grp_0x20_modem+0x41
 f prop.MODEM_OOK_CNT1 1				 @ prop.grp_0x20_modem+0x42
 f prop.MODEM_OOK_MISC 1				 @ prop.grp_0x20_modem+0x43
-f prop.MODEM_RAW_SEARCH_DEPRECATED 1	 @ prop.grp_0x20_modem+0x44
+f prop.MODEM_RAW_SEARCH_DEPRECATED 1 @ prop.grp_0x20_modem+0x44
 f prop.MODEM_RAW_CONTROL 1			 @ prop.grp_0x20_modem+0x45
 f prop.MODEM_RAW_EYE 2				 @ prop.grp_0x20_modem+0x46
 f prop.MODEM_ANT_DIV_MODE 1			 @ prop.grp_0x20_modem+0x48
@@ -132,11 +132,11 @@ f prop.MODEM_RSSI_JUMP_THRESH 1		 @ prop.grp_0x20_modem+0x4b
 f prop.MODEM_RSSI_CONTROL 1			 @ prop.grp_0x20_modem+0x4c
 f prop.MODEM_RSSI_CONTROL2 1		 @ prop.grp_0x20_modem+0x4d
 f prop.MODEM_RSSI_COMP 1			 @ prop.grp_0x20_modem+0x4e
-f prop.MODEM_UNDOCUMENTED_0x4f 1	 @ prop.grp_0x20_modem+0x4f
+f prop.MODEM_DC_CONTROL 1       	 @ prop.grp_0x20_modem+0x4f
 f prop.MODEM_RAW_SEARCH2 1			 @ prop.grp_0x20_modem+0x50
 f prop.MODEM_CLKGEN_BAND 1			 @ prop.grp_0x20_modem+0x51
-f prop.MODEM_UNDOCUMENTED_0x52 1	 @ prop.grp_0x20_modem+0x52
-f prop.MODEM_UNDOCUMENTED_0x53 1	 @ prop.grp_0x20_modem+0x53
+f prop.MODEM_RESERVED_0x52 1	     @ prop.grp_0x20_modem+0x52
+f prop.MODEM_MODEM_PLL_SETTLE_TIME 1 @ prop.grp_0x20_modem+0x53
 f prop.MODEM_SPIKE_DET 1			 @ prop.grp_0x20_modem+0x54
 f prop.MODEM_ONE_SHOT_AFC 1			 @ prop.grp_0x20_modem+0x55
 f prop.MODEM_RSSI_HYSTERESIS 1		 @ prop.grp_0x20_modem+0x56
@@ -181,10 +181,10 @@ f prop.PREAMBLE_POSTAMBLE_PATTERN 4	 @ prop.grp_0x10_preamble+0x0a
 f prop.PREAMBLE_UNDOCUMENTED_0x0e 1	 @ prop.grp_0x10_preamble+0x0e
 
 f prop.grp_0xf0_pti 5 @ 0x06cb
-f prop.PTI_CTL 1	 @ prop.grp_0xf0_pti+0x00
-f prop.PTI_BAUD 2	 @ prop.grp_0xf0_pti+0x01
-f prop.PTI_LOG_EN 1	 @ prop.grp_0xf0_pti+0x03
-f prop.PTI_UNDOCUMENTED 1 @ prop.grp_0xf0_pti+0x04
+f prop.PTI_CTL 1	  @ prop.grp_0xf0_pti+0x00
+f prop.PTI_BAUD 2	  @ prop.grp_0xf0_pti+0x01
+f prop.PTI_LOG_EN 1	  @ prop.grp_0xf0_pti+0x03
+f prop.PTI_LOG_EN_2 1 @ prop.grp_0xf0_pti+0x04
 
 f prop.grp_0x12_pkt 58 @ 0x06d0
 f prop.PKT_CRC_CONFIG 1				 @ prop.grp_0x12_pkt+0x00
@@ -228,7 +228,7 @@ f prop.PKT_RX_FIELD_4_CRC_CONFIG 1	 @ prop.grp_0x12_pkt+0x30
 f prop.PKT_RX_FIELD_5_LENGTH 2		 @ prop.grp_0x12_pkt+0x31
 f prop.PKT_RX_FIELD_5_CONFIG 1		 @ prop.grp_0x12_pkt+0x33
 f prop.PKT_RX_FIELD_5_CRC_CONFIG 1	 @ prop.grp_0x12_pkt+0x34
-f prop.PKT_UNDOCUMENTED_0x35 1		 @ prop.grp_0x12_pkt+0x35
+f prop.PKT_RESERVED_0x35 1		     @ prop.grp_0x12_pkt+0x35
 f prop.PKT_CRC_SEED 4				 @ prop.grp_0x12_pkt+0x36
 
 f prop.grp_0x22_pa 7 @ 0x070a
@@ -332,66 +332,70 @@ f var.CURRENT_RSSI 1 @ 0x0758
 
 f const.FUNC_INFO_PATCH 2 @ 0x075f
 
-CCu 0x37 bytes copied from NVRAM (cal data?), prop grp 0xf2 @ 0x0761
-f prop.cal_data 0x37 @ 0x0761
-f prop.cal_delay_msb 1 @ prop.cal_data+0x00
-f prop.cal_delay_lsb 1 @ prop.cal_data+0x01
-f prop.cal_tx_tune_delay 1 @ prop.cal_data+0x02
-f prop.cal_ready_delay 1 @ prop.cal_data+0x03
-f prop.cal_rx_tune_dly_msb 1 @ prop.cal_data+0x04
-f prop.cal_rx_tune_dly_lsb 1 @ prop.cal_data+0x05
-f prop.cal_offline2_cal_flags_28 1 @ prop.cal_data+0x06
-f prop.cal_offline2_cal_flags_27 1 @ prop.cal_data+0x07
-f prop.cal_data_0x09 1 @ prop.cal_data+0x09
-f prop.cal_data_0x0b 1 @ prop.cal_data+0x0b
-CCu rc32k cal related @ prop.cal_data+0x0b
-f prop.cal_data_0x0c 1 @ prop.cal_data+0x0c
-CCu rc32k cal related @ prop.cal_data+0x0c
-f prop.cal_data_0x0d 1 @ prop.cal_data+0x0d
-CCu rc32k cal related @ prop.cal_data+0x0d
-f prop.cal_data_0x0e 1 @ prop.cal_data+0x0e
-CCu rc32k related, upper nibble written to xreg 0xe5 @ prop.cal_data+0x0e
-f prop.cal_data_0x0f 1 @ prop.cal_data+0x0f
-CCu rc32k related, 0-5:written to xreg 0xe5 6-7:written to dsp 0x50 @ prop.cal_data+0x0f
-f prop.cal_data_0x10 1 @ prop.cal_data+0x10
-f prop.cal_data_0x11 1 @ prop.cal_data+0x11
-f prop.cal_data_0x14 1 @ prop.cal_data+0x14
-f prop.cal_data_0x15 1 @ prop.cal_data+0x15
-f prop.cal_data_0x17 1 @ prop.cal_data+0x17
-f prop.cal_dsp0x1f_low_pwr 1 @ prop.cal_data+0x18
-f prop.cal_dsp0x1e_low_pwr 1 @ prop.cal_data+0x19
-f prop.cal_clkgen_band_lpwr_ltmp_0x1a 1 @ prop.cal_data+0x1a
-f prop.cal_dsp0x06_temp_range_lo 1 @ prop.cal_data+0x1b
-CCu 4-7:dsp0x06 @ prop.cal_data+0x1b
-f prop.cal_clkgen_band_lpw_ltmp_0x1c 1 @ prop.cal_data+0x1c
-f prop.cal_dsp0x08_temp_range_lo_0x1d 1 @ prop.cal_data+0x1d
-f prop.cal_dsp0x1f_norm_pwr 1 @ prop.cal_data+0x1e
-f prop.cal_dsp0x1e_norm_pwr 1 @ prop.cal_data+0x1f
-f prop.cal_clkgen_band_hpwr_ltmp_0x20 1 @ prop.cal_data+0x20
-f prop.cal_dsp0x06_ETSI169 1 @ prop.cal_data+0x21
-CCu 4-7:dsp0x06 @ prop.cal_data+0x21
-f prop.cal_clkgen_band_hpwr_ltmp_0x22 1 @ prop.cal_data+0x22
-f prop.cal_data_0x23 1 @ prop.cal_data+0x23
-f prop.cal_dsp0x06_ETSI868 data_0x24 1 @ prop.cal_data+0x24
-CCu 4-7:dsp0x06 @ prop.cal_data+0x24
-f prop.cal_data_0x25 1 @ prop.cal_data+0x25
-f prop.cal_data_0x26 1 @ prop.cal_data+0x26
-f prop.cal_clkgen_band_hpwr_0x29 1 @ prop.cal_data+0x29
-f prop.cal_data_0x2a 1 @ prop.cal_data+0x2a
-f prop.cal_data_0x2b 1 @ prop.cal_data+0x2b
-f prop.cal_clkgen_band_hpwr_htmp_0x2c 1 @ prop.cal_data+0x2c
-f prop.cal_data_0x2d 1 @ prop.cal_data+0x2d
-f prop.cal_data_0x2e 1 @ prop.cal_data+0x2e
-f prop.cal_dsp0x06_temp_range_hi 1 @ prop.cal_data+0x2e
-CCu 4-7:dsp0x06 @ prop.cal_data+0x2e
-f prop.cal_data_0x2f 1 @ prop.cal_data+0x2f
-f prop.cal_data_0x30 1 @ prop.cal_data+0x30
-f prop.cal_data_0x31 1 @ prop.cal_data+0x31
-f prop.cal_offline_cal_flags_28 1 @ prop.cal_data+0x32
-f prop.cal_offline_cal_flags_27 1 @ prop.cal_data+0x33
-f prop.cal_dma_unk0x0a 1 @ prop.cal_data+0x34
-f prop.cal_data_0x35 1 @ prop.cal_data+0x35
-f prop.cal_data_0x36 1 @ prop.cal_data+0x36
+CCu 0x37 bytes calibration data copied from NVM, prop OTP_VARS @ 0x0761
+f prop.grp_0xf2_otp_vars 0x37 @ 0x0761
+f prop.OTP_VARS_SPI_ACTIVE_SEQ_DELAY 2 @ prop.grp_0xf2_otp_vars+0x00
+f prop.OTP_VARS_TX_TUNE_SEQ_DELAY 1 @ prop.grp_0xf2_otp_vars+0x02
+f prop.OTP_VARS_READY_SEQ_DELAY 1 @ prop.grp_0xf2_otp_vars+0x03
+f prop.OTP_VARS_RX_SEQ_DELAY 2 @ prop.grp_0xf2_otp_vars+0x04
+f prop.OTP_VARS_CAL_ENABLE_VTR 1 @ prop.grp_0xf2_otp_vars+0x06
+f prop.OTP_VARS_CAL_ENABLE 1 @ prop.grp_0xf2_otp_vars+0x07
+f prop.OTP_VARS_VTR_VCO_V3P3_TARGET_VOLTAGE 1 @ prop.grp_0xf2_otp_vars+0x08
+f prop.OTP_VARS_VTR_VCO_V1P5_TARGET_VOLTAGE 1 @ prop.grp_0xf2_otp_vars+0x09
+f prop.OTP_VARS_VTR_VCO_LADR_TARGET_VOLTAGE 1 @ prop.grp_0xf2_otp_vars+0x0a
+f prop.OTP_VARS_RC_CAL_ADC_TARGET 2 @ prop.grp_0xf2_otp_vars+0x0b
+CCu rc32k cal related @ prop.grp_0xf2_otp_vars+0x0b
+f prop.grp_0xf2_otp_vars_0x0c 1 @ prop.grp_0xf2_otp_vars+0x0c
+CCu rc32k cal related @ prop.grp_0xf2_otp_vars+0x0c
+f prop.OTP_VARS_RC_CAL 1 @ prop.grp_0xf2_otp_vars+0x0d
+CCu rc32k cal related @ prop.grp_0xf2_otp_vars+0x0d
+f prop.OTP_VARS_RC_CAL1 1 @ prop.grp_0xf2_otp_vars+0x0e
+CCu rc32k related, upper nibble written to xreg 0xe5 @ prop.grp_0xf2_otp_vars+0x0e
+f prop.OTP_VARS_RC_CAL2 1 @ prop.grp_0xf2_otp_vars+0x0f
+CCu rc32k related, 0-5:written to xreg 0xe5 6-7:written to dsp 0x50 @ prop.grp_0xf2_otp_vars+0x0f
+f prop.OTP_VARS_BOOT_OSC_CAL 1 @ prop.grp_0xf2_otp_vars+0x10
+f prop.OTP_VARS_BOOT_OSC_CAL1 1 @ prop.grp_0xf2_otp_vars+0x11
+f prop.OTP_VARS_AUXADC_TEMP_SLOPE 1 @ prop.grp_0xf2_otp_vars+0x12
+f prop.OTP_VARS_AUXADC_TEMP_INTERCEPT 1 @ prop.grp_0xf2_otp_vars+0x13
+f prop.OTP_VARS_AUXADC_SY_GAIN_ERROR 1 @ prop.grp_0xf2_otp_vars+0x14
+f prop.OTP_VARS_AUXADC_SY_OFFSET_ERROR 1 @ prop.grp_0xf2_otp_vars+0x15
+f prop.OTP_VARS_ADC_VOLTAGE_TRIM 1 @ prop.grp_0xf2_otp_vars+0x16
+f prop.OTP_VARS_VCO_LOAD5_XO 1 @ prop.grp_0xf2_otp_vars+0x17
+f prop.OTP_VARS_REG_RXFE_LPF 1 @ prop.grp_0xf2_otp_vars+0x18
+f prop.OTP_VARS_REG_ADC_LPF 1 @ prop.grp_0xf2_otp_vars+0x19
+f prop.OTP_VARS_REG_CLKGEN_COM_LPF 1 @ prop.grp_0xf2_otp_vars+0x1a
+f prop.OTP_VARS_REG_FBDIV_LPF 1 @ prop.grp_0xf2_otp_vars+0x1b
+CCu 4-7:dsp0x06 @ prop.grp_0xf2_otp_vars+0x1b
+f prop.OTP_VARS_REG_CLKGEN_TX_LPF 1 @ prop.grp_0xf2_otp_vars+0x1c
+f prop.OTP_VARS_REG_CLKGEN_COM_LOW_BAND 1 @ prop.grp_0xf2_otp_vars+0x1d
+f prop.OTP_VARS_REG_RXFE_HPF 1 @ prop.grp_0xf2_otp_vars+0x1e
+f prop.OTP_VARS_REG_ADC_HPF 1 @ prop.grp_0xf2_otp_vars+0x1f
+f prop.OTP_VARS_REG_CLKGEN_COM_HPF 1 @ prop.grp_0xf2_otp_vars+0x20
+f prop.OTP_VARS_REG_FBDIV_HPF 1 @ prop.grp_0xf2_otp_vars+0x21
+CCu 4-7:dsp0x06 @ prop.grp_0xf2_otp_vars+0x21
+f prop.OTP_VARS_REG_CLKGEN_TX_HPF 1 @ prop.grp_0xf2_otp_vars+0x22
+f prop.OTP_VARS_ETSI_CFG0 1 @ prop.grp_0xf2_otp_vars+0x23
+f prop.OTP_VARS_ETSI_CFG1 1 @ prop.grp_0xf2_otp_vars+0x24
+CCu 4-7:dsp0x06 @ prop.grp_0xf2_otp_vars+0x24
+f prop.OTP_VARS_ETSI_CFG2 1 @ prop.grp_0xf2_otp_vars+0x25
+f prop.OTP_VARS_PH_WATERMARK 1 @ prop.grp_0xf2_otp_vars+0x26
+f prop.OTP_VARS_PROC_MON_RCAL 1 @ prop.grp_0xf2_otp_vars+0x27
+f prop.OTP_VARS_REF_CAL_BANDGAP 1 @ prop.grp_0xf2_otp_vars+0x28
+f prop.OTP_VARS_VCO_ADJ 1 @ prop.grp_0xf2_otp_vars+0x29
+f prop.OTP_VARS_MISC_DELAY 1 @ prop.grp_0xf2_otp_vars+0x2a
+f prop.OTP_VARS_CAL_MAN 1 @ prop.grp_0xf2_otp_vars+0x2b
+f prop.OTP_VARS_REG_CLKGEN_COM_HPF_HOT 1 @ prop.grp_0xf2_otp_vars+0x2c
+f prop.OTP_VARS_VTR_VCO_V1P5_TARGET_VOLTAGE_HOT 1 @ prop.grp_0xf2_otp_vars+0x2d
+f prop.OTP_VARS_REG_FBDIV_COM_HOT 1 @ prop.grp_0xf2_otp_vars+0x2e
+CCu 4-7:dsp0x06 @ prop.grp_0xf2_otp_vars+0x2e
+f prop.OTP_VARS_REG_DIG_LOAD_ACFG_DIGREG_HOT 1 @ prop.grp_0xf2_otp_vars+0x2f
+f prop.OTP_VARS_CAL_MAN_ONLINE_TEMP_DELTA 1 @ prop.grp_0xf2_otp_vars+0x30
+f prop.OTP_VARS_CAL_MAN_OFFLINE_TEMP_DELTA 1 @ prop.grp_0xf2_otp_vars+0x31
+f prop.OTP_VARS_CAL_MAN_LOWER_TEMP_TARGET 1 @ prop.grp_0xf2_otp_vars+0x32
+f prop.OTP_VARS_CAL_MAN_HIGHER_TEMP_TARGET 1 @ prop.grp_0xf2_otp_vars+0x33
+f prop.OTP_VARS_NVM_TIMING 1 @ prop.grp_0xf2_otp_vars+0x34
+f prop.OTP_VARS_SPARE_35 1 @ prop.grp_0xf2_otp_vars+0x35
+f prop.OTP_VARS_SPARE_36 1 @ prop.grp_0xf2_otp_vars+0x36
 
 CCu 0x58 bytes copied from NVRAM, related to 0x94/95 @ 0x0798
 f var.dsp_reg_cache 0x58 @ 0x0798
@@ -449,5 +453,5 @@ f const.mPART_INFO_PART 2 @ 0x47f0
 f const.mPART_INFO_PBUILD 1 @ 0x47f2
 f const.mPART_INFO_ID 2 @ 0x47f3
 f const.mPART_INFO_CUSTOMER 1 @ 0x47f5
-f const.mPART_INFO_UNDOCUMENTED 1 @ 0x47fe
+f const.mPART_INFO_BOND 1 @ 0x47fe
 f const.mPART_INFO_CHIPREV 1 @ 0x47ff

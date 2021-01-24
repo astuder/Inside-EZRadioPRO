@@ -6,7 +6,7 @@ f boot.vect_eint0 1 @ 0x8003
 CCu launch EZRadioPRO firmware @ 0x8009
 Cd 1 4 @ 0x800c
 f boot.rom_magic 2 @ 0x800d
-.(fcn 0x8010 0x8018 boot.write_dsp_reg_r7_val_r5)
+.(fcn 0x8010 0x8018 boot.acfg_write)
 .(fcn 0x8018 0x801d boot.set_patch_dest_addr_r6r7)
 .(fcn 0x801d 0x801e boot.reti)
 .(fcn 0x801f 0x8022 boot.vect_spi)
@@ -44,14 +44,14 @@ CCu src within NVRAM (0x5500-0x74ff) @ 0x80cb
 CCu a = src addr lsb @ 0x80cd
 CCu clr dma src addr @ 0x80d9
 CCu don't disable NVRAM if set @ 0x80e4
-.(fcn 0x80ea 0x8118 boot.run_cmds_from_nvram)
+.(fcn 0x80ea 0x8118 boot.run_boot_script)
 CCu run cmds at r6r7 @ 0x80ea
 CCu counter = 0 @ 0x80ee
 CCu imem dest: 0x2b (spi cmd buffer) @ 0x80f1
 CCu nrvam src: start + 16*counter @ 0x80f7
 CCu len: 0x10 @ 0x8109
 CCu repeat until cmd response is 0 @ 0x8113
-.(fcn 0x8118 0x8155 boot.protect_nvram)
+.(fcn 0x8118 0x8155 boot.nvm_init)
 CCu Set NVRAM protection to User? @ 0x8118
 axd dsp_base+0x48 @ 0x811a
 axd xreg_base+0xe2 @ 0x812a
@@ -93,7 +93,7 @@ CCu only run once on power-up?? @ 0x81e9
 CCu indicate multiple NRAM reads @ 0x81f0
 CCu nvram src: 0x5600 @ 0x81f4
 CCu disable interrupts @ 0x8220
-.(fcn 0x823b 0x8245 boot.nvram_disable)
+.(fcn 0x823b 0x8245 boot.nvm_disable)
 .(fcn 0x8245 0x82a5 boot.checksum_memory)
 CCu src addr MSB/LSB @ 0x8245
 CCu length MSB/LSB @ 0x824b
@@ -108,34 +108,34 @@ CCu process next byte @ 0x82a1
 .(fcn 0x82a5 0x82ce boot.failed)
 CCu set bit 2 @ 0x82aa
 CCu wait for bit 2 clr @ 0x82b0
-f boot.setup_clocks 1 @ 0x82b3
+f boot.clk_init 1 @ 0x82b3
 axd xreg_base+0xab @ 0x82bc
 axd dsp_base+0x54 @ 0x82ca
 .(fcn 0x82ce 0x82ed boot.prepare_exit)
-.(fcn 0x82ed 0x8301 boot.cmd_read_nvram_74c0)
+.(fcn 0x82ed 0x8301 boot.cmd_test_data)
 CCu dest addr: response buffer @ 0x82f1
 CCu src addr: 0x7400+arg[1] @ 0x82f3
 CCu length: 16 bytes @ 0x82fb
 .(fcn 0x8301 0x835b boot.parse_cmd)
 CCu cmd 0x00: NOP @ 0x8303
 CCu cmd 0x01: PART_INFO @ 0x8305
-CCu cmd 0xfe: TAIL_ROM @ 0x830a
+CCu cmd 0xfe: DIE_INFO @ 0x830a
 CCu cmd 0x10: FUNC_INFO @ 0x830f
 f boot.cmd_func_info 1 @ 0x8312
 CCu cmd 0x02: POWER_UP @ 0x831c
-CCu cmd 0x03: PATCH_CLEAN @ 0x8321
+CCu cmd 0x03: RAM_TEST @ 0x8321
 CCu cmd 0x04: PATCH_IMAGE @ 0x8326
 CCu cmd 0x05: PATCH_ARGS @ 0x832b
 CCu cmd 0x23: GET_CHIP_STATUS @ 0x8330
-CCu cmd 0x09: READ_NVRAM_74C0 @ 0x8335
+CCu cmd 0x09: TEST_DATA @ 0x8335
 CCu cmd 0x06: PATCH_COPY @ 0x833c
-CCu cmd 0x0a: PATCH_COPY @ 0x8342
+CCu cmd 0x0a: PATCH_COPY2 @ 0x8342
 CCu cmd 0xe0-0xef: PATCH_DATA @ 0x8349
 CCu CMD_ERROR_BAD_CMD @ 0x8356
 .(fcn 0x835b 0x837b boot.cmd_patch_copy)
 CCu CMD_ERROR_BAD_PATCH @ 0x8367
 .(fcn 0x837b 0x8388 boot.clr_cmd_buffer)
-.(fcn 0x8388 0x83c5 boot.cmd_patch_clean)
+.(fcn 0x8388 0x83c5 boot.cmd_ram_test)
 CCu fill flag set in arg[1]? @ 0x8391
 CCu fill byte = arg[6] @ 0x8396
 CCu crc flag set in arg[1]? @ 0x839c
@@ -193,11 +193,11 @@ CCu r7 = arg byte @ 0x84b7
 CCu store decrypted arg byte @ 0x84ba
 CCu get next bit/byte @ 0x84be
 CCu done @ 0x84c8
-.(fcn 0x84c9 0x84e8 boot.cmd_tail_rom)
+.(fcn 0x84c9 0x84e8 boot.cmd_die_info)
 .(fcn 0x84e8 0x8523 boot.cmd_power_up)
 CCu CMD_ERROR_BAD_PATCH @ 0x8512
 CCu CMD_ERROR_BAD_ARG @ 0x851c
-.(fcn 0x8523 0x8532 boot.verify_cmd_bit)
+.(fcn 0x8523 0x8532 boot.verify_cmd_crc_lsb)
 .(fcn 0x8532 0x8549 boot.dma_xdata_unk0x8532)
 CCu dest: 0x4000 (XMEM mirror) @ 0x8532
 axd 0x5105 @ 0x8537
@@ -235,14 +235,14 @@ CCu 49:4a = r4:r5 @ 0x8605
 .(fcn 0x860d 0x8663 boot.spi_cmd_handler)
 CCu copy SPI buffer to IMEM 0x2b-3a @ 0x862c
 CCu copy IMEM 0x2b-3a to SPI buffer @ 0x863d
-.(fcn 0x8663 0x866d boot.spi_ready)
+.(fcn 0x8663 0x866d boot.timer0_start)
 .(fcn 0x866d 0x867a boot.verify_args_checksum)
 .(fcn 0x867a 0x8691 boot.nvram_enable)
 CCu already enabled? @ 0x867a
 CCu busy wait #0x14 loops @ 0x8684
 .(fcn 0x8691 0x86a9 boot.wipe_xdata)
 CCu fill xdata with r7 and xored r7 @ 0x86a0
-.(fcn 0x86a9 0x86d2 boot.update_crypto_state)
+.(fcn 0x86a9 0x86d2 boot.update_crc)
 .(fcn 0x86d2 0x86fd boot.checksum_byte_r7)
 CCu r4 is counter, loop 8 times @ 0x86d4
 CCu r7 = bit0 @ 0x86d6
@@ -258,7 +258,7 @@ axd 0x5103 @ 0x8729
 .(fcn 0x8740 0x874f boot.decrypt_arg_buffer_get_cmd_bit3)
 CCu decrypt all bytes except command @ 0x8740
 CCu extract bit 3 of command @ 0x8744
-.(fcn 0x874f 0x8759 boot.dma_enable_disable)
+.(fcn 0x874f 0x8759 boot.nvm_enable)
 CCu enable a=3, disable a=4 @ 0x8751
 CCu clr bits 2-3 @ 0x8755
 .(fcn 0x8759 0x8765 boot.get_cmd_buffer_ptr)
@@ -460,7 +460,7 @@ CCu tx @ 0x8d53
 .(fcn 0x8d5c 0x8d73 rom.fifo_rx_check_almost_full)
 .(fcn 0x8d73 0x8d76 rom.main_loop_parse_cfg_entry)
 .(fcn 0x8d76 0x8d7d rom.main_loop_raise_event_r7)
-.(fcn 0x8d7d 0x8d89 rom.cmd_undoc_0x1b)
+.(fcn 0x8d7d 0x8d89 rom.cmd_wait_property_processed)
 CCu if scratch 0x91-93 is 0 @ 0x8d81
 .(fcn 0x8d89 0x8d97 rom.raise_config_event_0x8d89)
 CCu raise config event @ 0x8d90
@@ -643,7 +643,7 @@ CCu RSSI_COMP @ 0x93ac
 axd xreg_base+0x55 @ 0x93af
 CCu MATAP @ 0x93b4
 CCu ENFZPMEND, ENAFC_CLKSW @ 0x93bc
-CCu UNDOC_0x4f[0:4] @ 0x93c2
+CCu DC_CONTROL @ 0x93c2
 CCu 4FSK? @ 0x93d2
 CCu clr MOD_TYPE bit3, disable 4FSK? @ 0x93d5
 CCu xreg.0x53[2:0]=2 @ 0x93e2
@@ -942,18 +942,18 @@ CCu GET_PROPERTY @ 0x9e1e
 CCu REQUEST_DEVICE_STATE @ 0x9e24
 CCu PART_INFO @ 0x9e2a
 CCu FUNC_INFO @ 0x9e30
-CCu UNDOCUMENTED 0xd0 @ 0x9e36
+CCu AGC_OVERRIDE 0xd0 @ 0x9e36
 CCu PEEK @ 0x9e3c
 CCu POKE @ 0x9e41
-CCu UNDOCUMENTED 0xf2 @ 0x9e46
+CCu SRAND 0xf2 @ 0x9e46
 CCu GPIO_PIN_CFG @ 0x9e4b
-CCu UNDOCUMENTED 0x35 @ 0x9e51
+CCu START_MFSK 0x35 @ 0x9e51
 CCu OFFLINE_RECAL @ 0x9e56
 CCu IRCAL_MANUAL @ 0x9e5c
 CCu NOP @ 0x9e62
 CCu hand over cmd parsing to main loop @ 0x9e66
-.(fcn 0x9e69 0x9e77 rom.cmd_undoc_0xf2)
-.(fcn 0x9e77 0x9eaa rom.cmd_undoc_0x35)
+.(fcn 0x9e69 0x9e77 rom.cmd_srand)
+.(fcn 0x9e77 0x9eaa rom.cmd_start_mfsk)
 CCu ARG[1]=freq_offset_msb @ 0x9e77
 CCu ARG[2]=freq_offset_lsb @ 0x9e7d
 CCu ARG[0] bits 1,4-6 stored in xreg 0xf7 @ 0x9e81
@@ -1134,7 +1134,7 @@ CCu CHIP_READY @ 0xa454
 CCu GET_ADC_READING @ 0xa462
 CCu IRCAL @ 0xa469
 CCu PROTOCOL_CFG @ 0xa471
-CCu UNDOCUMENTED 0x1b @ 0xa479
+CCu WAIT_PROPERTY_PROCESSED 0x1b @ 0xa479
 .(fcn 0xa48a 0xa4d8 rom.enter_sleep_state)
 CCu WUT event raised? @ 0xa48a
 axd xreg_base+0xaa @ 0xa49b
@@ -1882,7 +1882,7 @@ CCu close LNA shunt @ 0xc18d
 CCu restore LNA shunt state @ 0xc1c0
 .(fcn 0xc1db 0xc23a rom.rx_start_dsp_unk_0xc1db)
 .(fcn 0xc23a 0xc271 rom.rx_start_dsp_unk_0xc23a)
-.(fcn 0xc271 0xc2b6 rom.cmd_undoc_0xd0)
+.(fcn 0xc271 0xc2b6 rom.cmd_agc_override)
 .(fcn 0xc2b6 0xc2d2 rom.adc_acquisition)
 CCu ADC_CFG @ 0xc2b6 
 CCu UDTIME @ 0xc2b9
@@ -1897,7 +1897,7 @@ CCu r7: 0=GPIO, 2=battery, 4=temperature @ 0xc2f6
 CCu read adc result @ 0xc307
 CCu if reading temperature @ 0xc32d
 CCu store result in response buffer @ 0xc33e
-.(fcn 0xc349 0xc361 rom.restore_from_cmd_undoc35)
+.(fcn 0xc349 0xc361 rom.restore_from_cmd_start_mfsk)
 CCu restore sfr.modem_misc3 @ 0xc34e
 CCu READY @ 0xc359
 .(fcn 0xc361 0xc3f3 rom.config_from_nvram)
@@ -2289,7 +2289,7 @@ axd _idata+0x93 @ 0xcf84
 .(fcn 0xcf8c 0xcf8d rom.config_cmd_unk0x0c)
 .(fcn 0xcf8d 0xcfae rom.spi_cmd_isr)
 CCu WUT expired (??) @ 0xcf90
-CCu was previous cmd undoc_0x35? @ 0xcf95
+CCu was previous cmd START_MFSK? @ 0xcf95
 CCu bytes in spi buffer @ 0xcf9e
 CCu set if cmd parsing handed to main loop @ 0xcfa7
 .(fcn 0xcfae 0xcff0 rom.spi_parse_cmds)
