@@ -125,11 +125,12 @@ if __name__ == "__main__":
             if cmd == PATCH_IMAGE:
                 print('CMD: PATCH_IMAGE')
                 flags = args[1]
+                verify_crc = (flags >> 5) & 1 == 1
                 crc = args[2]*256 + args[3]
                 key1 = args[6]
                 key2 = args[7]
                 print('CRC: {:04X}'.format(crc))
-                print('VERIFY_CRC: {}'.format((flags >> 5) & 0x01))
+                print('VERIFY_CRC: {}'.format(verify_crc))
                 print('KEYS: {:02X}, {:02X}'.format(key1, key2))
                 print()
                 crypto.init(key1, key2)
@@ -146,6 +147,9 @@ if __name__ == "__main__":
                 if pip > 1:
                     print('ERROR: PIP > 1')
                     exit()
+                if verify_crc == True and crc != crypto.get_crc():
+                    print('ERROR: INVALID CRC')
+                    exit()
             elif cmd == PATCH_COPY or cmd == PATCH_COPY2:
                 print('CMD: PATCH_COPY')
                 args = crypto.decode_buffer(args, 0xfe)
@@ -158,6 +162,9 @@ if __name__ == "__main__":
                 print('DEST_ADDR: {:04X}'.format(dest_addr))
                 print('COUNT: {:04X}'.format(count))
                 print()
+                if verify_crc == True and crc_lsb != crypto.get_crc() & 1:
+                    print('ERROR: INVALID CRC')
+                    exit()
             elif cmd & 0xf0 == PATCH_DATA:
                 print('CMD: PATCH_DATA')
                 args = crypto.decode_buffer(args, 0xfe)
@@ -168,6 +175,9 @@ if __name__ == "__main__":
                 print('COUNT: {}'.format(count))
                 print('DATA: {}'.format(hex_list(data)))
                 print()
+                if verify_crc == True and crc_lsb != crypto.get_crc() & 1:
+                    print('ERROR: INVALID CRC')
+                    exit()
             if not outfile is None:
                 print(hex_list(args, '0x'), file=outfile)
 
