@@ -33,7 +33,7 @@ To decrypt a patch, run the script providing a binary ROM dump and a patch file.
 patch-crypto.py rom.bin patch.csg -o output-file
 ~~~~
 
-To encrypt a patch, run the script providing a binary ROM dump and an unencrypted patch file and the option `-e`. The output file will contain the encrypted patch. CRC fields of the input file are ignored and overwritten with the correct values.
+To encrypt a patch, run the script providing a binary ROM dump and an unencrypted patch file and the option `-e`. The output file will contain the encrypted patch. CRC fields of the input file are ignored and replaced with the correct values.
 
 ~~~~
 patch-crypto.py rom.bin unencrypted-patch -o output-file -e

@@ -84,9 +84,9 @@ The encryption scheme has four parts:
 * Content of ROM of the target device (`0x8000` to `0x88FF`)
 * 32/16 bit CRC
 
-`KEY1` and `KEY2` are XORed with `ROM_ID` and ROM content to initialize CRC and other variables.
+`KEY1` and `KEY2` are XORed with `ROM_ID` and ROM content to initialize CRC and other variables. Arbritrary keys can be selected by the creator of the patch.
 
-Decryption is done per byte. The encrypted byte is XORed with bytes from ROM with addresses determined by the keys and previous data. Encryption and decryption steps are identical, enabling us to create custom patches.
+Decryption is done per byte. The encrypted byte is XORed with bytes from ROM with addresses determined by the keys and previous data. As the algorithm uses XOR it can be easily reversed, enabling us to encrypt our own patches.
 
 A 32 bit CRC is continously calculated based on the unencrypted data, with the first 16 bit being used for verification.
 
