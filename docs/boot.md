@@ -71,12 +71,12 @@ Address fields use the address mapping of the Memory Controller (`MEMCTL`). This
 
 ## Patch encryption
 
+[This Python script](../tools/README.md#patch-cryptopy) implements encryption and decryption of patch files.
+
 Some patch commands are partially encrypted:
 * `PATCH_COPY`: Arguments `0x01` - `0x07`
 * `PATCH_ARGS`: Arguments `0x01` - `0x05`
 * `PATCH_DATA`: Arguments `0x01` - `0x07`
-
-[This Python script](../tools/README.md#patch-cryptopy) reimplements the decryption logic of the bootloader.
 
 The encryption scheme has four parts:
 * Two 8 bit keys provided with the patch (`PATCH_IMAGE` `KEY1` and `KEY2`)
@@ -86,9 +86,9 @@ The encryption scheme has four parts:
 
 `KEY1` and `KEY2` are XORed with `ROM_ID` and ROM content to initialize CRC and other variables.
 
-Decryption is done per byte. The encrypted byte is XORed with bytes from ROM with addresses determined by the keys and previous data.
+Decryption is done per byte. The encrypted byte is XORed with bytes from ROM with addresses determined by the keys and previous data. Encryption and decryption steps are identical.
 
-A 32 bit CRC is continously updated, with the first 16 bit being used for verification.
+A 32 bit CRC is continously calculated based on the unencrypted data, with the first 16 bit being used for verification.
 
 The command `RAM_TEST` (`0x03`) seems to use a different algorithm to calculate the checksum (CRC) of a given memory area.
 

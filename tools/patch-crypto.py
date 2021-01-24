@@ -1,4 +1,4 @@
-# Decoding EZRadioPRO patches - requires a copy of the ROM of the target device
+# Decoding and encoding EZRadioPRO patches - requires a copy of the ROM of the target device
 
 import argparse
 
@@ -23,7 +23,7 @@ class Crypto:
         self.e = 0
 
         if self.debug == True:
-            print('key: {:02X}, {:02X}, {:02X}, {:02X}'.format(self.crc[0], self.crc[1], self.crc[2], self.crc[3]))
+            print('crc: {:02X}, {:02X}, {:02X}, {:02X}'.format(self.crc[0], self.crc[1], self.crc[2], self.crc[3]))
             print('idx1: {:04X}'.format(self.idx1))
             print('idx2: {:04X}'.format(self.idx2))
             print('e: {:02X}'.format(self.e))
@@ -33,18 +33,11 @@ class Crypto:
         val = RAM[self.idx2 + self.e]
         self.e ^= val ^ byte
         val ^= RAM[self.idx1 + val] ^ self.crc[0] ^ byte
-
-        # update CRC
-        tmp1 = (self.crc[1] >> 1) ^ self.crc[1]
-        tmp2 = (((self.crc[0] >> 1) | (self.crc[1] << 7)) ^ self.crc[0]) & 0xff
-        self.crc[0] = self.crc[1]
-        self.crc[1] = self.crc[2]
-        self.crc[2] = (((tmp2 >> 1) | (tmp1 << 7)) ^ self.crc[3]) & 0xff
-        self.crc[3] = val
+        self.update_crc(val)
 
         if self.debug == True:
             print('{:02x} => {:02x}'.format(byte, val))
-            print('key: {:02X}, {:02X}, {:02X}, {:02X}'.format(self.crc[0], self.crc[1], self.crc[2], self.crc[3]))
+            print('crc: {:02X}, {:02X}, {:02X}, {:02X}'.format(self.crc[0], self.crc[1], self.crc[2], self.crc[3]))
             print('idx1: {:04X}'.format(self.idx1))
             print('idx2: {:04X}'.format(self.idx2))
             print('e: {:02X}'.format(self.e))
@@ -60,6 +53,41 @@ class Crypto:
                 out.append(b)
             mask = mask >> 1
         return out
+
+    def encode_byte(self, byte):
+        # decrypt byte
+        val = RAM[self.idx2 + self.e]
+        self.e ^= val ^ byte
+        val ^= RAM[self.idx1 + val] ^ self.crc[0] ^ byte
+        self.update_crc(byte)
+
+        if self.debug == True:
+            print('{:02x} => {:02x}'.format(byte, val))
+            print('crc: {:02X}, {:02X}, {:02X}, {:02X}'.format(self.crc[0], self.crc[1], self.crc[2], self.crc[3]))
+            print('idx1: {:04X}'.format(self.idx1))
+            print('idx2: {:04X}'.format(self.idx2))
+            print('e: {:02X}'.format(self.e))
+
+        return val
+
+    def encode_buffer(self, buffer, mask):
+        out = []
+        for b in buffer:
+            if mask & 0x01:
+                out.append(self.encode_byte(b))
+            else:
+                out.append(b)
+            mask = mask >> 1
+        return out
+
+    def update_crc(self, val):
+        # update CRC
+        tmp1 = (self.crc[1] >> 1) ^ self.crc[1]
+        tmp2 = (((self.crc[0] >> 1) | (self.crc[1] << 7)) ^ self.crc[0]) & 0xff
+        self.crc[0] = self.crc[1]
+        self.crc[1] = self.crc[2]
+        self.crc[2] = (((tmp2 >> 1) | (tmp1 << 7)) ^ self.crc[3]) & 0xff
+        self.crc[3] = val
 
     def get_crc(self):
         return self.crc[0]*256 + self.crc[1]
@@ -86,13 +114,15 @@ patch_crc = 0
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='EZRadioPRO patch decryption.')
+    parser = argparse.ArgumentParser(description='EZRadioPRO patch decryption and encryption.')
     parser.add_argument('rom', type=argparse.FileType('rb'),
                         help='Path and name of a binary dump of CODE address space to extract ROM data.')
     parser.add_argument('patch', type=argparse.FileType('r'),
-                        help='Path and name of patch file to decode.')
+                        help='Path and name of patch file to decrypt or encrypt.')
     parser.add_argument('-o', '--out',
-                        help='Path and name to save decoded patch file.')
+                        help='Path and name to save decrypted/encrypted patch file.')
+    parser.add_argument('-e', '--encrypt', action='store_true', default=False,
+                        help='Encode patch.')
     args = parser.parse_args()
 
     if not args.out is None:
@@ -118,17 +148,17 @@ if __name__ == "__main__":
         if line != '' and line[0] != '#':
             print(line)
             items = line.split(',')
-            args = []
+            params = []
             for i in items:
-                args.append(int(i, 16))
-            cmd = args[0]
+                params.append(int(i, 16))
+            cmd = params[0]
             if cmd == PATCH_IMAGE:
                 print('CMD: PATCH_IMAGE')
-                flags = args[1]
+                flags = params[1]
                 verify_crc = (flags >> 5) & 1 == 1
-                crc = args[2]*256 + args[3]
-                key1 = args[6]
-                key2 = args[7]
+                crc = params[2]*256 + params[3]
+                key1 = params[6]
+                key2 = params[7]
                 print('CRC: {:04X}'.format(crc))
                 print('VERIFY_CRC: {}'.format(verify_crc))
                 print('KEYS: {:02X}, {:02X}'.format(key1, key2))
@@ -136,50 +166,62 @@ if __name__ == "__main__":
                 crypto.init(key1, key2)
             elif cmd == PATCH_ARGS:
                 print('CMD: PATCH_ARGS')
-                args = crypto.decode_buffer(args, 0x3e)
-                pip = args[1]
-                dest_addr = args[3]*256 + args[4]
-                crc = args[6]*256 + args[7]
+                if args.encrypt == True:
+                    params = crypto.encode_buffer(params, 0x3e)
+                else:
+                    params = crypto.decode_buffer(params, 0x3e)
+                pip = params[1]
+                dest_addr = params[3]*256 + params[4]
+                crc = params[6]*256 + params[7]
                 print('PIP: {:02X}'.format(pip))
                 print('DEST_ADDR: {:04X}'.format(dest_addr))
                 print('CRC: {:04X} (actual: {:04X})'.format(crc, crypto.get_crc()))
                 print()
-                if pip > 1:
-                    print('ERROR: PIP > 1')
-                    exit()
-                if verify_crc == True and crc != crypto.get_crc():
-                    print('ERROR: INVALID CRC')
-                    exit()
+                if args.encrypt == False:
+                    if pip > 1:
+                        print('ERROR: PIP > 1')
+                        exit()
+                    if verify_crc == True and crc != crypto.get_crc():
+                        print('ERROR: INVALID CRC')
+                        exit()
             elif cmd == PATCH_COPY or cmd == PATCH_COPY2:
                 print('CMD: PATCH_COPY')
-                args = crypto.decode_buffer(args, 0xfe)
-                crc_lsb = (args[0] >> 3) & 1
-                src_addr = args[1]*256 + args[2]
-                dest_addr = args[3]*256 + args[4]
-                count = args[5]*256 + args[6]
+                if args.encrypt == True:
+                    params = crypto.encode_buffer(params, 0xfe)
+                else:
+                    params = crypto.decode_buffer(params, 0xfe)
+                crc_lsb = (params[0] >> 3) & 1
+                src_addr = params[1]*256 + params[2]
+                dest_addr = params[3]*256 + params[4]
+                count = params[5]*256 + params[6]
                 print('CRC_LSB: {}'.format(crc_lsb))
                 print('SRC_ADDR: {:04X}'.format(src_addr))
                 print('DEST_ADDR: {:04X}'.format(dest_addr))
                 print('COUNT: {:04X}'.format(count))
                 print()
-                if verify_crc == True and crc_lsb != crypto.get_crc() & 1:
-                    print('ERROR: INVALID CRC')
-                    exit()
+                if args.encrypt == False:
+                    if verify_crc == True and crc_lsb != crypto.get_crc() & 1:
+                        print('ERROR: INVALID CRC')
+                        exit()
             elif cmd & 0xf0 == PATCH_DATA:
                 print('CMD: PATCH_DATA')
-                args = crypto.decode_buffer(args, 0xfe)
-                crc_lsb = (args[0] >> 3) & 1
-                count = args[0] & 0x7
-                data = args[1:count+1]
+                if args.encrypt == True:
+                    params = crypto.encode_buffer(params, 0xfe)
+                else:
+                    params = crypto.decode_buffer(params, 0xfe)
+                crc_lsb = (params[0] >> 3) & 1
+                count = params[0] & 0x7
+                data = params[1:count+1]
                 print('CRC_LSB: {} (actual: {})'.format(crc_lsb, crypto.get_crc() & 1))
                 print('COUNT: {}'.format(count))
                 print('DATA: {}'.format(hex_list(data)))
                 print()
-                if verify_crc == True and crc_lsb != crypto.get_crc() & 1:
-                    print('ERROR: INVALID CRC')
-                    exit()
+                if args.encrypt == False:
+                    if verify_crc == True and crc_lsb != crypto.get_crc() & 1:
+                        print('ERROR: INVALID CRC')
+                        exit()
             if not outfile is None:
-                print(hex_list(args, '0x'), file=outfile)
+                print(hex_list(params, '0x'), file=outfile)
 
     if not outfile is None:
         outfile.close()
