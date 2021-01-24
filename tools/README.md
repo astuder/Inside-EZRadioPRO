@@ -21,19 +21,25 @@ wds-xml-extract.py path-to-wds/NewWDS.exe
 
 ## patch-crypto.py
 
-The firmware of the EZRadioPRO can be patched during power up. The patch commands are protected by a checksum and partially encrpyted. `patch-crypto.py` decrypts firmware patches.
+The firmware of the EZRadioPRO can be patched during power up. The patch commands are protected by a checksum and partially encrpyted. `patch-crypto.py` decrypts and encrypts firmware patches.
 
 ### Usage
 
-Run the script providing a ROM dump and a patch file.
-
-~~~~
-patch-crypto.py path-to-dump/rom.bin path-to-patch/patch.csg
-~~~~
-
 The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the CODE address space.
 
-A few patch files can be found in `C:\Program Files (x86)\SiliconLabs\WDS3\Patch`. 
+To decrypt a patch, run the script providing a binary ROM dump and a patch file. The output file will contain the patch commands with encryption removed.
+
+~~~~
+patch-crypto.py rom.bin patch.csg -o output-file
+~~~~
+
+To encrypt a patch, run the script providing a binary ROM dump and an unencrypted patch file and the option `-e`. The output file will contain the encrypted patch. CRC fields of the input file are ignored and overwritten with the correct values.
+
+~~~~
+patch-crypto.py rom.bin unencrypted-patch -o output-file -e
+~~~~
+
+For experimentation, a few patch files can be found in `C:\Program Files (x86)\SiliconLabs\WDS3\Patch`.
 
 ## ezradiopro.py
 

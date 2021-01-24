@@ -86,7 +86,7 @@ The encryption scheme has four parts:
 
 `KEY1` and `KEY2` are XORed with `ROM_ID` and ROM content to initialize CRC and other variables.
 
-Decryption is done per byte. The encrypted byte is XORed with bytes from ROM with addresses determined by the keys and previous data. Encryption and decryption steps are identical.
+Decryption is done per byte. The encrypted byte is XORed with bytes from ROM with addresses determined by the keys and previous data. Encryption and decryption steps are identical, enabling us to create custom patches.
 
 A 32 bit CRC is continously calculated based on the unencrypted data, with the first 16 bit being used for verification.
 
@@ -96,13 +96,13 @@ The command `RAM_TEST` (`0x03`) seems to use a different algorithm to calculate 
 
 The bootloader is located in ROM from `0x8000` to `0x876F`, including reset vector (`0x8000`) and the interrupt vector to process SPI commands (`0x801F` `INT_COMMAND`).
 
-In boot mode, the bootloader portion of ROM is mapped to `0x0000`, overlaying RAM. It is very likely that this is controlled by `SPI_STATUS:SPI_LLRAM_OVERLAY` which is set to 1 just before exiting bootloader.
+In boot mode, the bootloader portion of ROM is mapped to `0x0000`, overlaying RAM. This is likely controlled by `SPI_STATUS:SPI_LLRAM_OVERLAY` which is set to 1 just before exiting bootloader.
 
 ## Open RE topics
 
-* Implement encryption and CRC required to issue patch commands
 * How to verify the overlay theory after `POWER_UP`?
   * If clearing `SPI_STATUS:SPI_LLRAM_OVERLAY` overlays RAM with the bootloader, the IC will likely crash without graceful hand-off to bootloader
 * How to dump memory during `POWER_UP`?
   * Use `PATCH_DATA` to reconfigure SPI DMA and use `READ_RX_FIFO`?
   * Use `PATCH_COPY` to copy arbritrary memory into SPI API reply stream?
+  * Problem: Both use mechanisms and address spaces (`MEMCTL`, `SPI_DMA`) different from 8051 (`CODE`, `XDATA`)

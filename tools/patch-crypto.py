@@ -55,11 +55,13 @@ class Crypto:
         return out
 
     def encode_byte(self, byte):
-        # decrypt byte
+        # decrypt byte        
         val = RAM[self.idx2 + self.e]
-        self.e ^= val ^ byte
+        self.e ^= val
         val ^= RAM[self.idx1 + val] ^ self.crc[0] ^ byte
+        self.e ^= val
         self.update_crc(byte)
+
 
         if self.debug == True:
             print('{:02x} => {:02x}'.format(byte, val))
@@ -168,6 +170,8 @@ if __name__ == "__main__":
                 print('CMD: PATCH_ARGS')
                 if args.encrypt == True:
                     params = crypto.encode_buffer(params, 0x3e)
+                    params[6] = crypto.get_crc() >> 8
+                    params[7] = crypto.get_crc() & 0xff
                 else:
                     params = crypto.decode_buffer(params, 0x3e)
                 pip = params[1]
@@ -188,6 +192,7 @@ if __name__ == "__main__":
                 print('CMD: PATCH_COPY')
                 if args.encrypt == True:
                     params = crypto.encode_buffer(params, 0xfe)
+                    params[0] = (params[0] & 0xf7) | ((crypto.get_crc() & 1) << 3)
                 else:
                     params = crypto.decode_buffer(params, 0xfe)
                 crc_lsb = (params[0] >> 3) & 1
@@ -207,6 +212,7 @@ if __name__ == "__main__":
                 print('CMD: PATCH_DATA')
                 if args.encrypt == True:
                     params = crypto.encode_buffer(params, 0xfe)
+                    params[0] = (params[0] & 0xf7) | ((crypto.get_crc() & 1) << 3)
                 else:
                     params = crypto.decode_buffer(params, 0xfe)
                 crc_lsb = (params[0] >> 3) & 1
