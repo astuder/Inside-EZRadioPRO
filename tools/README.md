@@ -3,6 +3,7 @@
 This folder contains Python scripts to help with reverse engineering EZRadioPRO radio ICs.
 
 - [wds-xml-extract.py](#wds-xml-extractpy) Script to extract hidden XML files from SiLabs Wireless Development Suite
+- [ihex2patch.py](ihex2patch.py) Script to create firmware patches from Intel hex files (**work in progress**)
 - [patchcrypto.py](#patchcryptopy) Script to decrypt firmware patches
 - [ezradiopro.py](#ezradiopropy) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
 

@@ -9,16 +9,23 @@ class Crypto:
     e = 0
     debug = False
 
+    rom_id = 0
+    rom = []
+
+    def load_rom(self, dump):
+        self.rom = dump[0x8000:0x8900]
+        self.rom_id = dump[0xfffe]
+
     def init(self, key1, key2):
-        self.crc[0] = key1 ^ ROM_ID
-        self.crc[1] = key2 ^ ROM_ID
+        self.crc[0] = key1 ^ self.rom_id
+        self.crc[1] = key2 ^ self.rom_id
         self.crc[2] = self.crc[0]
         self.crc[3] = self.crc[1]
 
         addr = self.crc[0] * 8
-        self.idx1 = RAM[addr]*8 + RAM[addr+1]
+        self.idx1 = self.rom[addr]*8 + self.rom[addr+1]
         addr = self.crc[1] * 8 + 2
-        self.idx2 = RAM[addr]*8 + RAM[addr+1]
+        self.idx2 = self.rom[addr]*8 + self.rom[addr+1]
 
         self.e = 0
 
@@ -30,9 +37,9 @@ class Crypto:
 
     def decode_byte(self, byte):
         # decrypt byte
-        val = RAM[self.idx2 + self.e]
+        val = self.rom[self.idx2 + self.e]
         self.e ^= val ^ byte
-        val ^= RAM[self.idx1 + val] ^ self.crc[0] ^ byte
+        val ^= self.rom[self.idx1 + val] ^ self.crc[0] ^ byte
         self.update_crc(val)
 
         if self.debug == True:
@@ -56,9 +63,9 @@ class Crypto:
 
     def encode_byte(self, byte):
         # decrypt byte        
-        val = RAM[self.idx2 + self.e]
+        val = self.rom[self.idx2 + self.e]
         self.e ^= val
-        val ^= RAM[self.idx1 + val] ^ self.crc[0] ^ byte
+        val ^= self.rom[self.idx1 + val] ^ self.crc[0] ^ byte
         self.e ^= val
         self.update_crc(byte)
 
@@ -140,11 +147,10 @@ if __name__ == "__main__":
     rom_dump = args.rom.read()
     args.rom.close()
     print('{} bytes ROM data loaded.'.format(len(rom_dump)))
-    RAM = rom_dump[0x8000:0x8900]
-    ROM_ID = rom_dump[0xfffe]
 
     # decode patch
     crypto = Crypto()
+    crypto.load_rom(rom_dump)
     for line in args.patch:
         line = line.rstrip()
         if line != '' and line[0] != '#':
@@ -158,11 +164,15 @@ if __name__ == "__main__":
                 print('CMD: PATCH_IMAGE')
                 flags = params[1]
                 verify_crc = (flags >> 5) & 1 == 1
+                nonvm = (flags >> 3) & 1 == 1
+                func = flags & 0x0f
                 crc = params[2]*256 + params[3]
                 key1 = params[6]
                 key2 = params[7]
                 print('CRC: {:04X}'.format(crc))
                 print('VERIFY_CRC: {}'.format(verify_crc))
+                print('NONVM: {}'.format(nonvm))
+                print('FUNC: {}'.format(func))
                 print('KEYS: {:02X}, {:02X}'.format(key1, key2))
                 print()
                 crypto.init(key1, key2)
