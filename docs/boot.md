@@ -71,7 +71,7 @@ Address fields use the address mapping of the Memory Controller (`MEMCTL`). This
 
 ## Patch encryption
 
-[This Python script](../tools/README.md#patch-cryptopy) implements encryption and decryption of patch files.
+[This Python script](../tools/README.md#patchcryptopy) implements encryption and decryption of patch files.
 
 Some patch commands are partially encrypted:
 * `PATCH_COPY`: Arguments `0x01` - `0x07`

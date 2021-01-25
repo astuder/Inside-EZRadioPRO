@@ -3,7 +3,7 @@
 This folder contains Python scripts to help with reverse engineering EZRadioPRO radio ICs.
 
 - [wds-xml-extract.py](#wds-xml-extractpy) Script to extract hidden XML files from SiLabs Wireless Development Suite
-- [patch-crypto.py](#patch-cryptopy) Script to decrypt firmware patches
+- [patchcrypto.py](#patchcryptopy) Script to decrypt firmware patches
 - [ezradiopro.py](#ezradiopropy) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
 
 ## wds-xml-extract.py
@@ -19,9 +19,9 @@ Run the script providing the path to the WDS exectuable as command line paramete
 wds-xml-extract.py path-to-wds/NewWDS.exe
 ~~~~
 
-## patch-crypto.py
+## patchcrypto.py
 
-The firmware of the EZRadioPRO can be patched during power up. The patch commands are protected by a checksum and partially encrpyted. `patch-crypto.py` decrypts and encrypts firmware patches.
+The firmware of the EZRadioPRO can be patched during power up. The patch commands are protected by a checksum and partially encrpyted. `patchcrypto.py` decrypts and encrypts firmware patches.
 
 ### Usage
 
@@ -30,13 +30,13 @@ The algorithm uses ROM content of the target device as encryption key, the scrip
 To decrypt a patch, run the script providing a binary ROM dump and a patch file. The output file will contain the patch commands with encryption removed.
 
 ~~~~
-patch-crypto.py rom.bin patch.csg -o output-file
+patchcrypto.py rom.bin patch.csg -o output-file
 ~~~~
 
 To encrypt a patch, run the script providing a binary ROM dump and an unencrypted patch file and the option `-e`. The output file will contain the encrypted patch. CRC fields of the input file are ignored and replaced with the correct values.
 
 ~~~~
-patch-crypto.py rom.bin unencrypted-patch -o output-file -e
+patchcrypto.py rom.bin unencrypted-patch -o output-file -e
 ~~~~
 
 For experimentation, a few patch files can be found in `C:\Program Files (x86)\SiliconLabs\WDS3\Patch`.
