@@ -50,8 +50,8 @@ def addLabel(space, addr, name, isfunc = False):
     # check if there's already label here
     symbols = symtable.getSymbols(addrobj)
     if len(symbols) > 0:
-        # don't overwrite existing labels, unless it starts with 'DAT_'
-        if symbols[0].getName().startswith('DAT_'):
+        # don't overwrite existing labels, unless it starts with 'DAT_' or 'LAB_'
+        if symbols[0].getName().startswith('DAT_') or symbols[0].getName().startswith('LAB_'):
             symbols[0].setName(name, ghidra.program.model.symbol.SourceType.USER_DEFINED)
             print('label @ {:04x} {}'.format(addr, name))
         return
