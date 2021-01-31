@@ -92,7 +92,7 @@ if __name__ == "__main__":
     key1 = (args.key >> 8) & 0xff
     key2 = args.key & 0xff
 
-    # decode patch
+    # initialize patch encryption
     crypto = Crypto()
     crypto.load_rom(rom_dump)
     crypto.init(key1, key2)
@@ -121,6 +121,9 @@ if __name__ == "__main__":
 
     for f in fragments:
         address = f['address'] & 0xffff
+        if address < 0x0800:
+            # In boot mode, RAM is mapped to 0x4000
+            address |= 0x4000
         pargs = [ PATCH_ARGS, 1, 0, address >> 8, address & 0xff, 0, 0, 0 ]
         pargs = crypto.encode_buffer(pargs, 0x3e)
         pargs[6] = crypto.get_crc() >> 8

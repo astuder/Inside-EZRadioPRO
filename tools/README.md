@@ -3,9 +3,10 @@
 This folder contains Python scripts to help with reverse engineering EZRadioPRO radio ICs.
 
 - [wds-xml-extract.py](#wds-xml-extractpy) Script to extract hidden XML files from SiLabs Wireless Development Suite
-- [ihex2patch.py](ihex2patch.py) Script to create firmware patches from Intel hex files (**work in progress**)
-- [patchcrypto.py](#patchcryptopy) Script to decrypt firmware patches
-- [ezradiopro.py](#ezradiopropy) Script to dump firmware and other memory content of EZRadioPRO radio IC from a Raspberry Pi
+- [ezradiopro.py](#ezradiopropy) Script and library to interact with EZRadioPRO radio IC from a Raspberry Pi, including dumping firmware
+- [patchcrypto.py](#patchcryptopy) Script and library to encrypt and decrypt firmware patches
+- [ihex2patch.py](#ihex2patchpy) Script to create encrypted firmware patches from Intel hex files, requires `patchcrypto.py`
+- [patchradio.py](#patchradiopy) Script for deploying firmware patch to radio, requires `ezradiopro.py`
 
 ## wds-xml-extract.py
 
@@ -20,29 +21,13 @@ Run the script providing the path to the WDS exectuable as command line paramete
 wds-xml-extract.py path-to-wds/NewWDS.exe
 ~~~~
 
-## patchcrypto.py
-
-The firmware of the EZRadioPRO can be patched during power up. The patch commands are protected by a checksum and partially encrpyted. `patchcrypto.py` decrypts and encrypts firmware patches.
-
-### Usage
-
-The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the CODE address space.
-
-To decrypt a patch, run the script providing a binary ROM dump and a patch file. The output file will contain the patch commands with encryption removed.
-
-~~~~
-patchcrypto.py rom.bin patch.csg -o output-file
-~~~~
-
-To encrypt a patch, run the script providing a binary ROM dump and an unencrypted patch file and the option `-e`. The output file will contain the encrypted patch. CRC fields of the input file are ignored and replaced with the correct values.
-
-~~~~
-patchcrypto.py rom.bin unencrypted-patch -o output-file -e
-~~~~
-
-For experimentation, a few patch files can be found in `C:\Program Files (x86)\SiliconLabs\WDS3\Patch`.
-
 ## ezradiopro.py
+
+Script and library to communicate with EZRadioPRO from a Raspberry Pi.
+
+Use this script to dump the firmware and other address spaces. It also includes
+the [class EZRadioPRO](#ezradiopro-class) that can be used in other Python
+scripts to interact with the radio.
 
 The Si4362 or Si446x radio must be mounted on a breakout board with an XTAL and power supply decoupling caps.
 Breakout boards that were tested include dAISy BoosterPack and E10-M4463D.
@@ -86,6 +71,20 @@ Supported address spaces are `--peek` (PEEK API command), `--xdata` (`movx dptr`
 `--pdata` (`movx @r0`), `--code` (`movc dptr`), `--sfr`, `--memctl` ([MEMCTL](../docs/regs/mod-memctl.md)
 peripheral) and `--spidma` ([SPI_DMA](../docs/regs/mod-spi_dma.md) peripheral).
 
+Use `--h` to see additional options.
+
+### EZRadioPRO Class
+
+~~~~
+from ezradiopro import EZRadioPRO
+radio = EZRadioPRO()
+radio.open()
+radio.reset()
+result = radio.command(1, None, 4)
+print('Part #: {:04x}'.format(result[1] * 256 + result[2]))
+radio.close()
+~~~~
+
 ### Raspberry Pi to Radio IC Wiring
 
 |RPi Header|Radio IC|
@@ -124,3 +123,55 @@ sudo rasp-config
 ~~~~
 
 Interface Options > SPI -> answer with `Yes`
+
+## patchcrypto.py
+
+The firmware of the EZRadioPRO can be patched during power up. The patch commands are protected by a checksum and partially encrpyted. `patchcrypto.py` decrypts and encrypts firmware patches.
+
+The library also includes the class `Crypto` that can be used in other Python scripts. See [`ihex2patch.py`](ihex2patch.py) for an example of how to use this class.
+
+### Usage
+
+The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the `CODE` address space.
+
+To decrypt a patch, run the script providing a binary ROM dump and a patch file. The output file will contain the patch commands with encryption removed.
+
+~~~~
+patchcrypto.py rom.bin patch.csg -o output-file
+~~~~
+
+To encrypt a patch, run the script providing a binary ROM dump and an unencrypted patch file and the option `-e`. The output file will contain the encrypted patch. CRC fields of the input file are ignored and replaced with the correct values.
+
+~~~~
+patchcrypto.py rom.bin unencrypted-patch -o output-file -e
+~~~~
+
+For experimentation, a few patch files can be found in `C:\Program Files (x86)\SiliconLabs\WDS3\Patch`.
+
+## ihex2patch.py
+
+Use this Python script to create the encrpyted firmware patch file from an Intel hex file. 
+
+Prerequisites:
+* `patchcrpto.py`
+* ROM dump of the part to be patched
+
+### Usage
+
+The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the `CODE` address space.
+
+The example below creates a patch from an Intel hex file (`.ihx`). The hex file was created with the SDCC toolchain. 
+
+~~~~
+ihex2patch.py romdump.bin myfw.ihx -o myfw.patch
+~~~~
+
+Use `--h` to see additional options.
+
+## patchradio.py
+
+Use this Python script to upload a firmware patch to the radio.
+
+Prerequisites:
+* `ezradiopro.py`
+* Patch file generated with [`ihex2patch.py`](#ihex2patchpy)
