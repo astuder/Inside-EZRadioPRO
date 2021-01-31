@@ -71,7 +71,7 @@ Supported address spaces are `--peek` (PEEK API command), `--xdata` (`movx dptr`
 `--pdata` (`movx @r0`), `--code` (`movc dptr`), `--sfr`, `--memctl` ([MEMCTL](../docs/regs/mod-memctl.md)
 peripheral) and `--spidma` ([SPI_DMA](../docs/regs/mod-spi_dma.md) peripheral).
 
-Use `--h` to see additional options.
+Use `--help` to see additional options.
 
 ### EZRadioPRO Class
 
@@ -166,7 +166,7 @@ The example below creates a patch from an Intel hex file (`.ihx`). The hex file 
 ihex2patch.py romdump.bin myfw.ihx -o myfw.patch
 ~~~~
 
-Use `--h` to see additional options.
+Use `--help` to see additional options.
 
 ## patchradio.py
 
