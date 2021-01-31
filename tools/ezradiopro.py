@@ -134,7 +134,7 @@ class EZRadioPRO:
                 if addr + x <= end:
                     peek_in.append(int((addr + x) / 256))
                     peek_in.append(int((addr + x) % 256))
-            peek_out.extend(self.command(0xf0, peek_in, len(peek_in)/2))
+            peek_out.extend(self.command(0xf0, peek_in, int(len(peek_in)/2)))
             addr += 7
         return peek_out
 
@@ -295,7 +295,7 @@ class EZRadioPRO:
                 addr += 16
         # remove patch and reset fifo
         self.remove_patch()
-	self.fifo_info(0x02)
+        self.fifo_info(0x02)
         return mem_dump
 
 def dump_to_hex(dump, base):
@@ -337,33 +337,33 @@ def command_info(func):
     radio.reset()
 
     part_info = radio.part_info()
-    print 'Found Si%04x rev %d build %d id 0x%04x customer %d rom %d' % (
+    print('Found Si%04x rev %d build %d id 0x%04x customer %d rom %d' % (
                             part_info.part, part_info.chiprev,
                             part_info.pbuild, part_info.id,
-                            part_info.customer, part_info.romid)
+                            part_info.customer, part_info.romid))
 
     func_info = radio.func_info()
-    print 'Func: ext %d branch %d int %d patch %d func %d (%s)' % (
+    print('Func: ext %d branch %d int %d patch %d func %d (%s)' % (
                             func_info.revext, func_info.revbranch,
                             func_info.revint, func_info.patch, func_info.func,
-                            func_info.image)
+                            func_info.image))
 
     chip_status = radio.get_chip_status()
-    print 'Chip status: 0x%02x  Info flags: 0x%02x' % (
-                            chip_status.chip_status, chip_status.info_flags)
+    print('Chip status: 0x%02x  Info flags: 0x%02x' % (
+                            chip_status.chip_status, chip_status.info_flags))
 
-    print 'Power up radio...'
+    print('Power up radio...')
     radio.power_up(func)
 
     func_info = radio.func_info()
-    print 'Func: ext %d branch %d int %d patch %d func %d (%s)' % (
+    print('Func: ext %d branch %d int %d patch %d func %d (%s)' % (
                             func_info.revext, func_info.revbranch,
                             func_info.revint, func_info.patch, func_info.func,
-                            func_info.image)
+                            func_info.image))
 
     chip_status = radio.get_chip_status()
-    print 'Chip status: 0x%02x  Info flags: 0x%02x' % (
-                            chip_status.chip_status, chip_status.info_flags)
+    print('Chip status: 0x%02x  Info flags: 0x%02x' % (
+                            chip_status.chip_status, chip_status.info_flags))
 
     radio.close()
 
@@ -372,7 +372,7 @@ def command_peek(addr, func):
     radio.open()
     radio.reset()
     radio.power_up(func)
-    print '0x%02x' % radio.peek(addr)
+    print('0x%02x' % radio.peek(addr))
     radio.close()
 
 def command_dump(args):
@@ -399,13 +399,13 @@ def command_dump(args):
 
     if args.dump == 'hex':
         if args.out is None:
-            print dump_to_hex(dump, args.start)
+            print(dump_to_hex(dump, args.start))
         else:
             args.out.write(dump_to_hex(dump, args.start))
             args.out.close()
     elif args.dump == 'bin':
         if args.out is None:
-            print 'use -o to specify output file to dump binary data'
+            print('use -o to specify output file to dump binary data')
         else:
             args.out.write(bytearray(dump))
             args.out.close()
@@ -448,7 +448,6 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--info', action='store_true',
                         help='return information about radio IC')
     args = parser.parse_args()
-    print args
 
     if args.info == True:
         command_info(args.func)
@@ -456,3 +455,5 @@ if __name__ == '__main__':
         command_peek(args.peek, args.func)
     elif args.dump is not None:
         command_dump(args)
+    else:
+        parser.print_usage()

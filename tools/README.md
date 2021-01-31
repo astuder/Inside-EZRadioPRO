@@ -74,8 +74,9 @@ Dump memory in address range using PEEK as hex.
 ezradiopro.py -d hex --start 0x0100 --end 0x02ff
 ~~~~
 
-Dump CODE memory in address range into file dump.bin. This file is ready for 
-disassembly and exploration with tools like [radare2](http://www.radare.org).
+Dump CODE memory in address range into file dump.bin. This file is ready for
+disassembly and exploration with tools like [radare2](https://www.radare.org)
+or [Ghidra](https://ghidra-sre.org/).
 ~~~~
 ezradiopro.py -d bin --start 0x8000 --end 0xcfff --code -o dump.bin
 ~~~~
@@ -97,22 +98,24 @@ ezradiopro.py -d bin --start 0x8000 --end 0xcfff --code -o dump.bin
 
 #### SpiDev Library
 
+~~~~
 sudo apt-get install python-dev
-
 git clone https://github.com/doceme/py-spidev.git
-
 cd py-spidev
-
 make
-
 sudo make install
+~~~~
 
 #### RPi.GPIO Library
 
+~~~~
 sudo apt-get install python-rpi.gpio
+~~~~
 
 #### Enable SPI on Raspberry Pi
 
+~~~~
 sudo rasp-config
+~~~~
 
-Advanced Options > SPI -> set everything to Yes
+Interface Options > SPI -> answer with `Yes`
