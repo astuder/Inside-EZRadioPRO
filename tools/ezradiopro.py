@@ -18,7 +18,6 @@ class EZRadioPRO:
     def open(self):
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self._pin_SDN, GPIO.OUT)
-        GPIO.output(self._pin_SDN, GPIO.HIGH)
         GPIO.setup(self._pin_CTS, GPIO.IN)
 
         self._spi = SPI.SpiDev()
@@ -32,7 +31,6 @@ class EZRadioPRO:
             pass
 
     def close(self):
-        GPIO.output(self._pin_SDN, GPIO.HIGH)
         self._spi.close()
         GPIO.cleanup()
 
