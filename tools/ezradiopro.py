@@ -4,7 +4,6 @@
 # - tested with Si446x and Si4362
 # More info: https://github.com/astuder/Inside-EZRadioPRO/tree/master/python#ezradiopropy
 
-import collections
 import argparse
 import RPi.GPIO as GPIO
 import spidev as SPI
@@ -54,29 +53,29 @@ class EZRadioPRO:
 
     def part_info(self):
         data = self.command(0x01, output_bytes=8)
-        out = collections.namedtuple('PartInfo', ['chiprev', 'part', 'pbuild', 'id', 'customer', 'romid'])
-        out.chiprev = data[0]
-        out.part = data[1] * 256 + data[2]
-        out.pbuild = data[3]
-        out.id = data[4] * 256 + data[5]
-        out.customer = data[6]
-        out.romid = data[7]
+        out = {}
+        out['chiprev'] = data[0]
+        out['part'] = data[1] * 256 + data[2]
+        out['pbuild'] = data[3]
+        out['id'] = data[4] * 256 + data[5]
+        out['customer'] = data[6]
+        out['romid'] = data[7]
         return out
 
     def func_info(self):
         data = self.command(0x10, output_bytes=6)
-        out = collections.namedtuple('FuncInfo', ['revext', 'revbranch', 'reavint', 'patch', 'func'])
-        out.revext = data[0]
-        out.revbranch = data[1]
-        out.revint = data[2]
-        out.patch = data[3] * 256 + data[4]
-        out.func = data[5]
+        out = {}
+        out['revext'] = data[0]
+        out['revbranch'] = data[1]
+        out['revint'] = data[2]
+        out['patch'] = data[3] * 256 + data[4]
+        out['func'] = data[5]
         if data[5] == 0:
-            out.image = 'BOOT'
+            out['image'] = 'BOOT'
         elif data [5] == 1:
-            out.image = 'MAIN'
+            out['image'] = 'MAIN'
         else:
-            out.image = 'IMAGE%d' % data[5]
+            out['image'] = 'IMAGE%d' % data[5]
         return out
 
     def set_property(self, group, start_prop, prop_values):
@@ -93,19 +92,19 @@ class EZRadioPRO:
             data = self.command(0x23, output_bytes=5)
         else:
             data = self.command(0x23, [clr_pending_mask], 5)
-        out = collections.namedtuple('ChipStatus', ['chip_pend', 'chip_status', 'cmd_err_status', 'cmd_err_cmd_id', 'info_flags'])
-        out.chip_pend = data[0]
-        out.chip_status = data[1]
-        out.cmd_err_status = data[2]
-        out.cmd_err_cmd_id = data[3]
-        out.info_flags = data[4]
+        out = {}
+        out['chip_pend'] = data[0]
+        out['chip_status'] = data[1]
+        out['cmd_err_status'] = data[2]
+        out['cmd_err_cmd_id'] = data[3]
+        out['info_flags'] = data[4]
         return out
 
     def fifo_info(self, reset_mask=0):
         data = self.command(0x15, [reset_mask], 2)
-        out = collections.namedtuple('FifoInfo', ['rx_fifo_count', 'tx_fifo_space'])
-        out.rx_fifo_count = data[0]
-        out.tx_fifo_space = data[1]
+        out = {}
+        out['rx_fifo_count'] = data[0]
+        out['tx_fifo_space'] = data[1]
         return out
 
     def read_rx_fifo(self, count=1):
@@ -143,7 +142,7 @@ class EZRadioPRO:
         patch_addr = 0x0488
 
         # vector changed with A2A and C2A chip revision (romid 6)
-        if self.part_info().romid == 6:
+        if self.part_info['romid'] == 6:
             patch_jmp = 0x0168
 
         # free memory location different for func 2 and 3 (Si446x-A2A only)
@@ -164,7 +163,7 @@ class EZRadioPRO:
     def remove_patch(self):
         # restore GET_PROPERTY command
         patch_jmp = 0x0225
-        if self.part_info().romid == 6:
+        if self.part_info['romid'] == 6:
             patch_jmp = 0x0168
         self.poke(patch_jmp + 1, self._patch_jmp[0])
         self.poke(patch_jmp + 2, self._patch_jmp[1])
@@ -251,7 +250,7 @@ class EZRadioPRO:
         patch = [0x79, 0x71, 0xe3, 0xfc, 0x79, 0x72, 0xe3,
                  0xfd, 0x7a, 0x00, 0x7b, 0x01, 0x7e, 0x50,
                  0x7f, 0x70, 0x12, 0x00, 0x9c, 0x22]
-        if self.part_info().romid == 6:
+        if self.part_info['romid'] == 6:
             patch = [0x79, 0x71, 0xe3, 0xfc, 0x79, 0x72, 0xe3,
                      0xfd, 0x7a, 0x00, 0x7b, 0x01, 0x7e, 0x50,
                      0x7f, 0x70, 0x12, 0x8b, 0x50, 0x22]
@@ -338,32 +337,32 @@ def command_info(func):
 
     part_info = radio.part_info()
     print('Found Si%04x rev %d build %d id 0x%04x customer %d rom %d' % (
-                            part_info.part, part_info.chiprev,
-                            part_info.pbuild, part_info.id,
-                            part_info.customer, part_info.romid))
+                            part_info['part'], part_info['chiprev'],
+                            part_info['pbuild'], part_info['id'],
+                            part_info['customer'], part_info['romid']))
 
     func_info = radio.func_info()
     print('Func: ext %d branch %d int %d patch %d func %d (%s)' % (
-                            func_info.revext, func_info.revbranch,
-                            func_info.revint, func_info.patch, func_info.func,
-                            func_info.image))
+                            func_info['revext'], func_info['revbranch'],
+                            func_info['revint'], func_info['patch'], func_info['func'],
+                            func_info['image']))
 
     chip_status = radio.get_chip_status()
     print('Chip status: 0x%02x  Info flags: 0x%02x' % (
-                            chip_status.chip_status, chip_status.info_flags))
+                            chip_status['chip_status'], chip_status['info_flags']))
 
     print('Power up radio...')
     radio.power_up(func)
 
     func_info = radio.func_info()
     print('Func: ext %d branch %d int %d patch %d func %d (%s)' % (
-                            func_info.revext, func_info.revbranch,
-                            func_info.revint, func_info.patch, func_info.func,
-                            func_info.image))
+                            func_info['revext'], func_info['revbranch'],
+                            func_info['revint'], func_info['patch'], func_info['func'],
+                            func_info['image']))
 
     chip_status = radio.get_chip_status()
     print('Chip status: 0x%02x  Info flags: 0x%02x' % (
-                            chip_status.chip_status, chip_status.info_flags))
+                            chip_status['chip_status'], chip_status['info_flags']))
 
     radio.close()
 
