@@ -83,8 +83,8 @@ ezradiopro.py -d bin --code -o dump.bin
 ~~~~
 
 Supported address spaces are `--peek` (PEEK API command), `--xdata` (`movx dptr`),
-`--pdata` (`movx @r0`), `--code` (`movc dptr`), `--sfr`, `--memctl` (MEMCTL
-peripheral) and `--spidma` (SPI_DMA peripheral).
+`--pdata` (`movx @r0`), `--code` (`movc dptr`), `--sfr`, `--memctl` ([MEMCTL](../docs/regs/mod-memctl.md)
+peripheral) and `--spidma` ([SPI_DMA](../docs/regs/mod-spi_dma.md) peripheral).
 
 ### Raspberry Pi to Radio IC Wiring
 
