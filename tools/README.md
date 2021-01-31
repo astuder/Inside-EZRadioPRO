@@ -74,12 +74,17 @@ Dump memory in address range using PEEK as hex.
 ezradiopro.py -d hex --start 0x0100 --end 0x02ff
 ~~~~
 
-Dump CODE memory in address range into file dump.bin. This file is ready for
-disassembly and exploration with tools like [radare2](https://www.radare.org)
-or [Ghidra](https://ghidra-sre.org/).
+Dump CODE address space into file dump.bin. This file is ready for disassembly
+and exploration with tools like [radare2](https://www.radare.org) or
+[Ghidra](https://ghidra-sre.org/).
+
 ~~~~
-ezradiopro.py -d bin --start 0x8000 --end 0xcfff --code -o dump.bin
+ezradiopro.py -d bin --code -o dump.bin
 ~~~~
+
+Supported address spaces are `--peek` (PEEK API command), `--xdata` (`movx dptr`),
+`--pdata` (`movx @r0`), `--code` (`movc dptr`), `--sfr`, `--memctl` (MEMCTL
+peripheral) and `--spidma` (SPI_DMA peripheral).
 
 ### Raspberry Pi to Radio IC Wiring
 
