@@ -1,0 +1,1 @@
+Preamble length in nibbles. Maps to SPI API property prop:PREAMBLE_TX_LENGTH.

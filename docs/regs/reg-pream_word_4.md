@@ -1,0 +1,1 @@
+Maps to SPI API property prop:PREAMBLE_PATTERN [7:0].

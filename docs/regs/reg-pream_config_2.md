@@ -1,0 +1,1 @@
+See SPI API property prop:PREAMBLE_CONFIG_NSTD.
