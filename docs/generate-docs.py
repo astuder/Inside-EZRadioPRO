@@ -349,12 +349,22 @@ def pgrplink(name):
     return '<a href="#{}">{}</a>'.format(anchor('pgrp', name), name)
 
 # return link to property
-def proplink(name):
-    return '<a href="#{}">{}</a>'.format(anchor('prop', name), name)
+def proplink(name, external = False):
+    if external == False:
+        return '<a href="#{}">{}</a>'.format(anchor('prop', name), name)
+    else:
+        # target won't jump to anchor if API page already open
+        # return '<a href="{}#{}" target="api"><code>{}</code></a>'.format(api_doc, anchor('prop', name), name)
+        return '<a href="{}#{}"><code>{}</code></a>'.format(api_doc, anchor('prop', name), name)
 
 # return link to property field
-def fieldlink(name):
-    return '<a href="#{}">{}</a>'.format(anchor('field', name), name)
+def fieldlink(name, external = False):
+    if external == False:
+        return '<a href="#{}">{}</a>'.format(anchor('field', name), name)
+    else:
+        # target won't jump to anchor if API page already open
+        # return '<a href="{}#{}" target="api"><code>{}</code></a>'.format(api_doc, anchor('field', name), name)
+        return '<a href="{}#{}"><code>{}</code></a>'.format(api_doc, anchor('field', name), name)
 
 # return link to peripheral module
 def modlink(name):
@@ -608,6 +618,8 @@ def emit_markdown(text, level):
     re_reglink = re.compile(r'reg:([A-Z0-9_]*)', re.IGNORECASE)
     re_modlink = re.compile(r'mod:([A-Z0-9_]*)', re.IGNORECASE)
     re_cmdlink = re.compile(r'cmd:([A-Z0-9_]*)', re.IGNORECASE)
+    re_proplink = re.compile(r'prop:([A-Z0-9_]*)', re.IGNORECASE)
+    re_fieldlink = re.compile(r'field:([A-Z0-9_:]*)', re.IGNORECASE)
     re_li = re.compile(r'^\* (.*)')
     re_bold = re.compile(r'.\*([^\*]*)')
     re_code = re.compile(r'`([^`]*)`', re.IGNORECASE)
@@ -629,6 +641,8 @@ def emit_markdown(text, level):
             line = re_reglink.sub(lambda x: reglink(x.group(1).upper()), line)
             line = re_modlink.sub(lambda x: modlink(x.group(1).upper()), line)
             line = re_cmdlink.sub(lambda x: cmdlink(x.group(1).upper(), True), line)
+            line = re_proplink.sub(lambda x: proplink(x.group(1).upper(), True), line)
+            line = re_fieldlink.sub(lambda x: fieldlink(x.group(1).upper(), True), line)
             line = re_li.sub(lambda x: '<li>{}</li>'.format(x.group(1)), line)
             line = re_bold.sub(lambda x: '<b>{}</b>'.format(x.group(1)), line)
             html = re_code.sub(lambda x: '<code>{}</code>'.format(x.group(1)), line)
