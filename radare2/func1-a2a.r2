@@ -50,8 +50,6 @@ f var.flags_24 1 @ _idata+0x24
 CCu 0:? 1:? 2:txrx started? 4:rx hop? 5:rc32k cal due 6:wht bit8 7:state change in progress? @ _idata+0x24
 f var.flags_25 1 @ _idata+0x25
 CCu 0:wut expired 1:low power 3:EZConfig? 4:zeroif 5:synth recal 7:OOK @ _idata+0x25
-CCu low power flag @@/c 0x25.1 > /dev/null
-f-hit*
 f var.flags_26 1 @ _idata+0x26
 CCu 0:usec delay expired 1:tx hop? 3:RX(0)/TX(1) 4:Cal LOW/HIGH_TEMP 5:? @ _idata+0x26
 f var.flags_27 1 @ _idata+0x27
@@ -204,7 +202,7 @@ f map.rx_hop_config 1 @ 0x00ba
 f map.config_cmd_unk0x0c 1 @ 0x00bd
 f map.config_cmd_unk0x01 1 @ 0x00c0
 f map.irq0x07_phase_sample 1 @ 0x00c6
-f map.usec_delay_unk_0xbda1 1 @ 0x0x00c9
+f map.usec_delay_unk_0xbda1 1 @ 0x00c9
 f map.change_from_ready_to_11 1 @ 0x00cc
 f map.wut_expired 1 @ 0x00cf
 f map.gpio_read_pin_cfg 1 @ 0x00d2

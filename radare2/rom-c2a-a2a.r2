@@ -2881,10 +2881,11 @@ f func2.vector_table 1 @ 0xf603
 f func2.map_table 1 @ 0xf64a
 CCu copied to 0x0057, 0xf5f3 offset compared to rom (func1) @ 0xf64a
 
-Cd 1 0x6d5 @ 0xf929
+Cd 1 0x6cd @ 0xf929
 f rom.end_of_code @ 0xf929
 
-Cd 1 2 @ 0xfffe
-f rom.ROMID_REVEXT 1 @ 0xfffe
-f rom.PART_INFO_CHIPREV 1 @ 0xffff
+Cd 1 10 @ 0xfff6
+f rom.DIE_INFO 8 @ 0xfff6
+f rom.DIE_INFO_ROM_ID 1 @ 0xfffe
+f rom.DIE_INFO_CHIP_REV 1 @ 0xffff
 
