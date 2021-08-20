@@ -132,7 +132,7 @@ The library also includes the class `Crypto` that can be used in other Python sc
 
 ### Usage
 
-The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the `CODE` address space.
+Patches are encrypted using the ROM of the target device as key, the script therefore requires a dump of the `CODE` address space.
 
 To decrypt a patch, run the script providing a binary ROM dump and a patch file. The output file will contain the patch commands with encryption removed.
 
@@ -158,7 +158,7 @@ Prerequisites:
 
 ### Usage
 
-The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the `CODE` address space.
+Patches are encrypted using the ROM of the target device as key, the script therefore requires a dump of the `CODE` address space.
 
 The example below creates a patch from an Intel hex file (`.ihx`). 
 

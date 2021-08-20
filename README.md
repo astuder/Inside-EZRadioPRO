@@ -30,6 +30,7 @@ Pull requests are welcome, especially [reverse engineering notes](docs/regs) tha
 - [docs/generate-docs.py](docs/generate-docs.py): Python script generating HTML documentation from information hidden in SiLabs WDS executable.
 - [tools/wds-xml-extract.py](tools/README.md#wds-xml-extractpy): Python script to extract XML files with internal documentation hidden in SiLabs WDS.
 - [tools/patchcrypto.py](tools/README.md#patchcryptopy): Python script to decrypt and encrypt firmware patches.
+- [tools/ihex2patch.py](tools#ihex2patchpy): Python script to create patch file from Intel hex file.
 - [ghidra](ghidra): Tooling to analyze dumped firmware with [Ghidra](https://ghidra-sre.org/), including custom processor definition for 8051 core and plugin to import EZRadioPRO registers
 - [radare2](radare2): Tooling to analyze dumped firmware with [radare2](https://github.com/radareorg/radare2), including firmware annotations.
 
