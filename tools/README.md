@@ -153,20 +153,27 @@ For experimentation, a few patch files can be found in `C:\Program Files (x86)\S
 Use this Python script to create the encrpyted firmware patch file from an Intel hex file. 
 
 Prerequisites:
-* `patchcrpto.py`
+* `patchcrypto.py`
 * ROM dump of the part to be patched
 
 ### Usage
 
 The algorithm uses ROM content of the target device as encryption key, the script therefore requires a dump of the `CODE` address space.
 
-The example below creates a patch from an Intel hex file (`.ihx`). The hex file was created with the SDCC toolchain. 
+The example below creates a patch from an Intel hex file (`.ihx`). 
 
 ~~~~
 ihex2patch.py romdump.bin myfw.ihx -o myfw.patch
 ~~~~
 
 Use `--help` to see additional options.
+
+We used the macro assembler included with [SDCC](http://sdcc.sourceforge.net/) to create patch files. The following commands compile and link an assembly source file into an Intel hex file.
+
+~~~~
+sdas8051 -l -o -s myfw.asm
+sdld -i myfw.rel
+~~~~
 
 ## patchradio.py
 
