@@ -168,7 +168,7 @@ ihex2patch.py romdump.bin myfw.ihx -o myfw.patch
 
 Use `--help` to see additional options.
 
-We used the macro assembler included with [SDCC](http://sdcc.sourceforge.net/) to create patch files. The following commands compile and link an assembly source file into an Intel hex file.
+We use the macro assembler included with [SDCC](http://sdcc.sourceforge.net/) to write patches. The following commands compile and link an assembly source file into an Intel hex file.
 
 ~~~~
 sdas8051 -l -o -s myfw.asm
