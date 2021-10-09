@@ -21,7 +21,7 @@ Pull requests are welcome, especially [reverse engineering notes](docs/regs) tha
 - [Register and API documentation](docs/wds-xml-docs.md) generated from data hidden in WDS, augmented with RE notes
 - [List of API commands](docs/api-cmd.md) in different modes, including undocumented commands
 - [Memory map](docs/memory-map.md)
-- [Bootloader](docs/boot.md)
+- [Bootloader and patch mechanism](docs/boot.md)
 - [Talks](talks)
 
 ## Tools

@@ -1,4 +1,4 @@
-# Bootloader
+# Bootloader and patch mechanism
 
 The EZRadioPRO enters the bootloader when powered on or after exiting shutdown (`SDN` pin transitioning from high to low). The bootloader is exited on completion of the `POWER_UP` command.
 
