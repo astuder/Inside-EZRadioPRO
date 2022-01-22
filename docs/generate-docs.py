@@ -1014,7 +1014,7 @@ if __name__ == '__main__':
             emit_field_details(cmd['outputs'], 'reply', cmd['name'])
             emit('</li>')
             emit('</ul>')
-            notes_title, notes_text = load_extra('api', 'notes', cmd['name'].lower())
+            notes_title, notes_text = load_extra('api', 'cmd', cmd['name'].lower())
             if len(notes_text) > 0:
                 if len(notes_title) > 0:
                     emit('<h5>{}</h5>'.format(notes_title))
