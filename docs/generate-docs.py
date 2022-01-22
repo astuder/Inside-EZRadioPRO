@@ -632,10 +632,12 @@ def emit_markdown(text, level):
                 pass
             else:
                 emit('</p><p>')
+        elif line.startswith('# '):
+            emit('<h{}>{}</h{}>'.format(level, line[2:], level))
         elif line.startswith('## '):
-            emit('<h{}>{}</h{}'.format(level+1, line[3:], level+1))
+            emit('<h{}>{}</h{}>'.format(level+1, line[3:], level+1))
         elif line.startswith('### '):
-            emit('<h{}>{}</h{}'.format(level+2, line[3:], level+2))
+            emit('<h{}>{}</h{}>'.format(level+2, line[4:], level+2))
         else:
             line = re_hex.sub(lambda x: '<code>0x{}</code>'.format(x.group(1).upper()), line)
             line = re_reglink.sub(lambda x: reglink(x.group(1).upper()), line)
@@ -657,8 +659,10 @@ def load_extra(folder, type, id):
     text = ''
     try:
         with open(filename, 'r', encoding='utf-8') as extra:
+            found_title = False
             for line in extra:
-                if line.startswith('# '):
+                if found_title == False and line.startswith('# '):
+                    found_title = True
                     title = line[2:].rstrip()
                 else:
                     text += line
@@ -987,7 +991,7 @@ if __name__ == '__main__':
     for cset in cmd_list:
         emit('<h3><a name="{}">{}</a></h3>'.format(anchor('cset', cset['name']), cset['name']))
         for cmd in sorted(cset['commands'], key = lambda c: c['number']):
-            emit('<h4><a name="{}">{}</a></h3>'.format(anchor('cmd', cmd['name']), cmd['name']))
+            emit('<h4><a name="{}">{}</a></h4>'.format(anchor('cmd', cmd['name']), cmd['name']))
             emit('<ul>')
             emit('<li>Number: 0x{:02x}</li>'.format(cmd['number']))
             emit('<li>Summary: {}</li>'.format(cmd['summary']))
@@ -1010,6 +1014,13 @@ if __name__ == '__main__':
             emit_field_details(cmd['outputs'], 'reply', cmd['name'])
             emit('</li>')
             emit('</ul>')
+            notes_title, notes_text = load_extra('api', 'notes', cmd['name'].lower())
+            if len(notes_text) > 0:
+                if len(notes_title) > 0:
+                    emit('<h5>{}</h5>'.format(notes_title))
+                else:
+                    emit('<h5>Notes</h5>')
+                emit_markdown(notes_text, 5)
             emit('<hr />')
 
     # documentaiton for each property
