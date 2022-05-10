@@ -11,6 +11,7 @@ Pull requests are welcome, especially [reverse engineering notes](docs/regs) tha
 - Dump all memory address spaces, including CODE and NVM
   - Si4362-B1B, Si4362-C2A, Si4460-C2A, Si4463-B1B, Si4467-A2A
 - Run custom code on radio IC
+- Reverse engineered [patch mechanism](docs/boot.md#patch-process) and created [tooling](tools/README.md#patchcryptopy) for custom firmware patches
 - Analyze and annotate large parts of the firmware using radare2
   - Si4362-C2A: bootloader, main application image (FUNC1)
 - Found [internal documentation](docs/wds-xml-docs.md) for API and registers hidden in WDS
