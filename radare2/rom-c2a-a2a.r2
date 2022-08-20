@@ -659,7 +659,7 @@ CCu FIFO_SRC_SEL (doc Si4467) @ 0x945d
 CCu FIFO contents are phase samples taken on the oversampled bit clock @ 0x9460
 f rom.config_modem_ifpkd 1 @ 0x946b
 CCu FIFO contents come from packet handler @ 0x946b
-CCu PHASE_SAMPLE int enable @ 0x9477
+CCu RX_CLK_OR_TXBITCLK_IRPT_EN @ 0x9477
 CCu set to default @ 0x9483
 .(fcn 0x948a 0x94c9 rom.config_modem_chflt)
 CCu count = 36 @ 0x948a
@@ -675,7 +675,7 @@ CCu STANDARD_PREAM @ 0x94dc
 CCu PRE_NS (non-std) @ 0x94e2
 CCu DSA disabled @ 0x94e6
 CCu BCR_GEAR_SHIFT, ARRIVAL_THD @ 0x94ec
-.(fcn 0x94f5 0x9513 rom.irq0x07_packet_sent)
+.(fcn 0x94f5 0x9513 rom.modem_isr_packet_sent)
 CCu usec delay expired @ 0x950b
 .(fcn 0x9513 0x9556 rom.0x07_isr)
 CCu not implemented @ 0x9542
@@ -703,7 +703,7 @@ CCu RSSI_THRESH int enable @ 0x95fc
 CCu set xreg2 modem_rssi_ctrl bit 4 @ 0x9603
 CCu RSSI_THRESH int enable @ 0x9606
 .(fcn 0x960a 0x960f rom.rssi_crosses_above_thresh)
-.(fcn 0x960f 0x961b rom.irq0x07_rssi_thresh)
+.(fcn 0x960f 0x961b rom.modem_isr_rssi_thresh)
 CCu irq on thresh up or down? @ 0x9616
 .(fcn 0x9620 0x9635 rom.timer_wait_until_done)
 CCu wait until timer done @ 0x9622
@@ -748,10 +748,10 @@ axd dsp_base+0x28 @ 0x97a6
 CCu CHIP_READY, indicate completion @ 0x97b8
 CCu store cal for reference @ 0x97bd
 CCu build reply stream (undocumented) @ 0x97cf
-.(fcn 0x97ef 0x97f0 rom.irq0x07_bit7)
-.(fcn 0x97f0 0x97ff rom.irq0x07_preamble_timeout)
+.(fcn 0x97ef 0x97f0 rom.modem_isr_rfpd)
+.(fcn 0x97f0 0x97ff rom.modem_isr_preamble_timeout)
 CCu if preamble detected, no timeout @ 0x97f0
-.(fcn 0x97ff 0x9800 rom.irq0x07_bit3)
+.(fcn 0x97ff 0x9800 rom.modem_isr_arrivingdet)
 .(fcn 0x9800 0x981f rom.ircal_bit_timer_oneshot)
 CCu r7=delay lsb (bit clock) @ 0x9814
 CCu r6=delay msb @ 0x9816
@@ -774,7 +774,7 @@ CCu first measurement? @ 0x9867
 CCu loc39=RSSI @ 0x986a
 CCu calc avg RSSI @ 0x9873
 CCu return avg RSSI in r7 @ 0x987f
-.(fcn 0x9882 0x988d rom.irq0x07_sync_timout)
+.(fcn 0x9882 0x988d rom.modem_isr_sync_timout)
 CCu clr preamble detected flag @ 0x9885
 CCu SYNC_TIMEOUT int disable @ 0x9887
 .(fcn 0x988d 0x9897 rom.latch_rssi)
@@ -836,7 +836,7 @@ CCu reached end of ring buffer? @ 0x9a9d
 axd 0x0730 @ 0x9aac
 CCu reset/warp tx read ptr @ 0x9aa7
 CCu increment tx read ptr @ 0x9ab4
-.(fcn 0x9abc 0x9acf rom.irq0x07_phase_sample)
+.(fcn 0x9abc 0x9acf rom.modem_isr_phase_sample)
 .(fcn 0x9acf 0x9ae3 rom.ircal_set_cal_val_r7)
 CCu amp or ph stage @ 0x9ad9
 .(fcn 0x9ae3 0x9b9b rom.ircal_calibration_step)
@@ -2162,7 +2162,7 @@ CCu bit 0: parse commands @ 0xcbd4
 .(fcn 0xcc36 0xcc43 rom.0x17_handler)
 .(fcn 0xcc43 0xcc4c rom.reset_handler)
 .(fcn 0xcc4c 0xcc55 rom.power_up_handler)
-.(fcn 0xcc55 0xcc5e rom.0x07_handler)
+.(fcn 0xcc55 0xcc5e rom.modem_irq_handler)
 .(fcn 0xcc5e 0xcc67 rom.0x0f_handler)
 .(fcn 0xcc67 0xcc70 rom.eint1_handler)
 .(fcn 0xcc70 0xcc79 rom.spi_cmd_handler)
@@ -2206,7 +2206,7 @@ CCu 0=no state change, no rearm @ 0xcda0
 CCu FILTER_MISS @ 0xcd81
 .(fcn 0xcd86 0xcda6 rom.rx_packet_invalid)
 CCu SYNC_DETECT @ 0xcd8e
-.(fcn 0xcda6 0xcdb0 rom.irq0x07_rssi_jump)
+.(fcn 0xcda6 0xcdb0 rom.modem_isr_rssi_jump)
 CCu RSSI_JUMP @ 0xcda6
 CCu RSSI_JUMP @ 0xcdab
 .(fcn 0xcdb0 0xcdb3 rom.rx_process_byte_b)
@@ -2547,7 +2547,7 @@ CCu INVALID_PREAMBLE @ 0xd7ef
 .(fcn 0xd84d 0xd85a func2.0x17_handler)
 .(fcn 0xd85a 0xd863 func2.reset_handler)
 .(fcn 0xd863 0xd86c func2.power_up_handler)
-.(fcn 0xd86c 0xd875 func2.0x07_handler)
+.(fcn 0xd86c 0xd875 func2.modem_irq_handler)
 .(fcn 0xd875 0xd87e func2.0x0f_handler)
 .(fcn 0xd87e 0xd887 func2.eint1_handler)
 .(fcn 0xd887 0xd890 func2.spi_cmd_handler)
@@ -2644,7 +2644,7 @@ axd 0x05bf @ 0xdf85
 .(fcn 0xdff3 0xdff4 func2.raise_preamble_detect)
 .(fcn 0xdff4 0xdffb func2.rx_sync_timeout)
 CCu RSSI_THRESH int enable @ 0xdff7
-.(fcn 0xdffb 0xdffc func2.irq0x07_rssi_jump)
+.(fcn 0xdffb 0xdffc func2.modem_isr_rssi_jump)
 .(fcn 0xdffd 0xdffe func2.raise_postamble_detect)
 
 echo   ..0xe000
@@ -2759,7 +2759,7 @@ CCu RX @ 0xea0d
 .(fcn 0xea79 0xea86 func3.0x17_handler)
 .(fcn 0xea86 0xea8f func3.reset_handler)
 .(fcn 0xea8f 0xea98 func3.power_up_handler)
-.(fcn 0xea98 0xeaa1 func3.0x07_handler)
+.(fcn 0xea98 0xeaa1 func3.modem_irq_handler)
 .(fcn 0xeaa1 0xeaaa func3.0x0f_handler)
 .(fcn 0xeaaa 0xeab3 func3.eint1_handler)
 .(fcn 0xeab3 0xeabc func3.spi_cmd_handler)
@@ -2842,7 +2842,7 @@ CCu READY @ 0xeca9
 .(fcn 0xed13 0xed22 func3.rx_packet_received)
 CCu PACKET_RX @ 0xed13
 .(fcn 0xed22 0xed2c func3.rx_packet_invalid)
-.(fcn 0xed2c 0xed2d func3.irq0x07_rssi_jump)
+.(fcn 0xed2c 0xed2d func3.modem_isr_rssi_jump)
 .(fcn 0xed2d 0xed2e func3.rx_process_byte_b)
 .(fcn 0xed2f 0xed30 func3.rssi_above_thresh)
 .(fcn 0xed30 0xed31 func3.clear_int_modem_rssi)

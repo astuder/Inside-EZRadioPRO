@@ -57,20 +57,20 @@ echo interrupt vectors
 
 f vect.reset 1 @ 0x0000
 f vect.power_up 1 @ 0x0003
-f vect.unk_0x07 1 @ 0x0007
-f vect.timer0 1 @ 0x000b
-f vect.unk_0x0f 1 @ 0x000f
-f vect.eint1 1 @ 0x0013
-f vect.unk_0x17 1 @ 0x0017
-f vect.rx_ph 1 @ 0x001b
-f vect.spi_cmd 1 @ 0x001f
-f vect.tx_event 1 @ 0x0023
-f vect.rx_event 1 @ 0x0027
-f vect.spi_fifo_err 1 @ 0x002b
-f vect.unk_0x2f 1 @ 0x002f
-f vect.tx_frame 1 @ 0x0033
-f vect.rx_byte 1 @ 0x0037
-f vect.unk_0x3b 1 @ 0x003b
+f vect.modem 1 @ 0x0007
+f vect.debug 1 @ 0x000b
+f vect.timer0 1 @ 0x000f
+f vect.timer1 1 @ 0x0013
+f vect.pa_ramp 1 @ 0x0017
+f vect.ph_info 1 @ 0x001b
+f vect.command 1 @ 0x001f
+f vect.dmawr 1 @ 0x0023
+f vect.dmard 1 @ 0x0027
+f vect.spi_err 1 @ 0x002b
+f vect.ph_err 1 @ 0x002f
+f vect.tx_ph_ae 1 @ 0x0033
+f vect.rx_ph_af 1 @ 0x0037
+f vect.ph_halt 1 @ 0x003b
 f vect.wut 1 @ 0x003f
-f vect.unk_0x43 1 @ 0x0043
+f vect.mctlcmd 1 @ 0x0043
 

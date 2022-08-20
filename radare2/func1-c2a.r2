@@ -70,7 +70,7 @@ f var.main_loop_event_ex 1 @ _idata+0x2d
 CCu 0:rx 1:wut 2:rc32k cal 3:tx 4:manual rx hop 5:rx hop @ _idata+0x2d
 f var.pti_flags 1 @ _idata+0x2e
 CCu 3:? (idata 0x8d,8e,90) 4:spi_en (undoc) 5:tx_en 6:rx_en @ _idata+0x2e
-f var.irq_0x07_flags 1 @ _idata+0x2f
+f var.modem_irq_flags 1 @ _idata+0x2f
 CCu 0:phase sample 1:packet sent 4:preamble timeout 5:sync timout 6:RSSI jump @ _idata+0x2f
 
 f var.loc30 1 @ _idata+0x30
@@ -215,7 +215,7 @@ f map.main_loop_rxtx_event_part2 1 @ 0x0081
 f map.eint1_disable 1 @ 0x0084
 f map.main_loop_bit6_event 1 @ 0x0087
 f map.fifo_tx_check_almost_empty 1 @ 0x008a
-f map.irq0x07_rssi_thresh 1 @ 0x008d
+f map.modem_isr_rssi_thresh 1 @ 0x008d
 f map.psm_enable 1 @ 0x0090
 f map.cmd_protocol_cfg 1 @ 0x0093
 f map.rx_process_byte 1 @ 0x0096
@@ -232,7 +232,7 @@ f map.dma_copy 1 @ 0x00b7
 f map.rx_hop_config 1 @ 0x00ba
 f map.config_cmd_unk0x0c 1 @ 0x00bd
 f map.config_cmd_unk0x01 1 @ 0x00c0
-f map.irq0x07_phase_sample 1 @ 0x00c6
+f map.modem_isr_phase_sample 1 @ 0x00c6
 f map.usec_delay_unk_0xbda1 1 @ 0x0x00c9
 f map.change_from_ready_to_11 1 @ 0x00cc
 f map.wut_expired 1 @ 0x00cf
@@ -250,7 +250,7 @@ f map.adc_calculate_result 1 @ 0x00f0
 f map.config_modem 1 @ 0x00f3
 f map.rc32k_read_xreg_0xe7_0xe8 @ 0x00f9
 f map.config_cmd_unk0x12 1 @ 0x00fc
-f map.irq0x07_rssi_jump 1 @ 0x00ff
+f map.modem_isr_rssi_jump 1 @ 0x00ff
 
 f map.gpio_state_clr_r7 1 @ 0x0102
 f map.wut_start_rx_tx 1 @ 0x0105
@@ -311,7 +311,7 @@ f map.cmd_func_info 1 @ 0x01ad
 f map.change_from_tx_tune 1 @ 0x01b0
 f map.pti_send_curr_state 1 @ 0x01b3
 f map.rc32k_cal_unk0xb16e 1 @ 0x01b6
-f map.irq0x07_bit3 1 @ 0x01b9
+f map.modem_isr_arrivingdet 1 @ 0x01b9
 f map.config_modem_etsi 1 @ 0x01bc
 f map.rx_ph_isr_preamble_detected 1 @ 0x01bf
 f map.modem_start_rx 1 @ 0x01c2
@@ -339,7 +339,7 @@ f map.tx_ph_send_frame 1 @ 0x0201
 f map.tx_raw_send_frame 1 @ 0x0204
 f map.rc32k_xreg0xe5_write_r7_xreg0xe6_write_0 1 @ 0x0207
 f map.dsp_config_reg_0x06 1 @ 0x020a
-f map.irq0x07_bit7 1 @ 0x020d
+f map.modem_isr_rfpd 1 @ 0x020d
 f map.rc32k_cal_unk0xb2d2 @ 0x0210
 f map.main_loop_unknown_cmd 1 @ 0x0213
 f map.cmd_set_property 1 @ 0x0216
@@ -355,7 +355,7 @@ CCu hook for custom reset code @ 0x022e
 f map.rx_ph_filter 1 @ 0x0231
 f map.rc32k_calibrate 1 @ 0x0234
 f map.invalid_prop_group_set 1 @ 0x237
-f map.irq0x07_sync_timeout 1 @ 0x023a
+f map.modem_isr_sync_timeout 1 @ 0x023a
 f map.ircal_perform_calibration 1 @ 0x0240
 f map.adc_acquisition 1 @ 0x0249
 f map.main_loop 1 @ 0x024f
@@ -373,7 +373,7 @@ f map.change_from_rx 1 @ 0x0276
 f map.main_loop_change_state 1 @ 0x0279
 f map.config_modem_chflt 1 @ 0x027c
 f map.config_preamble_timeout @ 0x0282
-f map.irq0x07_preamble_timeout 1 @ 0x0285
+f map.modem_isr_preamble_timeout 1 @ 0x0285
 f map.reset_entry 1 @ 0x028b
 f map.eint1_pause 1 @ 0x028e
 f map.wut_set_mantissa_r5r7 1 @ 0x0291
