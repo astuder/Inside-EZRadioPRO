@@ -4,9 +4,9 @@
 
 <table>
     <thead>
-        <tr><td>Address</td><td align="left">Vector</td><td align="left">Peripheral</td><td>Enable</td><td>Priority</td><td>Flag</td></tr>
+        <tr><td>Address</td><td align="left">Vector</td><td align="left">Peripheral</td><td>Enable</td><td>Priority</td><td>Flag</td><td>Granular EN</td><td>Granular Flag</td></tr>
     </thead><tbody>
-        <tr><td>0x0007</td><td align="left">INT_MODEM</td><td align="left">mod:MODEM</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
+        <tr><td>0x0007</td><td align="left">INT_MODEM</td><td align="left">mod:MODEM</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td><td>reg:MODEMRPT_EN</td><td>reg:MODEMRPT_STUS</td></tr>
         <tr><td>0x000B</td><td align="left">INT_DEBUG</td><td align="left">mod:BREAKPOINTS</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
         <tr><td>0x000F</td><td align="left">INT_TIMER0</td><td align="left">mod:MCU_TIMER</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
         <tr><td>0x0013</td><td align="left">INT_TIMER1</td><td align="left">mod:MCU_TIMER</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
