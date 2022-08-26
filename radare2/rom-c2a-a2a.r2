@@ -2489,7 +2489,7 @@ CCu RETRANSMIT @ 0xd58e
 .(fcn 0xd5b1 0xd5c5 rom.pkt_tx_unk_0xd5b1)
 .(fcn 0xd5c5 0xd5dc rom.pkt_tx_unk_0xd5c5)
 CCu FIFO_UNDERFLOW_OVERFLOW_ERROR @ 0xd5c9
-.(fcn 0xd5dc 0xd5f4 rom.pkt_tx_unk_0xd5dc)
+.(fcn 0xd5dc 0xd5f4 rom.pkt_tx_halt)
 .(fcn 0xd5f4 0xd5f5 rom.rx_nextstate_remain)
 .(fcn 0xd5f5 0xd5ff rom.pa_ramp_isr_finish)
 .(fcn 0xd5ff 0xd60f rom.rx_hop_trigger)
