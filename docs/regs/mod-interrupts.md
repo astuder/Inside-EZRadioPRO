@@ -11,7 +11,7 @@
         <tr><td>0x000F</td><td align="left">INT_TIMER0</td><td align="left">mod:MCU_TIMER</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
         <tr><td>0x0013</td><td align="left">INT_TIMER1</td><td align="left">mod:MCU_TIMER</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
         <tr><td>0x0017</td><td align="left">INT_PA_RAMP</td><td align="left">mod:PA</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
-        <tr><td>0x001B</td><td align="left">INT_PH_INFO</td><td align="left">mod:PACKET_HANDLER</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td></tr>
+        <tr><td>0x001B</td><td align="left">INT_PH_INFO</td><td align="left">mod:PACKET_HANDLER</td><td>reg:IE</td><td>reg:IP</td><td>reg:IRQ</td><td>reg:PH_INT_ENABLE_1<br />reg:PH_INT_ENABLE_2</td><td>reg:PH_INT_STATUS_1<br />reg:PH_INT_STATUS_2</td></tr>
         <tr><td>0x001F</td><td align="left">INT_COMMAND</td><td align="left">mod:SPI</td><td>reg:EIE1</td><td>reg:EIP1</td><td>reg:EIRQ1</td></tr>
         <tr><td>0x0023</td><td align="left">INT_DMAWR</td><td align="left">mod:SPI_DMA</td><td>reg:EIE1</td><td>reg:EIP1</td><td>reg:EIRQ1</td></tr>
         <tr><td>0x0027</td><td align="left">INT_DMARD</td><td align="left">mod:SPI_DMA</td><td>reg:EIE1</td><td>reg:EIP1</td><td>reg:EIRQ1</td></tr>

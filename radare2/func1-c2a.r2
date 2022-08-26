@@ -148,10 +148,10 @@ f var.modem_fsk4_map_val2 1 @ _idata+0x84
 f var.modem_fsk4_map_val1 1 @ _idata+0x85
 f var.afc_freq_offset_msb 1 @ _idata+0x86
 f var.afc_freq_offset_lsb 1 @ _idata+0x87
-f var.int0x0f_callback_msb 1 @ _idata+0x89
-f var.int0x0f_callback_lsb 1 @ _idata+0x8a
-f var.eint1_callback_msb 1 @ _idata+0x8b
-f var.eint1_callback_lsb 1 @ _idata+0x8c
+f var.timer0_callback_msb 1 @ _idata+0x89
+f var.timer0_callback_lsb 1 @ _idata+0x8a
+f var.timer1_callback_msb 1 @ _idata+0x8b
+f var.timer1_callback_lsb 1 @ _idata+0x8c
 f var.scratch_unk0x8e 1 @ _idata+0x8e
 f var.info_flags_cal_type 1 @ _idata+0x8f
 
@@ -207,19 +207,19 @@ f map.config_cmd_unk0x10 1 @ 0x0066
 f map.clk_unk0xb97f 1 @ 0x0069
 f map.pti_send_tx_info 1 @ 0x006c
 f map.cmd_undoc_0xd0 1 @ 0x006f
-f map.psm_eint1_callback 1 @ 0x0075
+f map.psm_timer1_callback 1 @ 0x0075
 f map.rx_preamble_timeout 1 @ 0x0078
 f map.config_bufclk 1 @ 0x007b
 f map.rc32k_cal_unk0xb2bf @ 0x007e
 f map.main_loop_rxtx_event_part2 1 @ 0x0081
-f map.eint1_disable 1 @ 0x0084
+f map.timer1_disable 1 @ 0x0084
 f map.main_loop_bit6_event 1 @ 0x0087
 f map.fifo_tx_check_almost_empty 1 @ 0x008a
 f map.modem_isr_rssi_thresh 1 @ 0x008d
 f map.psm_enable 1 @ 0x0090
 f map.cmd_protocol_cfg 1 @ 0x0093
 f map.rx_process_byte 1 @ 0x0096
-f map.rx_ph_isr_bit5 1 @ 0x0099
+f map.ph_info_isr_bit5 1 @ 0x0099
 f map.clk_config_div_clk_output 1 @ 0x009c
 f map.ircal_measure_rssi 1 @ 0x009f
 f map.change_state_from_11 1 @ 0x00a5
@@ -267,16 +267,16 @@ f map.rx_packet_received 1 @ 0x0123
 f map.set_pcon 1 @ 0x0126
 f map.change_state_from_ezconfig 1 @ 0x0129
 f map.rssi_above_thresh 1 @ 0x012c
-f map.int0x0f_config_callback 1 @ 0x012f
+f map.timer0_config_callback 1 @ 0x012f
 f map.spi_unknown_cmd @ 0x0132
 f map.fifo_raise_underflow_overflow_err 1 @ 0x0135
 f map.rx_packet_invalid 1 @ 0x0138
-f map.eint1_config_callback 1 @ 0x013b
+f map.timer1_config_callback 1 @ 0x013b
 f map.raise_postamble_detect 1 @ 0x013e
 f map.usec_timer_unk_0xbd85 1 @ 0x0141
 f map.rx_ph_start 1 @ 0x0144
 f map.cmd_get_chip_status 1 @ 0x0147
-f map.0x17_isr_finish 1 @ 0x014a
+f map.pa_ramp_isr_finish 1 @ 0x014a
 f map.cmd_offline_recal 1 @ 0x014d
 f map.dsp_reg_r7_unk0xb371 1 @ 0x0150
 f map.rc32k_set_source 1 @ 0x0153
@@ -313,10 +313,10 @@ f map.pti_send_curr_state 1 @ 0x01b3
 f map.rc32k_cal_unk0xb16e 1 @ 0x01b6
 f map.modem_isr_arrivingdet 1 @ 0x01b9
 f map.config_modem_etsi 1 @ 0x01bc
-f map.rx_ph_isr_preamble_detected 1 @ 0x01bf
+f map.ph_info_isr_preamble_detected 1 @ 0x01bf
 f map.modem_start_rx 1 @ 0x01c2
 f map.reset_finish 1 @ 0x01c5
-f map.rx_ph_isr_sync_detected 1 @ 0x01c8
+f map.ph_info_isr_sync_detected 1 @ 0x01c8
 f map.modem_start_unk0xb560 1 @ 0x01cb
 f map.change_state_from_spi_active 1 @ 0x01ce
 f map.group_id_to_index 1 @ 0x01d1
@@ -366,7 +366,7 @@ f map.gpio_state_set_r7 1 @ 0x025b
 f map.clk_bufclk_unk0xba0d 1 @ 0x025e
 f map.main_loop_bit7_event 1 @ 0x0261
 f map.cmd_request_device_state 1 @ 0x0264
-f map.rx_ph_isr_pkt_end 1 @ 0x0267
+f map.ph_info_isr_pkt_end 1 @ 0x0267
 f map.fifo_tx_reset_hw 1 @ 0x0270
 f map.pkt_tx_unk_0xd5c5 1 @ 0x0273
 f map.change_from_rx 1 @ 0x0276
@@ -375,7 +375,7 @@ f map.config_modem_chflt 1 @ 0x027c
 f map.config_preamble_timeout @ 0x0282
 f map.modem_isr_preamble_timeout 1 @ 0x0285
 f map.reset_entry 1 @ 0x028b
-f map.eint1_pause 1 @ 0x028e
+f map.timer1_pause 1 @ 0x028e
 f map.wut_set_mantissa_r5r7 1 @ 0x0291
 f map.tx_sequencer_mode_delay 1 @ 0x0297
 f map.change_state_from_ready 1 @ 0x029a
