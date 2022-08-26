@@ -375,8 +375,13 @@ def maplink(name):
     return '<a href="#{}">{}</a>'.format(anchor('map', name), name)
 
 # return link to register
-def reglink(name):
-    return '<code><a href="#{}">{}</a></code>'.format(anchor('reg', name), name)
+def reglink(name, external = False):
+    if external == False:
+        return '<a href="#{}"><code>{}</code></a>'.format(anchor('reg', name), name)
+    else:
+        # target won't jump to anchor if API page already open
+        # return '<a href="{}#{}" target="api"><code>{}</code></a>'.format(reg_doc, anchor('reg', name), name)
+        return '<a href="{}#{}"><code>{}</code></a>'.format(reg_doc, anchor('reg', name), name)
 
 # generate HTML register map
 def emit_regmap(name, start, end = 0, width = 8, regs = None, offset = 0):
@@ -610,7 +615,13 @@ def emit_field_details(params, ptype, parent, prefix = False):
     emit('</ul>')
 
 # emit text as HTML using a basic markdown parser
-def emit_markdown(text, level):
+def emit_markdown(text, level, doc):
+    if (doc == 'API'):
+        api_external = False;
+        reg_external = True;
+    else:
+        api_external = True;
+        reg_external = False;
     text = text.rstrip()
     if len(text) == 0:
         return    
@@ -640,11 +651,11 @@ def emit_markdown(text, level):
             emit('<h{}>{}</h{}>'.format(level+2, line[4:], level+2))
         else:
             line = re_hex.sub(lambda x: '<code>0x{}</code>'.format(x.group(1).upper()), line)
-            line = re_reglink.sub(lambda x: reglink(x.group(1).upper()), line)
+            line = re_reglink.sub(lambda x: reglink(x.group(1).upper(), reg_external), line)
             line = re_modlink.sub(lambda x: modlink(x.group(1).upper()), line)
-            line = re_cmdlink.sub(lambda x: cmdlink(x.group(1).upper(), True), line)
-            line = re_proplink.sub(lambda x: proplink(x.group(1).upper(), True), line)
-            line = re_fieldlink.sub(lambda x: fieldlink(x.group(1).upper(), True), line)
+            line = re_cmdlink.sub(lambda x: cmdlink(x.group(1).upper(), api_external), line)
+            line = re_proplink.sub(lambda x: proplink(x.group(1).upper(), api_external), line)
+            line = re_fieldlink.sub(lambda x: fieldlink(x.group(1).upper(), api_external), line)
             line = re_li.sub(lambda x: '<li>{}</li>'.format(x.group(1)), line)
             line = re_bold.sub(lambda x: '<b>{}</b>'.format(x.group(1)), line)
             html = re_code.sub(lambda x: '<code>{}</code>'.format(x.group(1)), line)
@@ -818,7 +829,7 @@ if __name__ == '__main__':
                 mod_title = m['name']
             emit('<h3><a name="{}">{}</a></h3>'.format(anchor('mod', m['name']), mod_title))
             if 'text' in m:
-                emit_markdown(m['text'], 3)
+                emit_markdown(m['text'], 3, 'REG')
             emit('<h4>Registers</h4>')
             mregs = sorted(filter(lambda r: 'module' in r and r['module'] == m['name'], reg_list), key = lambda r: r['name'])
             sml = set()
@@ -899,7 +910,7 @@ if __name__ == '__main__':
 
         emit('</tr></tbody></table>')
         emit('<p></p>')
-        emit_markdown(reg_text, 3)
+        emit_markdown(reg_text, 3, 'REG')
         emit('<hr />')
     emit('</body>')
     emit('</html>')
@@ -1020,7 +1031,7 @@ if __name__ == '__main__':
                     emit('<h5>{}</h5>'.format(notes_title))
                 else:
                     emit('<h5>Notes</h5>')
-                emit_markdown(notes_text, 5)
+                emit_markdown(notes_text, 5, 'API')
             emit('<hr />')
 
     # documentaiton for each property
@@ -1056,6 +1067,13 @@ if __name__ == '__main__':
             emit_field_details(prop['params'], 'prop', pgroup['name'], True)
             emit('</li>')
             emit('</ul>')
+            notes_title, notes_text = load_extra('api', 'prop', prop['name'].lower())
+            if len(notes_text) > 0:
+                if len(notes_title) > 0:
+                    emit('<h5>{}</h5>'.format(notes_title))
+                else:
+                    emit('<h5>Notes</h5>')
+                emit_markdown(notes_text, 5, 'API')
             emit('<hr />')
 
     emit('</body>')
