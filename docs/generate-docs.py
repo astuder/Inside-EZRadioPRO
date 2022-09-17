@@ -98,6 +98,7 @@ def extract_regs(part):
         r = {}
         r['address'] = int(reg.get('address'), 16)
         r['name'] = reg.get('name').upper()
+        r['title'], r['text'] = load_extra('regs', 'reg', r['name'].lower())
         try:
             r['defaultVal'] = int(reg.get('defaultVal'), 16)
         except:
@@ -842,21 +843,28 @@ if __name__ == '__main__':
                     emit('<h4>{}</h4>'.format(sm))
                     emit('<ul>')
                     for r in filter(lambda r: 'submodule' in r and r['submodule'] == sm, mregs):
-                        emit('<li>{}</li>'.format(reglink(r['name'])))
+                        emit('<li>')
+                        emit(reglink(r['name']))
+                        if len(r['title']) > 0:
+                            emit(' - {}'.format(r['title']))
+                        emit('</li>')
                     emit('</ul>')
             else:
                 emit('<ul>')
                 for r in mregs:
-                    emit('<li>{}</li>'.format(reglink(r['name'])))
+                    emit('<li>')
+                    emit(reglink(r['name']))
+                    if len(r['title']) > 0:
+                        emit(' - {}'.format(r['title']))
+                    emit('</li>')
                 emit('</ul>')
             emit('<hr />')
 
     # individual registers
     emit('<h2><a name="registers">Registers</a></h2>')
     for r in sorted(reg_list, key = lambda r: r['address']):
-        reg_title, reg_text = load_extra('regs', 'reg', r['name'].lower())
-        if len(reg_title) > 0:
-            reg_title = '{} - {}'.format(r['name'], reg_title)
+        if len(r['title']) > 0:
+            reg_title = '{} - {}'.format(r['name'], r['title'])
         else:
             reg_title = r['name']
         emit('<h3><a name="{}">{}</a></h3>'.format(anchor('reg', r['name']), reg_title))
@@ -910,7 +918,7 @@ if __name__ == '__main__':
 
         emit('</tr></tbody></table>')
         emit('<p></p>')
-        emit_markdown(reg_text, 3, 'REG')
+        emit_markdown(r['text'], 3, 'REG')
         emit('<hr />')
     emit('</body>')
     emit('</html>')
