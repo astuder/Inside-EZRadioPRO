@@ -16,9 +16,9 @@ The boot process is as follows:
 * enable NVM and basic clocks, incl. NVM timing calibration
 * check flag `SPI_STATUS:WARM_BOOT`, execute following steps if flag is clear:
   * set flag `SPI_STATUS:WARM_BOOT`
-  * copy part information from `NVM:0x5510` to `RAM:0x07f0`
-  * copy calibration data from `NVM:0x5578` to `RAM:0x0761`
-  * copy ACFG defaults from `NVM:0x5520` to `RAM:0x0798`
+  * copy part information from `NVM:0x5510` to `RAM:0x07f0` (0x10 bytes)
+  * copy calibration data from `NVM:0x5578` to `RAM:0x0761` (0x37 bytes)
+  * copy ACFG defaults from `NVM:0x5520` to `RAM:0x0798` (0x58 bytes)
   * run boot script located at `NVM:0x5600` 
 * Start `TIMER0` (timeout?)
 * Enable SPI command interrupt (`0x1F` `INT_COMMAND`), enabling SPI API
