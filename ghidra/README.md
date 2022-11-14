@@ -4,7 +4,7 @@
 * [EZRadioPRO importer](#ezradiopro-importer)
 * [Radare2 importer](#radare2-importer)
 
-This tooling was tested with Ghidra 9.2.
+This tooling was tested with Ghidra 10.2.1
 
 ## Si4440 processor variant
 
