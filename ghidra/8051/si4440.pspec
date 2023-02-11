@@ -6,6 +6,7 @@
   
   <volatile outputop="write_volatile" inputop="read_volatile">
     <range space="SFR" first="0x0" last="0xFF"/>
+    <range space="BITS" first="0x80" last="0xFF"/>
     <range space="RAM" first="0x5000" last="0x51ff"/>
     <range space="RAM" first="0x5480" last="0x54ff"/>
   </volatile>
