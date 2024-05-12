@@ -9,7 +9,7 @@ Pull requests are welcome, especially [reverse engineering notes](docs/regs) tha
 ## Progress
 
 - Dump all memory address spaces, including CODE and NVM
-  - Si4362-B1B, Si4362-C2A, Si4460-C2A, Si4463-B1B, Si4467-A2A
+  - Si4362-B1B, Si4362-C2A, Si4460-C2A, Si4463-B1B, Si4467-A2A, Si4438-C2A
 - Run custom code on radio IC
 - Reverse engineered [patch mechanism](docs/boot.md#patch-process) and created [tooling](tools/README.md#patchcryptopy) for custom firmware patches
 - Analyze and annotate large parts of the firmware using radare2
@@ -56,3 +56,4 @@ Members of the EZRadio and EZRadioPRO product families share the same silicon di
 - NVM organization and locking is similar to what's described in application note [AN518 Si4010 Memory Overlay Technique](https://www.silabs.com/documents/public/application-notes/AN518.pdf).
 - The firmware of EZRadioPRO parts includes code for EZConfig commands, which are only documented for the EZRadio product family (Si4355, Si4455)
 - The string `si4440` found towards the end of the firmware ROM matches die marking [found on Si4362-C2A](https://github.com/astuder/Inside-EZRadioPRO/blob/master/img/Si4362-C2A-marking.jpg). It also was found in the Si4355 by [TechInsights](http://www.techinsights.com/reports-and-subscriptions/open-market-reports/Report-Profile/?ReportKey=FAR-1606-804).
+- [High resolution die shot](https://github.com/astuder/Inside-EZRadioPRO/blob/master/img/Si4362-C2A-top20x-goodspeed.jpg) courtesy of Travis Goodspeed, unfortuantely with most of the digital section hidden under a metal layer
